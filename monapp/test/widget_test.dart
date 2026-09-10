@@ -1,38 +1,46 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:monapp/layers/functional/Anime/data/mock_anime_catalog.dart';
-import 'package:monapp/layers/functional/Anime/presentation/watch_status_display.dart';
-import 'package:monapp/layers/functional/Anime/presentation/widgets/anime_poster.dart';
 import 'package:monapp/main.dart';
 
-void main() {
-  testWidgets('the watchlist shows every anime title', (tester) async {
-    await tester.pumpWidget(const AnimeTrackerApp());
-
-    expect(find.text('Ma liste'), findsOneWidget);
-    for (final anime in MockAnimeCatalog.watchlist) {
-      expect(find.text(anime.title), findsOneWidget);
-    }
-  });
-
-  testWidgets('each anime carries its watch status label', (tester) async {
-    await tester.pumpWidget(const AnimeTrackerApp());
-
-    for (final anime in MockAnimeCatalog.watchlist) {
-      expect(
-        find.text(anime.status.label),
-        findsWidgets,
-        reason: '${anime.title} should display ${anime.status.label}',
-      );
-    }
-  });
-
-  testWidgets('every anime gets a placeholder poster', (tester) async {
-    await tester.pumpWidget(const AnimeTrackerApp());
-
-    expect(
-      find.byType(AnimePoster),
-      findsNWidgets(MockAnimeCatalog.watchlist.length),
+Future<void> pumpHome(WidgetTester tester) => tester.pumpWidget(
+      AnimeTrackerApp(issueDate: DateTime(2026, 9, 10)),
     );
+
+void main() {
+  testWidgets('the masthead announces the issue and the counts',
+      (tester) async {
+    await pumpHome(tester);
+
+    expect(find.text('SAISON'), findsOneWidget);
+    expect(find.text('JEU. 10 SEPT. 2026'), findsOneWidget);
+    expect(find.text('Ma liste'), findsOneWidget);
+    expect(find.text('3 en cours · 3 en attente · 4 terminées'), findsOneWidget);
+  });
+
+  testWidgets('the home opens on the En cours tab', (tester) async {
+    await pumpHome(tester);
+
+    expect(find.text('Frieren : Au-delà du voyage'), findsOneWidget);
+    expect(find.text('Wit Studio · 2019 · 24 épisodes'), findsOneWidget);
+    expect(find.text('Fullmetal Alchemist: Brotherhood'), findsNothing);
+  });
+
+  testWidgets('selecting a tab swaps the listed animes', (tester) async {
+    await pumpHome(tester);
+
+    await tester.tap(find.text('Terminé'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Fullmetal Alchemist: Brotherhood'), findsOneWidget);
+    expect(find.text('Frieren : Au-delà du voyage'), findsNothing);
+  });
+
+  testWidgets('a row carries the original title and the studio line',
+      (tester) async {
+    await pumpHome(tester);
+
+    expect(find.text('Sousou no Frieren'), findsOneWidget);
+    expect(find.text('Madhouse · 2023 · 28 épisodes'), findsOneWidget);
+    expect(find.text('12 / 28'), findsOneWidget);
   });
 }

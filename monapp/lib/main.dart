@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'layers/functional/Anime/presentation/watchlist_view.dart';
 import 'layers/technical/Injection/injection.dart';
+import 'layers/technical/Navigation/app_shell.dart';
 import 'layers/technical/Theme/app_theme.dart';
 
 void main() {
@@ -17,7 +17,7 @@ class AnimeTrackerApp extends StatelessWidget {
     return MaterialApp(
       title: 'Anime Tracker',
       theme: AppTheme.editorial,
-      home: const WatchlistView(),
+      home: const AppShell(),
     );
   }
 }

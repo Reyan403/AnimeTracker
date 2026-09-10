@@ -9,7 +9,6 @@ abstract final class MockAnimeCatalog {
       studio: 'Madhouse',
       year: 2023,
       episodeCount: 28,
-      watchedEpisodes: 12,
       status: WatchStatus.watching,
     ),
     Anime(
@@ -18,7 +17,6 @@ abstract final class MockAnimeCatalog {
       studio: 'Wit Studio',
       year: 2019,
       episodeCount: 24,
-      watchedEpisodes: 6,
       status: WatchStatus.watching,
     ),
     Anime(
@@ -27,7 +25,6 @@ abstract final class MockAnimeCatalog {
       studio: 'Trigger',
       year: 2024,
       episodeCount: 24,
-      watchedEpisodes: 5,
       status: WatchStatus.watching,
     ),
     Anime(
@@ -36,7 +33,6 @@ abstract final class MockAnimeCatalog {
       studio: 'Sunrise',
       year: 1998,
       episodeCount: 26,
-      watchedEpisodes: 0,
       status: WatchStatus.toWatch,
     ),
     Anime(
@@ -45,7 +41,6 @@ abstract final class MockAnimeCatalog {
       studio: 'Bones',
       year: 2016,
       episodeCount: 37,
-      watchedEpisodes: 0,
       status: WatchStatus.toWatch,
     ),
     Anime(
@@ -54,7 +49,6 @@ abstract final class MockAnimeCatalog {
       studio: 'Wit Studio',
       year: 2022,
       episodeCount: 25,
-      watchedEpisodes: 0,
       status: WatchStatus.toWatch,
     ),
     Anime(
@@ -63,7 +57,6 @@ abstract final class MockAnimeCatalog {
       studio: 'Bones',
       year: 2009,
       episodeCount: 64,
-      watchedEpisodes: 64,
       status: WatchStatus.completed,
     ),
     Anime(
@@ -72,7 +65,6 @@ abstract final class MockAnimeCatalog {
       studio: 'Wit Studio',
       year: 2013,
       episodeCount: 87,
-      watchedEpisodes: 87,
       status: WatchStatus.completed,
     ),
     Anime(
@@ -81,7 +73,6 @@ abstract final class MockAnimeCatalog {
       studio: 'MAPPA',
       year: 2020,
       episodeCount: 47,
-      watchedEpisodes: 47,
       status: WatchStatus.completed,
     ),
     Anime(
@@ -90,7 +81,6 @@ abstract final class MockAnimeCatalog {
       studio: 'Madhouse',
       year: 2006,
       episodeCount: 37,
-      watchedEpisodes: 37,
       status: WatchStatus.completed,
     ),
   ];

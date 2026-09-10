@@ -7,10 +7,7 @@ abstract final class AppSpacing {
 
   static const double plaqueWidth = 78;
   static const double plaqueHeight = 104;
-  static const double plaqueDotSpacing = 5;
-  static const double plaqueDotRadius = 1;
 
   static const double hairline = 1;
   static const double squareRadius = 2;
-  static const double ruleThickness = 2;
 }

@@ -11,6 +11,5 @@ abstract final class AppColors {
   static const Color rule = Color(0xFFE2DED8);
 
   static const Color plaqueBackground = Color(0xFFF2F0EC);
-  static const Color plaqueDot = Color(0xFFD9D5CF);
   static const Color plaqueInk = Color(0xFFA9A49D);
 }

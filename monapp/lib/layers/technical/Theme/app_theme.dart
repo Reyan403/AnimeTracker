@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
 abstract final class AppTheme {
-  static const String _serif = 'serif';
+  static const String _serif = 'SourceSerif';
 
   static ThemeData get editorial {
     const scheme = ColorScheme.light(
@@ -51,13 +51,6 @@ abstract final class AppTheme {
     bodySmall: TextStyle(
       fontFamily: _serif,
       fontSize: 13,
-      color: AppColors.inkMuted,
-    ),
-    labelSmall: TextStyle(
-      fontFamily: _serif,
-      fontSize: 11,
-      fontWeight: FontWeight.w700,
-      letterSpacing: 1.6,
       color: AppColors.inkMuted,
     ),
   );

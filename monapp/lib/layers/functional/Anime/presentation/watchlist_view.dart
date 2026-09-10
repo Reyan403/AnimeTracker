@@ -9,9 +9,7 @@ import 'widgets/watch_status_tabs.dart';
 import 'widgets/watchlist_header.dart';
 
 class WatchlistView extends StatefulWidget {
-  const WatchlistView({required this.issueDate, super.key});
-
-  final DateTime issueDate;
+  const WatchlistView({super.key});
 
   @override
   State<WatchlistView> createState() => _WatchlistViewState();
@@ -38,7 +36,6 @@ class _WatchlistViewState extends State<WatchlistView> {
           children: [
             WatchlistHeader(
               animes: MockAnimeCatalog.watchlist,
-              issueDate: widget.issueDate,
             ),
             const SizedBox(height: AppSpacing.lg),
             WatchStatusTabs(

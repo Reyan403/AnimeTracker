@@ -1,51 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../technical/Injection/injection.dart';
 import '../../../technical/Theme/app_spacing.dart';
-import '../data/mock_anime_catalog.dart';
-import '../domain/entities/anime.dart';
-import '../domain/entities/watch_status.dart';
+import 'cubit/watchlist_cubit.dart';
+import 'cubit/watchlist_state.dart';
 import 'widgets/anime_row.dart';
 import 'widgets/watch_status_tabs.dart';
+import 'widgets/watchlist_empty.dart';
+import 'widgets/watchlist_error.dart';
 import 'widgets/watchlist_header.dart';
+import 'widgets/watchlist_skeleton.dart';
 
-class WatchlistView extends StatefulWidget {
+class WatchlistView extends StatelessWidget {
   const WatchlistView({super.key});
 
   @override
-  State<WatchlistView> createState() => _WatchlistViewState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => getIt<WatchlistCubit>()..load(),
+      child: const WatchlistScaffold(),
+    );
+  }
 }
 
-class _WatchlistViewState extends State<WatchlistView> {
-  WatchStatus _selected = WatchStatus.watching;
-
-  List<Anime> get _visibleAnimes => MockAnimeCatalog.watchlist
-      .where((anime) => anime.status == _selected)
-      .toList();
+class WatchlistScaffold extends StatelessWidget {
+  const WatchlistScaffold({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<WatchlistCubit>();
+
     return Scaffold(
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(
-            AppSpacing.lg,
-            AppSpacing.lg,
-            AppSpacing.lg,
-            AppSpacing.xl,
+        child: BlocBuilder<WatchlistCubit, WatchlistState>(
+          builder: (context, state) => ListView(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.lg,
+              AppSpacing.lg,
+              AppSpacing.lg,
+              AppSpacing.xl,
+            ),
+            children: [
+              WatchlistHeader(state: state),
+              const SizedBox(height: AppSpacing.lg),
+              WatchStatusTabs(
+                state: state,
+                onSelected: cubit.selectStatus,
+              ),
+              const SizedBox(height: AppSpacing.xl),
+              switch (state.status) {
+                ViewStatus.loading => const WatchlistSkeleton(),
+                ViewStatus.failure => WatchlistError(onRetry: cubit.load),
+                ViewStatus.empty => const WatchlistEmpty(),
+                ViewStatus.success => Column(
+                    children: [
+                      for (final anime in state.visibleAnimes)
+                        AnimeRow(anime: anime),
+                    ],
+                  ),
+              },
+            ],
           ),
-          children: [
-            WatchlistHeader(
-              animes: MockAnimeCatalog.watchlist,
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            WatchStatusTabs(
-              animes: MockAnimeCatalog.watchlist,
-              selected: _selected,
-              onSelected: (status) => setState(() => _selected = status),
-            ),
-            const SizedBox(height: AppSpacing.xl),
-            for (final anime in _visibleAnimes) AnimeRow(anime: anime),
-          ],
         ),
       ),
     );

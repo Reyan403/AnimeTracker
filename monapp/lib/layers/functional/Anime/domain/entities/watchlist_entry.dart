@@ -1,14 +1,13 @@
-import 'anime_details.dart';
 import 'watch_status.dart';
 
-class Anime {
-  const Anime({
+class WatchlistEntry {
+  const WatchlistEntry({
+    required this.malId,
     required this.title,
     required this.status,
-    this.details,
   });
 
+  final int malId;
   final String title;
   final WatchStatus status;
-  final AnimeDetails? details;
 }

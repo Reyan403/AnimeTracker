@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../technical/Theme/app_spacing.dart';
 import '../../domain/entities/anime.dart';
+import '../../domain/entities/anime_details.dart';
 import 'anime_plaque.dart';
 
 class AnimeRow extends StatelessWidget {
@@ -9,9 +10,13 @@ class AnimeRow extends StatelessWidget {
 
   final Anime anime;
 
+  static String _metaLine(AnimeDetails details) =>
+      '${details.studio} · ${details.year} · ${details.episodeCount} épisodes';
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final details = anime.details;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.lg),
@@ -27,7 +32,7 @@ class AnimeRow extends StatelessWidget {
                 Text(anime.title, style: theme.textTheme.titleMedium),
                 const SizedBox(height: AppSpacing.sm),
                 Text(
-                  '${anime.studio} · ${anime.year} · ${anime.episodeCount} épisodes',
+                  details == null ? 'Fiche indisponible' : _metaLine(details),
                   style: theme.textTheme.bodyMedium,
                 ),
               ],

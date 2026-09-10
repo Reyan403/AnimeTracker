@@ -1,30 +1,28 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:monapp/layers/functional/Anime/data/mock_anime_catalog.dart';
+import 'package:monapp/layers/functional/Anime/presentation/watch_status_display.dart';
 import 'package:monapp/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('the watchlist shows every anime title', (tester) async {
+    await tester.pumpWidget(const AnimeTrackerApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    expect(find.text('Ma liste'), findsOneWidget);
+    for (final anime in MockAnimeCatalog.watchlist) {
+      expect(find.text(anime.title), findsOneWidget);
+    }
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  testWidgets('each anime carries its watch status label', (tester) async {
+    await tester.pumpWidget(const AnimeTrackerApp());
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    for (final anime in MockAnimeCatalog.watchlist) {
+      expect(
+        find.text(anime.status.label),
+        findsWidgets,
+        reason: '${anime.title} should display ${anime.status.label}',
+      );
+    }
   });
 }

@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:monapp/layers/functional/Anime/data/mock_anime_catalog.dart';
 import 'package:monapp/layers/functional/Anime/presentation/watch_status_display.dart';
+import 'package:monapp/layers/functional/Anime/presentation/widgets/anime_poster.dart';
 import 'package:monapp/main.dart';
 
 void main() {
@@ -24,5 +25,14 @@ void main() {
         reason: '${anime.title} should display ${anime.status.label}',
       );
     }
+  });
+
+  testWidgets('every anime gets a placeholder poster', (tester) async {
+    await tester.pumpWidget(const AnimeTrackerApp());
+
+    expect(
+      find.byType(AnimePoster),
+      findsNWidgets(MockAnimeCatalog.watchlist.length),
+    );
   });
 }

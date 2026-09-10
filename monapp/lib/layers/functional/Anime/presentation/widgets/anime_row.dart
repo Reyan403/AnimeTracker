@@ -9,8 +9,6 @@ class AnimeRow extends StatelessWidget {
 
   final Anime anime;
 
-  bool get _hasDistinctOriginalTitle => anime.originalTitle != anime.title;
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -27,14 +25,6 @@ class AnimeRow extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(anime.title, style: theme.textTheme.titleMedium),
-                if (_hasDistinctOriginalTitle) ...[
-                  const SizedBox(height: AppSpacing.xs),
-                  Text(
-                    anime.originalTitle,
-                    style: theme.textTheme.bodyMedium
-                        ?.copyWith(fontStyle: FontStyle.italic),
-                  ),
-                ],
                 const SizedBox(height: AppSpacing.sm),
                 Text(
                   '${anime.studio} · ${anime.year} · ${anime.episodeCount} épisodes',

@@ -28,11 +28,10 @@ void main() {
     expect(find.text('Frieren : Au-delà du voyage'), findsNothing);
   });
 
-  testWidgets('an original title shows only when it differs from the title',
-      (tester) async {
+  testWidgets('a row keeps only the title and the studio line', (tester) async {
     await tester.pumpWidget(const AnimeTrackerApp());
 
-    expect(find.text('Sousou no Frieren'), findsOneWidget);
-    expect(find.text('Vinland Saga'), findsOneWidget);
+    expect(find.text('Sousou no Frieren'), findsNothing);
+    expect(find.text('Delicious in Dungeon'), findsNothing);
   });
 }

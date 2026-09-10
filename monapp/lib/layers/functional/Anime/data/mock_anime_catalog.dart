@@ -5,7 +5,6 @@ abstract final class MockAnimeCatalog {
   static const List<Anime> watchlist = [
     Anime(
       title: 'Frieren : Au-delà du voyage',
-      originalTitle: 'Sousou no Frieren',
       studio: 'Madhouse',
       year: 2023,
       episodeCount: 28,
@@ -13,7 +12,6 @@ abstract final class MockAnimeCatalog {
     ),
     Anime(
       title: 'Vinland Saga',
-      originalTitle: 'Vinland Saga',
       studio: 'Wit Studio',
       year: 2019,
       episodeCount: 24,
@@ -21,7 +19,6 @@ abstract final class MockAnimeCatalog {
     ),
     Anime(
       title: 'Dungeon Meshi',
-      originalTitle: 'Delicious in Dungeon',
       studio: 'Trigger',
       year: 2024,
       episodeCount: 24,
@@ -29,7 +26,6 @@ abstract final class MockAnimeCatalog {
     ),
     Anime(
       title: 'Cowboy Bebop',
-      originalTitle: 'Cowboy Bebop',
       studio: 'Sunrise',
       year: 1998,
       episodeCount: 26,
@@ -37,7 +33,6 @@ abstract final class MockAnimeCatalog {
     ),
     Anime(
       title: 'Mob Psycho 100',
-      originalTitle: 'Mob Psycho 100',
       studio: 'Bones',
       year: 2016,
       episodeCount: 37,
@@ -45,7 +40,6 @@ abstract final class MockAnimeCatalog {
     ),
     Anime(
       title: 'Spy x Family',
-      originalTitle: 'Spy x Family',
       studio: 'Wit Studio',
       year: 2022,
       episodeCount: 25,
@@ -53,7 +47,6 @@ abstract final class MockAnimeCatalog {
     ),
     Anime(
       title: 'Fullmetal Alchemist: Brotherhood',
-      originalTitle: 'Hagane no Renkinjutsushi',
       studio: 'Bones',
       year: 2009,
       episodeCount: 64,
@@ -61,7 +54,6 @@ abstract final class MockAnimeCatalog {
     ),
     Anime(
       title: "L'Attaque des Titans",
-      originalTitle: 'Shingeki no Kyojin',
       studio: 'Wit Studio',
       year: 2013,
       episodeCount: 87,
@@ -69,7 +61,6 @@ abstract final class MockAnimeCatalog {
     ),
     Anime(
       title: 'Jujutsu Kaisen',
-      originalTitle: 'Jujutsu Kaisen',
       studio: 'MAPPA',
       year: 2020,
       episodeCount: 47,
@@ -77,7 +68,6 @@ abstract final class MockAnimeCatalog {
     ),
     Anime(
       title: 'Death Note',
-      originalTitle: 'Death Note',
       studio: 'Madhouse',
       year: 2006,
       episodeCount: 37,

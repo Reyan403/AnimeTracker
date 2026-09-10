@@ -46,7 +46,7 @@ void main() {
     await tester.tap(find.text('Catalogue'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Rien à explorer pour le moment.'), findsOneWidget);
+    expect(find.text('Cherche un animé à ajouter à ta liste.'), findsOneWidget);
   });
 
   testWidgets('coming back to Liste keeps it loaded', (tester) async {

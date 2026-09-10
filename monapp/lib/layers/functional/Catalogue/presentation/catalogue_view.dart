@@ -1,9 +1,29 @@
 import 'package:flutter/material.dart';
 
 import '../../../technical/Theme/app_spacing.dart';
+import 'widgets/catalogue_search_field.dart';
 
-class CatalogueView extends StatelessWidget {
+class CatalogueView extends StatefulWidget {
   const CatalogueView({super.key});
+
+  @override
+  State<CatalogueView> createState() => _CatalogueViewState();
+}
+
+class _CatalogueViewState extends State<CatalogueView> {
+  final TextEditingController _controller = TextEditingController();
+  String _query = '';
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _clear() {
+    _controller.clear();
+    setState(() => _query = '');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +37,17 @@ class CatalogueView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Catalogue', style: theme.textTheme.displaySmall),
-              const SizedBox(height: AppSpacing.sm),
+              const SizedBox(height: AppSpacing.lg),
+              CatalogueSearchField(
+                controller: _controller,
+                onChanged: (value) => setState(() => _query = value),
+                onCleared: _clear,
+              ),
+              const SizedBox(height: AppSpacing.lg),
               Text(
-                'Rien à explorer pour le moment.',
+                _query.isEmpty
+                    ? 'Cherche un animé à ajouter à ta liste.'
+                    : 'La recherche n\'est pas encore branchée à l\'API.',
                 style: theme.textTheme.bodyMedium,
               ),
             ],

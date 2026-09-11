@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
-import '../../functional/Anime/data/data_sources/jikan_client.dart';
+import '../JikanApi/jikan_client.dart';
 import '../../functional/Anime/data/gateways/anime_details_gateway_impl.dart';
 import '../../functional/Anime/data/my_watchlist.dart';
 import '../../functional/Anime/domain/gateways/anime_details_gateway.dart';

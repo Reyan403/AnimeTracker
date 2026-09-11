@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 import '../../domain/entities/anime_details.dart';
 import '../../domain/gateways/anime_details_gateway.dart';
-import '../data_sources/jikan_client.dart';
+import '../../../../technical/JikanApi/jikan_client.dart';
 import '../models/anime_details_dto.dart';
 
 class AnimeDetailsGatewayImpl implements AnimeDetailsGateway {

@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../technical/Injection/injection.dart';
 import '../../../technical/Theme/app_spacing.dart';
 import '../../../technical/Theme/widgets/plaque_row_skeleton.dart';
+import '../domain/entities/catalogue_anime.dart';
+import 'anime_sheet_view.dart';
 import 'cubit/catalogue_cubit.dart';
 import 'cubit/catalogue_state.dart';
 import 'widgets/catalogue_empty.dart';
@@ -44,6 +46,14 @@ class _CatalogueScaffoldState extends State<CatalogueScaffold> {
   void _clear() {
     _controller.clear();
     context.read<CatalogueCubit>().clear();
+  }
+
+  void _openSheet(BuildContext context, CatalogueAnime anime) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => AnimeSheetView(animeId: anime.id, title: anime.title),
+      ),
+    );
   }
 
   bool _loadMoreWhenNearBottom(ScrollNotification notification) {
@@ -88,7 +98,10 @@ class _CatalogueScaffoldState extends State<CatalogueScaffold> {
                   CatalogueStatus.success => Column(
                       children: [
                         for (final anime in state.animes)
-                          CatalogueRow(anime: anime),
+                          InkWell(
+                            onTap: () => _openSheet(context, anime),
+                            child: CatalogueRow(anime: anime),
+                          ),
                         if (state.isAppending)
                           const PlaqueRowSkeleton(rowCount: 1),
                       ],

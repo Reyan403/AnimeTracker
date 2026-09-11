@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:monapp/layers/functional/Catalogue/domain/entities/catalogue_anime.dart';
+import 'package:monapp/layers/functional/Catalogue/domain/entities/anime_sheet.dart';
 import 'package:monapp/layers/functional/Catalogue/domain/gateways/anime_catalogue_gateway.dart';
 import 'package:monapp/layers/functional/Catalogue/domain/use_cases/browse_catalogue_use_case.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/catalogue_view.dart';
+import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_sheet_cubit.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/catalogue_cubit.dart';
 import 'package:monapp/layers/technical/Injection/injection.dart';
 import 'package:monapp/layers/technical/Theme/widgets/plaque_row_skeleton.dart';
 
 import 'fake_anime_catalogue_gateway.dart';
+import 'fake_anime_sheet_gateway.dart';
 
 const bebop = CatalogueAnime(
   id: 1,
@@ -34,6 +37,13 @@ const mob = CatalogueAnime(
   episodeCount: 12,
 );
 
+const bebopSheet = AnimeSheet(
+  id: 1,
+  title: 'Cowboy Bebop',
+  format: 'Série TV',
+  synopsis: 'Spike Spiegel chasse les primes à bord du Bebop.',
+);
+
 FakeAnimeCatalogueGateway stockedGateway() => FakeAnimeCatalogueGateway(
       mostPopular: const [bebop, mob],
       resultsByQuery: const {
@@ -52,9 +62,15 @@ Future<void> pumpWith(
   AnimeCatalogueGateway gateway,
 ) async {
   await getIt.reset();
-  getIt.registerFactory<CatalogueCubit>(
-    () => CatalogueCubit(BrowseCatalogueUseCase(gateway)),
-  );
+  getIt
+    ..registerFactory<CatalogueCubit>(
+      () => CatalogueCubit(BrowseCatalogueUseCase(gateway)),
+    )
+    ..registerFactory<AnimeSheetCubit>(
+      () => AnimeSheetCubit(
+        FakeAnimeSheetGateway(sheetsById: const {1: bebopSheet}),
+      ),
+    );
 
   await tester.pumpWidget(const MaterialApp(home: CatalogueView()));
 }
@@ -148,5 +164,19 @@ void main() {
     await scrollToBottom(tester);
 
     expect(gateway.receivedPages, [1, 2]);
+  });
+
+  testWidgets('tapping an anime opens its sheet', (tester) async {
+    await pumpWith(tester, stockedGateway());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Cowboy Bebop'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Synopsis'), findsOneWidget);
+    expect(
+      find.text('Spike Spiegel chasse les primes à bord du Bebop.'),
+      findsOneWidget,
+    );
   });
 }

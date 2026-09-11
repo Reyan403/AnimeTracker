@@ -12,6 +12,7 @@ import 'package:monapp/layers/technical/Theme/widgets/plaque_row_skeleton.dart';
 import 'package:monapp/main.dart';
 
 import 'fake_anime_catalogue_gateway.dart';
+import 'counting_anime_details_gateway.dart';
 import 'fake_anime_details_gateway.dart';
 
 const entries = [
@@ -86,5 +87,25 @@ void main() {
 
     expect(find.text('Impossible de charger les fiches'), findsOneWidget);
     expect(find.text('Réessayer'), findsOneWidget);
+  });
+
+  testWidgets('the titles show up before the details arrive', (tester) async {
+    await pumpWith(
+      tester,
+      CountingAnimeDetailsGateway(
+        bebop,
+        answerDelay: const Duration(milliseconds: 300),
+      ),
+    );
+    await tester.pump();
+    await tester.pump();
+
+    expect(find.text('Vinland Saga'), findsOneWidget);
+    expect(find.text('Sunrise · 1998 · 26 épisodes'), findsNothing);
+
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Sunrise · 1998 · 26 épisodes'), findsOneWidget);
   });
 }

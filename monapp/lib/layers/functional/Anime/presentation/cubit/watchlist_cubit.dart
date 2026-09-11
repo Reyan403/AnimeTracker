@@ -4,16 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entities/anime.dart';
 import '../../domain/entities/watch_status.dart';
-import '../../domain/entities/watchlist_entry.dart';
 import '../../domain/use_cases/load_watchlist_use_case.dart';
 import 'watchlist_state.dart';
 
 class WatchlistCubit extends Cubit<WatchlistState> {
-  WatchlistCubit(this._loadWatchlist, this._entries)
-      : super(const WatchlistState());
+  WatchlistCubit(this._loadWatchlist) : super(const WatchlistState());
 
   final LoadWatchlistUseCase _loadWatchlist;
-  final List<WatchlistEntry> _entries;
 
   StreamSubscription<List<Anime>>? _loading;
 
@@ -21,12 +18,10 @@ class WatchlistCubit extends Cubit<WatchlistState> {
     await _loading?.cancel();
     emit(state.copyWith(status: ViewStatus.loading));
 
-    _loading = _loadWatchlist(_entries).listen(
+    _loading = _loadWatchlist().listen(
       _show,
       onError: (_) => emit(state.copyWith(status: ViewStatus.failure)),
     );
-
-    return _loading!.asFuture<void>().catchError((_) {});
   }
 
   void selectStatus(WatchStatus status) => emit(

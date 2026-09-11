@@ -63,6 +63,7 @@ class WatchlistScaffold extends StatelessWidget {
                     children: [
                       for (final anime in state.visibleAnimes)
                         InkWell(
+                          key: ValueKey(anime.id),
                           onTap: () => onAnimeSelected(anime.id, anime.title),
                           child: AnimeRow(anime: anime),
                         ),

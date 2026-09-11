@@ -13,6 +13,7 @@ class CatalogueState extends Equatable {
     this.page = BrowseCatalogueUseCase.firstPage,
     this.hasMore = false,
     this.isAppending = false,
+    this.listedIds = const {},
   });
 
   final CatalogueStatus status;
@@ -21,8 +22,11 @@ class CatalogueState extends Equatable {
   final int page;
   final bool hasMore;
   final bool isAppending;
+  final Set<int> listedIds;
 
   bool get isSearching => query.trim().isNotEmpty;
+
+  bool isListed(CatalogueAnime anime) => listedIds.contains(anime.id);
 
   CatalogueState copyWith({
     CatalogueStatus? status,
@@ -31,6 +35,7 @@ class CatalogueState extends Equatable {
     int? page,
     bool? hasMore,
     bool? isAppending,
+    Set<int>? listedIds,
   }) =>
       CatalogueState(
         status: status ?? this.status,
@@ -39,8 +44,10 @@ class CatalogueState extends Equatable {
         page: page ?? this.page,
         hasMore: hasMore ?? this.hasMore,
         isAppending: isAppending ?? this.isAppending,
+        listedIds: listedIds ?? this.listedIds,
       );
 
   @override
-  List<Object?> get props => [status, animes, query, page, hasMore, isAppending];
+  List<Object?> get props =>
+      [status, animes, query, page, hasMore, isAppending, listedIds];
 }

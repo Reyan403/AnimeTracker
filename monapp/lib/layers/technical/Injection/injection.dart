@@ -2,8 +2,12 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
 import '../../functional/Anime/data/gateways/anime_details_gateway_impl.dart';
+import '../../functional/Anime/data/gateways/in_memory_watchlist_gateway.dart';
 import '../../functional/Anime/data/my_watchlist.dart';
 import '../../functional/Anime/domain/gateways/anime_details_gateway.dart';
+import '../../functional/Anime/domain/gateways/watchlist_gateway.dart';
+import '../../functional/Anime/domain/use_cases/add_to_watchlist_use_case.dart';
+import '../../functional/Anime/domain/use_cases/listed_anime_ids_use_case.dart';
 import '../../functional/Anime/domain/use_cases/load_watchlist_use_case.dart';
 import '../../functional/Anime/presentation/cubit/watchlist_cubit.dart';
 import '../../functional/Catalogue/data/gateways/anime_catalogue_gateway_impl.dart';
@@ -37,6 +41,9 @@ void initializeDependencies() {
     ..registerLazySingleton<AnimeDetailsGateway>(
       () => AnimeDetailsGatewayImpl(getIt()),
     )
+    ..registerLazySingleton<WatchlistGateway>(
+      () => InMemoryWatchlistGateway(MyWatchlist.entries),
+    )
     ..registerLazySingleton<AnimeSheetGateway>(
       () => AnimeSheetGatewayImpl(getIt()),
     )
@@ -47,7 +54,16 @@ void initializeDependencies() {
       () => AnimeCatalogueGatewayImpl(getIt()),
     )
     ..registerLazySingleton<LoadWatchlistUseCase>(
-      () => LoadWatchlistUseCase(getIt<AnimeDetailsGateway>()),
+      () => LoadWatchlistUseCase(
+        getIt<AnimeDetailsGateway>(),
+        getIt<WatchlistGateway>(),
+      ),
+    )
+    ..registerLazySingleton<AddToWatchlistUseCase>(
+      () => AddToWatchlistUseCase(getIt<WatchlistGateway>()),
+    )
+    ..registerLazySingleton<ListedAnimeIdsUseCase>(
+      () => ListedAnimeIdsUseCase(getIt<WatchlistGateway>()),
     )
     ..registerLazySingleton<LoadAnimeSheetUseCase>(
       () => LoadAnimeSheetUseCase(
@@ -59,12 +75,16 @@ void initializeDependencies() {
       () => BrowseCatalogueUseCase(getIt<AnimeCatalogueGateway>()),
     )
     ..registerFactory<WatchlistCubit>(
-      () => WatchlistCubit(getIt<LoadWatchlistUseCase>(), MyWatchlist.entries),
+      () => WatchlistCubit(getIt<LoadWatchlistUseCase>()),
     )
     ..registerFactory<AnimeSheetCubit>(
       () => AnimeSheetCubit(getIt<LoadAnimeSheetUseCase>()),
     )
     ..registerFactory<CatalogueCubit>(
-      () => CatalogueCubit(getIt<BrowseCatalogueUseCase>()),
+      () => CatalogueCubit(
+        getIt<BrowseCatalogueUseCase>(),
+        getIt<AddToWatchlistUseCase>(),
+        getIt<ListedAnimeIdsUseCase>(),
+      ),
     );
 }

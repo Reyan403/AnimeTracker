@@ -2,22 +2,36 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../Anime/domain/use_cases/add_to_watchlist_use_case.dart';
+import '../../../Anime/domain/use_cases/listed_anime_ids_use_case.dart';
 import '../../domain/entities/catalogue_anime.dart';
 import '../../domain/entities/catalogue_page.dart';
 import '../../domain/use_cases/browse_catalogue_use_case.dart';
 import 'catalogue_state.dart';
 
 class CatalogueCubit extends Cubit<CatalogueState> {
-  CatalogueCubit(this._browseCatalogue) : super(const CatalogueState());
+  CatalogueCubit(
+    this._browseCatalogue,
+    this._addToWatchlist,
+    this._listedAnimeIds,
+  ) : super(const CatalogueState()) {
+    _listed = _listedAnimeIds().listen(_showListed);
+  }
 
   static const Duration typingPause = Duration(milliseconds: 400);
 
   final BrowseCatalogueUseCase _browseCatalogue;
+  final AddToWatchlistUseCase _addToWatchlist;
+  final ListedAnimeIdsUseCase _listedAnimeIds;
 
+  StreamSubscription<Set<int>>? _listed;
   Timer? _pendingSearch;
   int _lastRequest = 0;
 
   Future<void> load() => _browse(state.query);
+
+  void addToWatchlist(CatalogueAnime anime) =>
+      _addToWatchlist(anime.id, anime.title);
 
   void search(String query) {
     _pendingSearch?.cancel();
@@ -68,10 +82,19 @@ class CatalogueCubit extends Cubit<CatalogueState> {
   }
 
   @override
-  Future<void> close() {
+  Future<void> close() async {
     _pendingSearch?.cancel();
+    await _listed?.cancel();
 
     return super.close();
+  }
+
+  void _showListed(Set<int> listedIds) {
+    if (isClosed) {
+      return;
+    }
+
+    emit(state.copyWith(listedIds: listedIds));
   }
 
   Future<void> _browse(String query) async {

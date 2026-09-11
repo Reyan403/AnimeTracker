@@ -21,6 +21,7 @@ class AnimePoster extends StatelessWidget {
 
     return Image.network(
       url,
+      key: ValueKey(url),
       width: AppSpacing.plaqueWidth,
       height: AppSpacing.plaqueHeight,
       fit: BoxFit.cover,

@@ -64,6 +64,20 @@ class _CatalogueScaffoldState extends State<CatalogueScaffold> {
     return false;
   }
 
+  Widget _row(BuildContext context, CatalogueState state, int index) {
+    final anime = state.animes[index];
+
+    return InkWell(
+      key: ValueKey(anime.id),
+      onTap: () => _openSheet(context, anime),
+      child: CatalogueRow(
+        anime: anime,
+        isListed: state.isListed(anime),
+        onAdd: () => context.read<CatalogueCubit>().addToWatchlist(anime),
+      ),
+    );
+  }
+
   Widget _results(CatalogueState state) => switch (state.status) {
         CatalogueStatus.loading => const SliverToBoxAdapter(
             child: PlaqueRowSkeleton(),
@@ -78,10 +92,7 @@ class _CatalogueScaffoldState extends State<CatalogueScaffold> {
           ),
         CatalogueStatus.success => SliverList.builder(
             itemCount: state.animes.length,
-            itemBuilder: (context, index) => InkWell(
-              onTap: () => _openSheet(context, state.animes[index]),
-              child: CatalogueRow(anime: state.animes[index]),
-            ),
+            itemBuilder: (context, index) => _row(context, state, index),
           ),
       };
 

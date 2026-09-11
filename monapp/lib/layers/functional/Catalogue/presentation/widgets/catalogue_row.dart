@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 
+import '../../../../technical/Theme/app_colors.dart';
 import '../../../../technical/Theme/app_spacing.dart';
 import '../../../../technical/Theme/widgets/anime_poster.dart';
 import '../../domain/entities/catalogue_anime.dart';
 
 class CatalogueRow extends StatelessWidget {
-  const CatalogueRow({required this.anime, super.key});
+  const CatalogueRow({
+    required this.anime,
+    required this.isListed,
+    required this.onAdd,
+    super.key,
+  });
 
   final CatalogueAnime anime;
+  final bool isListed;
+  final VoidCallback onAdd;
 
   static String _metaLine(CatalogueAnime anime) => [
         anime.format,
@@ -35,6 +43,13 @@ class CatalogueRow extends StatelessWidget {
                 Text(_metaLine(anime), style: theme.textTheme.bodyMedium),
               ],
             ),
+          ),
+          IconButton(
+            onPressed: isListed ? null : onAdd,
+            tooltip: isListed ? 'Déjà dans ma liste' : 'Ajouter à « À voir »',
+            color: AppColors.accent,
+            disabledColor: AppColors.inkMuted,
+            icon: Icon(isListed ? Icons.check : Icons.add),
           ),
         ],
       ),

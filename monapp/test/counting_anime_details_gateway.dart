@@ -7,20 +7,13 @@ class CountingAnimeDetailsGateway implements AnimeDetailsGateway {
   final AnimeDetails details;
   final Duration answerDelay;
 
-  int _pending = 0;
-  int mostPendingAtOnce = 0;
+  int requests = 0;
 
   @override
-  Future<AnimeDetails> findById(int id) async {
-    _pending++;
-
-    if (_pending > mostPendingAtOnce) {
-      mostPendingAtOnce = _pending;
-    }
-
+  Future<Map<int, AnimeDetails>> findAllByIds(List<int> ids) async {
+    requests++;
     await Future<void>.delayed(answerDelay);
-    _pending--;
 
-    return details;
+    return {for (final id in ids) id: details};
   }
 }

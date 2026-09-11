@@ -83,7 +83,7 @@ void main() {
   });
 
   testWidgets('it offers a retry when every lookup failed', (tester) async {
-    await pumpWith(tester, const FakeAnimeDetailsGateway({}));
+    await pumpWith(tester, const FakeAnimeDetailsGateway({}, isDown: true));
     await tester.pumpAndSettle();
 
     expect(find.text('Impossible de charger les fiches'), findsOneWidget);

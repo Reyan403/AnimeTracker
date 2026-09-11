@@ -15,20 +15,20 @@ const entries = [
 
 const bebop = AnimeDetails(format: 'Série TV', year: 1998, episodeCount: 26);
 
-Stream<List<Anime>> watchlistOf(Map<int, AnimeDetails> details) =>
-    LoadWatchlistUseCase(FakeAnimeDetailsGateway(details))(entries);
+Stream<List<Anime>> watchlistOf(FakeAnimeDetailsGateway gateway) =>
+    LoadWatchlistUseCase(gateway)(entries);
 
 void main() {
-  test('it shows every entry at once, before any lookup answers', () async {
-    final shown = await watchlistOf(const {1: bebop}).first;
+  test('it shows every entry at once, before the details answer', () async {
+    final shown = await watchlistOf(const FakeAnimeDetailsGateway({})).first;
 
     expect(shown.map((anime) => anime.title), ['Cowboy Bebop', 'Introuvable']);
     expect(shown.every((anime) => anime.isLoadingDetails), isTrue);
-    expect(shown.every((anime) => anime.details == null), isTrue);
   });
 
   test('it keeps the local title and status of every entry', () async {
-    final animes = await watchlistOf(const {1: bebop}).last;
+    final animes =
+        await watchlistOf(const FakeAnimeDetailsGateway({1: bebop})).last;
 
     expect(animes.map((anime) => anime.title), ['Cowboy Bebop', 'Introuvable']);
     expect(animes.map((anime) => anime.status),
@@ -36,37 +36,39 @@ void main() {
   });
 
   test('it fills the details fetched from the gateway', () async {
-    final animes = await watchlistOf(const {1: bebop}).last;
+    final animes =
+        await watchlistOf(const FakeAnimeDetailsGateway({1: bebop})).last;
 
     expect(animes.first.details?.format, 'Série TV');
     expect(animes.first.details?.episodeCount, 26);
     expect(animes.first.isLoadingDetails, isFalse);
   });
 
-  test('an entry whose lookup fails still comes back, without details',
-      () async {
-    final animes = await watchlistOf(const {1: bebop}).last;
+  test('an entry the API ignores still comes back, without details', () async {
+    final animes =
+        await watchlistOf(const FakeAnimeDetailsGateway({1: bebop})).last;
 
     expect(animes.last.title, 'Introuvable');
     expect(animes.last.details, isNull);
-    expect(animes.last.isLoadingDetails, isFalse);
   });
 
-  test('the list is refreshed after each answer', () async {
-    final refreshes = await watchlistOf(const {1: bebop}).length;
+  test('an unreachable service leaves every entry without details', () async {
+    final animes = await watchlistOf(
+      const FakeAnimeDetailsGateway({1: bebop}, isDown: true),
+    ).last;
 
-    expect(refreshes, entries.length + 1);
+    expect(animes.map((anime) => anime.title), ['Cowboy Bebop', 'Introuvable']);
+    expect(animes.every((anime) => anime.details == null), isTrue);
   });
 
-  test('it asks for every entry at once instead of one after another',
-      () async {
+  test('it asks the API once for the whole list', () async {
     final gateway = CountingAnimeDetailsGateway(
       bebop,
-      answerDelay: const Duration(milliseconds: 20),
+      answerDelay: const Duration(milliseconds: 5),
     );
 
     await LoadWatchlistUseCase(gateway)(entries).last;
 
-    expect(gateway.mostPendingAtOnce, entries.length);
+    expect(gateway.requests, 1);
   });
 }

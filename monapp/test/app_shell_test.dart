@@ -17,9 +17,9 @@ const entries = [
 ];
 
 const frieren = CatalogueAnime(
-  malId: 52991,
+  id: 52991,
   title: 'Sousou no Frieren',
-  studio: 'Madhouse',
+  format: 'TV',
   year: 2023,
   episodeCount: 28,
 );

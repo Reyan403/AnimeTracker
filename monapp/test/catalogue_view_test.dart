@@ -11,25 +11,25 @@ import 'package:monapp/layers/technical/Theme/widgets/plaque_row_skeleton.dart';
 import 'fake_anime_catalogue_gateway.dart';
 
 const bebop = CatalogueAnime(
-  malId: 1,
+  id: 1,
   title: 'Cowboy Bebop',
-  studio: 'Sunrise',
+  format: 'TV',
   year: 1998,
   episodeCount: 26,
 );
 
 const frieren = CatalogueAnime(
-  malId: 52991,
+  id: 52991,
   title: 'Sousou no Frieren',
-  studio: 'Madhouse',
+  format: 'TV',
   year: 2023,
   episodeCount: 28,
 );
 
 const mob = CatalogueAnime(
-  malId: 32182,
+  id: 32182,
   title: 'Mob Psycho 100',
-  studio: 'Bones',
+  format: 'TV',
   year: 2016,
   episodeCount: 12,
 );
@@ -81,7 +81,7 @@ void main() {
 
     expect(find.text('Catalogue'), findsOneWidget);
     expect(find.text('Cowboy Bebop'), findsOneWidget);
-    expect(find.text('Sunrise · 1998 · 26 épisodes'), findsOneWidget);
+    expect(find.text('TV · 1998 · 26 épisodes'), findsOneWidget);
   });
 
   testWidgets('a search replaces the list with its results', (tester) async {

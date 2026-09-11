@@ -16,12 +16,12 @@ class AnimeCatalogueGatewayImpl implements AnimeCatalogueGateway {
 
   @override
   Future<List<CatalogueAnime>> findMostPopular() =>
-      _animesAt('top/anime?limit=$pageSize&sfw=true');
+      _animesAt('top/anime?limit=$pageSize');
 
   @override
   Future<List<CatalogueAnime>> search(String query) => _animesAt(
         'anime?q=${Uri.encodeQueryComponent(query)}'
-        '&limit=$pageSize&order_by=members&sort=desc&sfw=true',
+        '&limit=$pageSize',
       );
 
   Future<List<CatalogueAnime>> _animesAt(String path) async {

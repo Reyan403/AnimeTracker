@@ -10,7 +10,7 @@ class CatalogueRow extends StatelessWidget {
   final CatalogueAnime anime;
 
   static String _metaLine(CatalogueAnime anime) => [
-        anime.studio,
+        anime.format,
         if (anime.year > 0) '${anime.year}',
         if (anime.episodeCount > 0) '${anime.episodeCount} épisodes',
       ].join(' · ');

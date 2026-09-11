@@ -7,25 +7,25 @@ import 'package:monapp/layers/functional/Catalogue/presentation/cubit/catalogue_
 import 'fake_anime_catalogue_gateway.dart';
 
 const bebop = CatalogueAnime(
-  malId: 1,
+  id: 1,
   title: 'Cowboy Bebop',
-  studio: 'Sunrise',
+  format: 'TV',
   year: 1998,
   episodeCount: 26,
 );
 
 const mob = CatalogueAnime(
-  malId: 32182,
+  id: 32182,
   title: 'Mob Psycho 100',
-  studio: 'Bones',
+  format: 'TV',
   year: 2016,
   episodeCount: 12,
 );
 
 const frieren = CatalogueAnime(
-  malId: 52991,
+  id: 52991,
   title: 'Sousou no Frieren',
-  studio: 'Madhouse',
+  format: 'TV',
   year: 2023,
   episodeCount: 28,
 );

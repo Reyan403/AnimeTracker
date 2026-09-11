@@ -2,19 +2,19 @@ import 'package:equatable/equatable.dart';
 
 class CatalogueAnime extends Equatable {
   const CatalogueAnime({
-    required this.malId,
+    required this.id,
     required this.title,
-    required this.studio,
+    required this.format,
     required this.year,
     required this.episodeCount,
   });
 
-  final int malId;
+  final int id;
   final String title;
-  final String studio;
+  final String format;
   final int year;
   final int episodeCount;
 
   @override
-  List<Object?> get props => [malId, title, studio, year, episodeCount];
+  List<Object?> get props => [id, title, format, year, episodeCount];
 }

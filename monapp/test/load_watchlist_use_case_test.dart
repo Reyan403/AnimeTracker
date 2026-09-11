@@ -4,6 +4,7 @@ import 'package:monapp/layers/functional/Anime/domain/entities/watch_status.dart
 import 'package:monapp/layers/functional/Anime/domain/entities/watchlist_entry.dart';
 import 'package:monapp/layers/functional/Anime/domain/use_cases/load_watchlist_use_case.dart';
 
+import 'counting_anime_details_gateway.dart';
 import 'fake_anime_details_gateway.dart';
 
 const entries = [
@@ -41,5 +42,28 @@ void main() {
 
     expect(animes.last.title, 'Introuvable');
     expect(animes.last.details, isNull);
+  });
+
+  test('it asks for every entry at once instead of one after another',
+      () async {
+    final gateway = CountingAnimeDetailsGateway(
+      bebop,
+      answerDelay: const Duration(milliseconds: 20),
+    );
+
+    await LoadWatchlistUseCase(gateway)(entries);
+
+    expect(gateway.mostPendingAtOnce, entries.length);
+  });
+
+  test('the animes come back in the order of the list', () async {
+    final gateway = CountingAnimeDetailsGateway(
+      bebop,
+      answerDelay: const Duration(milliseconds: 5),
+    );
+
+    final animes = await LoadWatchlistUseCase(gateway)(entries);
+
+    expect(animes.map((anime) => anime.title), ['Cowboy Bebop', 'Introuvable']);
   });
 }

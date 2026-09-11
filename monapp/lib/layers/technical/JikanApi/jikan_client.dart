@@ -17,7 +17,7 @@ class JikanClient {
 
   static final Uri _baseUrl = Uri.parse('https://api.jikan.moe/v4/');
   static const Duration _timeout = Duration(seconds: 10);
-  static const Duration _minimumInterval = Duration(milliseconds: 400);
+  static const Duration _minimumInterval = Duration(milliseconds: 340);
 
   final http.Client _httpClient;
 

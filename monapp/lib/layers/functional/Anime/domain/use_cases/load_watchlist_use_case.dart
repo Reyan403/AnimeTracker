@@ -8,21 +8,14 @@ class LoadWatchlistUseCase {
 
   final AnimeDetailsGateway _gateway;
 
-  Future<List<Anime>> call(List<WatchlistEntry> entries) async {
-    final animes = <Anime>[];
+  Future<List<Anime>> call(List<WatchlistEntry> entries) =>
+      Future.wait(entries.map(_loaded));
 
-    for (final entry in entries) {
-      animes.add(
-        Anime(
-          title: entry.title,
-          status: entry.status,
-          details: await _detailsOrNull(entry.malId),
-        ),
+  Future<Anime> _loaded(WatchlistEntry entry) async => Anime(
+        title: entry.title,
+        status: entry.status,
+        details: await _detailsOrNull(entry.malId),
       );
-    }
-
-    return animes;
-  }
 
   Future<AnimeDetails?> _detailsOrNull(int malId) async {
     try {

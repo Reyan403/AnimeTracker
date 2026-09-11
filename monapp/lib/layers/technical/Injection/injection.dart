@@ -7,8 +7,11 @@ import '../../functional/Anime/domain/gateways/anime_details_gateway.dart';
 import '../../functional/Anime/domain/use_cases/load_watchlist_use_case.dart';
 import '../../functional/Anime/presentation/cubit/watchlist_cubit.dart';
 import '../../functional/Catalogue/data/gateways/anime_catalogue_gateway_impl.dart';
+import '../../functional/Catalogue/data/gateways/anime_sheet_gateway_impl.dart';
 import '../../functional/Catalogue/domain/gateways/anime_catalogue_gateway.dart';
+import '../../functional/Catalogue/domain/gateways/anime_sheet_gateway.dart';
 import '../../functional/Catalogue/domain/use_cases/browse_catalogue_use_case.dart';
+import '../../functional/Catalogue/presentation/cubit/anime_sheet_cubit.dart';
 import '../../functional/Catalogue/presentation/cubit/catalogue_cubit.dart';
 import '../JikanApi/jikan_client.dart';
 import '../KitsuApi/kitsu_client.dart';
@@ -27,6 +30,9 @@ void initializeDependencies() {
     ..registerLazySingleton<AnimeDetailsGateway>(
       () => AnimeDetailsGatewayImpl(getIt()),
     )
+    ..registerLazySingleton<AnimeSheetGateway>(
+      () => AnimeSheetGatewayImpl(getIt()),
+    )
     ..registerLazySingleton<AnimeCatalogueGateway>(
       () => AnimeCatalogueGatewayImpl(getIt()),
     )
@@ -38,6 +44,9 @@ void initializeDependencies() {
     )
     ..registerFactory<WatchlistCubit>(
       () => WatchlistCubit(getIt<LoadWatchlistUseCase>(), MyWatchlist.entries),
+    )
+    ..registerFactory<AnimeSheetCubit>(
+      () => AnimeSheetCubit(getIt<AnimeSheetGateway>()),
     )
     ..registerFactory<CatalogueCubit>(
       () => CatalogueCubit(getIt<BrowseCatalogueUseCase>()),

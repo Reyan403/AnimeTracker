@@ -3,9 +3,14 @@ import 'package:flutter/material.dart';
 import '../../../../technical/Theme/app_spacing.dart';
 
 class CatalogueError extends StatelessWidget {
-  const CatalogueError({required this.onRetry, super.key});
+  const CatalogueError({
+    required this.onRetry,
+    this.title = 'Impossible de charger le catalogue',
+    super.key,
+  });
 
   final VoidCallback onRetry;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +20,7 @@ class CatalogueError extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Impossible de charger le catalogue',
+          title,
           style: theme.textTheme.titleMedium,
         ),
         const SizedBox(height: AppSpacing.sm),

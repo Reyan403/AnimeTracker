@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 
 import '../../../../technical/JikanApi/jikan_client.dart';
-import '../../domain/entities/catalogue_anime.dart';
+import '../../domain/entities/catalogue_page.dart';
 import '../../domain/gateways/anime_catalogue_gateway.dart';
-import '../models/catalogue_anime_dto.dart';
+import '../models/catalogue_page_dto.dart';
 
 class AnimeCatalogueGatewayImpl implements AnimeCatalogueGateway {
   const AnimeCatalogueGatewayImpl(this._client);
@@ -15,24 +15,18 @@ class AnimeCatalogueGatewayImpl implements AnimeCatalogueGateway {
   final JikanClient _client;
 
   @override
-  Future<List<CatalogueAnime>> findMostPopular() =>
-      _animesAt('top/anime?limit=$pageSize');
+  Future<CataloguePage> findMostPopular(int page) =>
+      _pageAt('top/anime?page=$page&limit=$pageSize');
 
   @override
-  Future<List<CatalogueAnime>> search(String query) => _animesAt(
+  Future<CataloguePage> search(String query, int page) => _pageAt(
         'anime?q=${Uri.encodeQueryComponent(query)}'
-        '&limit=$pageSize',
+        '&page=$page&limit=$pageSize',
       );
 
-  Future<List<CatalogueAnime>> _animesAt(String path) async {
+  Future<CataloguePage> _pageAt(String path) async {
     try {
-      final payload = await _client.getJson(path);
-      final data = payload['data'] as List<dynamic>? ?? const [];
-
-      return [
-        for (final node in data)
-          CatalogueAnimeDto.fromJson(node as Map<String, dynamic>),
-      ];
+      return CataloguePageDto.fromJson(await _client.getJson(path));
     } on JikanRequestFailedException {
       throw const CatalogueUnavailableException();
     } on TimeoutException {

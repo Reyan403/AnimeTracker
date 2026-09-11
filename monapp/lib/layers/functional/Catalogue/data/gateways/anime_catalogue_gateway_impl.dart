@@ -10,7 +10,7 @@ import '../models/catalogue_page_dto.dart';
 class AnimeCatalogueGatewayImpl implements AnimeCatalogueGateway {
   const AnimeCatalogueGatewayImpl(this._client);
 
-  static const int pageSize = 25;
+  static const int pageSize = 20;
 
   final KitsuClient _client;
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../technical/Theme/app_colors.dart';
+import '../app_colors.dart';
 
 class SkeletonBar extends StatelessWidget {
   const SkeletonBar({

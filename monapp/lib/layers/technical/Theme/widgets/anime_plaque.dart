@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../technical/Theme/app_colors.dart';
-import '../../../../technical/Theme/app_spacing.dart';
+import '../app_colors.dart';
+import '../app_spacing.dart';
 
 class AnimePlaque extends StatelessWidget {
   const AnimePlaque({required this.title, super.key});

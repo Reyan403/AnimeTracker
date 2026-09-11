@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../technical/Theme/app_spacing.dart';
 import '../../domain/entities/anime.dart';
 import '../../domain/entities/anime_details.dart';
-import 'anime_plaque.dart';
+import '../../../../technical/Theme/widgets/anime_plaque.dart';
 
 class AnimeRow extends StatelessWidget {
   const AnimeRow({required this.anime, super.key});

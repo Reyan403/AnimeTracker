@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../technical/Injection/injection.dart';
 import '../../../technical/Theme/app_spacing.dart';
+import '../../../technical/Theme/widgets/plaque_row_skeleton.dart';
 import 'cubit/watchlist_cubit.dart';
 import 'cubit/watchlist_state.dart';
 import 'widgets/anime_row.dart';
@@ -10,7 +11,6 @@ import 'widgets/watch_status_tabs.dart';
 import 'widgets/watchlist_empty.dart';
 import 'widgets/watchlist_error.dart';
 import 'widgets/watchlist_header.dart';
-import 'widgets/watchlist_skeleton.dart';
 
 class WatchlistView extends StatelessWidget {
   const WatchlistView({super.key});
@@ -50,7 +50,7 @@ class WatchlistScaffold extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.xl),
               switch (state.status) {
-                ViewStatus.loading => const WatchlistSkeleton(),
+                ViewStatus.loading => const PlaqueRowSkeleton(),
                 ViewStatus.failure => WatchlistError(onRetry: cubit.load),
                 ViewStatus.empty => const WatchlistEmpty(),
                 ViewStatus.success => Column(

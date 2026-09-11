@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../../../technical/Theme/app_colors.dart';
-import '../../../../technical/Theme/app_spacing.dart';
+import '../app_colors.dart';
+import '../app_spacing.dart';
 import 'skeleton_bar.dart';
 
-class WatchlistSkeleton extends StatelessWidget {
-  const WatchlistSkeleton({this.rowCount = 3, super.key});
+class PlaqueRowSkeleton extends StatelessWidget {
+  const PlaqueRowSkeleton({this.rowCount = 3, super.key});
 
   final int rowCount;
 

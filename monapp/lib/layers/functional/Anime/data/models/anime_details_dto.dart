@@ -14,6 +14,14 @@ abstract final class AnimeDetailsDto {
           : (firstStudio as Map<String, dynamic>)['name'] as String,
       year: json['year'] as int? ?? 0,
       episodeCount: json['episodes'] as int? ?? 0,
+      posterUrl: _posterOf(json),
     );
+  }
+
+  static String? _posterOf(Map<String, dynamic> json) {
+    final images = json['images'] as Map<String, dynamic>?;
+    final jpg = images?['jpg'] as Map<String, dynamic>?;
+
+    return jpg?['image_url'] as String? ?? jpg?['large_image_url'] as String?;
   }
 }

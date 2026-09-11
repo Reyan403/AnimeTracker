@@ -1,9 +1,9 @@
-import '../entities/catalogue_anime.dart';
+import '../entities/catalogue_page.dart';
 
 abstract interface class AnimeCatalogueGateway {
-  Future<List<CatalogueAnime>> findMostPopular();
+  Future<CataloguePage> findMostPopular(int page);
 
-  Future<List<CatalogueAnime>> search(String query);
+  Future<CataloguePage> search(String query, int page);
 }
 
 class CatalogueUnavailableException implements Exception {

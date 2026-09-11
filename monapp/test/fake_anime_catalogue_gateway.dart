@@ -10,12 +10,14 @@ class FakeAnimeCatalogueGateway implements AnimeCatalogueGateway {
     this.resultsByQuery = const {},
     this.pageSize = 25,
     this.isDown = false,
+    this.failingPage,
   });
 
   final List<CatalogueAnime> mostPopular;
   final Map<String, List<CatalogueAnime>> resultsByQuery;
   final int pageSize;
   final bool isDown;
+  final int? failingPage;
   final List<String> receivedQueries = [];
   final List<int> receivedPages = [];
 
@@ -31,7 +33,7 @@ class FakeAnimeCatalogueGateway implements AnimeCatalogueGateway {
     receivedQueries.add(query);
     receivedPages.add(page);
 
-    if (isDown) {
+    if (isDown || page == failingPage) {
       throw const CatalogueUnavailableException();
     }
 

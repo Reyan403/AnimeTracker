@@ -14,6 +14,14 @@ const bebop = CatalogueAnime(
   episodeCount: 26,
 );
 
+const mob = CatalogueAnime(
+  malId: 32182,
+  title: 'Mob Psycho 100',
+  studio: 'Bones',
+  year: 2016,
+  episodeCount: 12,
+);
+
 const frieren = CatalogueAnime(
   malId: 52991,
   title: 'Sousou no Frieren',
@@ -21,6 +29,14 @@ const frieren = CatalogueAnime(
   year: 2023,
   episodeCount: 28,
 );
+
+FakeAnimeCatalogueGateway pagedGateway() => FakeAnimeCatalogueGateway(
+      mostPopular: const [bebop, mob],
+      resultsByQuery: const {
+        'frieren': [frieren],
+      },
+      pageSize: 1,
+    );
 
 CatalogueCubit cubitOn(FakeAnimeCatalogueGateway gateway) =>
     CatalogueCubit(BrowseCatalogueUseCase(gateway));
@@ -30,23 +46,17 @@ Future<void> letTypingSettle() =>
 
 void main() {
   test('it opens on the most popular animes', () async {
-    final cubit = cubitOn(FakeAnimeCatalogueGateway(mostPopular: const [bebop]));
+    final cubit = cubitOn(pagedGateway());
 
     await cubit.load();
 
     expect(cubit.state.status, CatalogueStatus.success);
     expect(cubit.state.animes, [bebop]);
+    expect(cubit.state.hasMore, isTrue);
   });
 
   test('a typed query is searched once typing pauses', () async {
-    final cubit = cubitOn(
-      FakeAnimeCatalogueGateway(
-        mostPopular: const [bebop],
-        resultsByQuery: const {
-          'frieren': [frieren],
-        },
-      ),
-    );
+    final cubit = cubitOn(pagedGateway());
 
     cubit.search('frieren');
     expect(cubit.state.status, CatalogueStatus.loading);
@@ -58,11 +68,7 @@ void main() {
   });
 
   test('typing letter by letter only sends the last query', () async {
-    final gateway = FakeAnimeCatalogueGateway(
-      resultsByQuery: const {
-        'frieren': [frieren],
-      },
-    );
+    final gateway = pagedGateway();
     final cubit = cubitOn(gateway);
 
     cubit
@@ -72,6 +78,45 @@ void main() {
     await letTypingSettle();
 
     expect(gateway.receivedQueries, ['frieren']);
+  });
+
+  test('asking for more appends the next page', () async {
+    final gateway = pagedGateway();
+    final cubit = cubitOn(gateway);
+
+    await cubit.load();
+    await cubit.loadMore();
+
+    expect(cubit.state.animes, [bebop, mob]);
+    expect(gateway.receivedPages, [1, 2]);
+  });
+
+  test('the last page stops the browsing', () async {
+    final gateway = pagedGateway();
+    final cubit = cubitOn(gateway);
+
+    await cubit.load();
+    await cubit.loadMore();
+
+    expect(cubit.state.hasMore, isFalse);
+
+    await cubit.loadMore();
+
+    expect(gateway.receivedPages, [1, 2]);
+  });
+
+  test('a new search starts the pages over', () async {
+    final gateway = pagedGateway();
+    final cubit = cubitOn(gateway);
+
+    await cubit.load();
+    await cubit.loadMore();
+    cubit.search('frieren');
+    await letTypingSettle();
+
+    expect(cubit.state.animes, [frieren]);
+    expect(cubit.state.page, BrowseCatalogueUseCase.firstPage);
+    expect(gateway.receivedPages, [1, 2, 1]);
   });
 
   test('a search without match reports an empty catalogue', () async {
@@ -84,7 +129,7 @@ void main() {
   });
 
   test('clearing the field brings the popular animes back', () async {
-    final cubit = cubitOn(FakeAnimeCatalogueGateway(mostPopular: const [bebop]));
+    final cubit = cubitOn(pagedGateway());
 
     cubit.search('frieren');
     await letTypingSettle();
@@ -100,5 +145,22 @@ void main() {
     await cubit.load();
 
     expect(cubit.state.status, CatalogueStatus.failure);
+  });
+
+  test('a page that fails to load keeps what is already shown', () async {
+    final cubit = cubitOn(
+      FakeAnimeCatalogueGateway(
+        mostPopular: const [bebop, mob],
+        pageSize: 1,
+        failingPage: 2,
+      ),
+    );
+
+    await cubit.load();
+    await cubit.loadMore();
+
+    expect(cubit.state.animes, [bebop]);
+    expect(cubit.state.isAppending, isFalse);
+    expect(cubit.state.hasMore, isFalse);
   });
 }

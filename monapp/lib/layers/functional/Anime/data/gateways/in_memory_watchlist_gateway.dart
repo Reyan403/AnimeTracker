@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import '../../domain/entities/watch_status.dart';
 import '../../domain/entities/watchlist_entry.dart';
 import '../../domain/gateways/watchlist_gateway.dart';
 
@@ -25,6 +26,18 @@ class InMemoryWatchlistGateway implements WatchlistGateway {
     }
 
     _entries.insert(0, entry);
+    _changes.add(entries);
+  }
+
+  @override
+  void changeStatus(int animeId, WatchStatus status) {
+    final listed = _entries.indexWhere((entry) => entry.id == animeId);
+
+    if (listed < 0) {
+      return;
+    }
+
+    _entries[listed] = _entries[listed].withStatus(status);
     _changes.add(entries);
   }
 }

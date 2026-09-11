@@ -5,11 +5,18 @@ import '../../../../technical/Theme/widgets/anime_poster.dart';
 import '../../../../technical/Theme/widgets/skeleton_bar.dart';
 import '../../domain/entities/anime.dart';
 import '../../domain/entities/anime_details.dart';
+import '../../domain/entities/watch_status.dart';
+import 'watch_status_menu.dart';
 
 class AnimeRow extends StatelessWidget {
-  const AnimeRow({required this.anime, super.key});
+  const AnimeRow({
+    required this.anime,
+    required this.onStatusSelected,
+    super.key,
+  });
 
   final Anime anime;
+  final ValueChanged<WatchStatus> onStatusSelected;
 
   static String _metaLine(AnimeDetails details) => [
         details.format,
@@ -44,6 +51,10 @@ class AnimeRow extends StatelessWidget {
                   ),
               ],
             ),
+          ),
+          WatchStatusMenu(
+            selected: anime.status,
+            onSelected: onStatusSelected,
           ),
         ],
       ),

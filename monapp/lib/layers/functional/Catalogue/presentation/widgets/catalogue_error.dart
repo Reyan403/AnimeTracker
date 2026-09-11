@@ -25,7 +25,7 @@ class CatalogueError extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.sm),
         Text(
-          'Le service MyAnimeList ne répond pas pour le moment.',
+          'Le service Kitsu ne répond pas pour le moment.',
           style: theme.textTheme.bodyMedium,
         ),
         const SizedBox(height: AppSpacing.md),

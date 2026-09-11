@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../functional/Anime/presentation/watchlist_view.dart';
+import '../../functional/Catalogue/presentation/anime_sheet_view.dart';
 import '../../functional/Catalogue/presentation/catalogue_view.dart';
 import 'app_destination.dart';
 import 'app_navigation_bar.dart';
@@ -15,12 +16,23 @@ class AppShell extends StatefulWidget {
 class _AppShellState extends State<AppShell> {
   AppDestination _selected = AppDestination.watchlist;
 
+  void _openSheet(int animeId, String title) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => AnimeSheetView(animeId: animeId, title: title),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(
         index: _selected.index,
-        children: const [WatchlistView(), CatalogueView()],
+        children: [
+          WatchlistView(onAnimeSelected: _openSheet),
+          const CatalogueView(),
+        ],
       ),
       bottomNavigationBar: AppNavigationBar(
         selected: _selected,

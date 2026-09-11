@@ -16,6 +16,7 @@ class LoadWatchlistUseCase {
     yield [
       for (final entry in entries)
         Anime(
+          id: entry.id,
           title: entry.title,
           status: entry.status,
           details: details[entry.id],
@@ -24,6 +25,7 @@ class LoadWatchlistUseCase {
   }
 
   static Anime _awaited(WatchlistEntry entry) => Anime(
+        id: entry.id,
         title: entry.title,
         status: entry.status,
         isLoadingDetails: true,

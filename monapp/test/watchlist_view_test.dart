@@ -5,7 +5,10 @@ import 'package:monapp/layers/functional/Anime/domain/entities/watchlist_entry.d
 import 'package:monapp/layers/functional/Anime/domain/gateways/anime_details_gateway.dart';
 import 'package:monapp/layers/functional/Anime/domain/use_cases/load_watchlist_use_case.dart';
 import 'package:monapp/layers/functional/Anime/presentation/cubit/watchlist_cubit.dart';
+import 'package:monapp/layers/functional/Catalogue/domain/entities/anime_sheet.dart';
 import 'package:monapp/layers/functional/Catalogue/domain/use_cases/browse_catalogue_use_case.dart';
+import 'package:monapp/layers/functional/Catalogue/domain/use_cases/load_anime_sheet_use_case.dart';
+import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_sheet_cubit.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/catalogue_cubit.dart';
 import 'package:monapp/layers/technical/Injection/injection.dart';
 import 'package:monapp/layers/technical/Theme/widgets/plaque_row_skeleton.dart';
@@ -14,6 +17,8 @@ import 'package:monapp/main.dart';
 import 'fake_anime_catalogue_gateway.dart';
 import 'counting_anime_details_gateway.dart';
 import 'fake_anime_details_gateway.dart';
+import 'fake_anime_sheet_gateway.dart';
+import 'fake_french_synopsis_gateway.dart';
 
 const entries = [
   WatchlistEntry(id: 1, title: 'Cowboy Bebop', status: WatchStatus.toWatch),
@@ -24,6 +29,13 @@ const entries = [
 const bebop = AnimeDetails(format: 'Série TV', year: 1998, episodeCount: 26);
 const vinland =
     AnimeDetails(format: 'Série TV', year: 2019, episodeCount: 24);
+
+const vinlandSheet = AnimeSheet(
+  id: 2,
+  title: 'Vinland Saga',
+  format: 'Série TV',
+  synopsis: 'Thorfinn poursuit sa vengeance.',
+);
 
 Future<void> pumpWith(WidgetTester tester, AnimeDetailsGateway gateway) async {
   await getIt.reset();
@@ -38,6 +50,14 @@ Future<void> pumpWith(WidgetTester tester, AnimeDetailsGateway gateway) async {
     )
     ..registerFactory<WatchlistCubit>(
       () => WatchlistCubit(getIt<LoadWatchlistUseCase>(), entries),
+    )
+    ..registerFactory<AnimeSheetCubit>(
+      () => AnimeSheetCubit(
+        LoadAnimeSheetUseCase(
+          FakeAnimeSheetGateway(sheetsById: const {2: vinlandSheet}),
+          FakeFrenchSynopsisGateway(),
+        ),
+      ),
     );
 
   await tester.pumpWidget(const AnimeTrackerApp());
@@ -108,5 +128,19 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Série TV · 1998 · 26 épisodes'), findsOneWidget);
+  });
+
+  testWidgets('tapping an anime of the list opens its sheet', (tester) async {
+    await pumpWith(
+      tester,
+      const FakeAnimeDetailsGateway({1: bebop, 2: vinland}),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Vinland Saga'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Synopsis'), findsOneWidget);
+    expect(find.text('Thorfinn poursuit sa vengeance.'), findsOneWidget);
   });
 }

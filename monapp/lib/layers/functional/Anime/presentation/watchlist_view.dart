@@ -12,20 +12,26 @@ import 'widgets/watchlist_empty.dart';
 import 'widgets/watchlist_error.dart';
 import 'widgets/watchlist_header.dart';
 
+typedef AnimeSelected = void Function(int animeId, String title);
+
 class WatchlistView extends StatelessWidget {
-  const WatchlistView({super.key});
+  const WatchlistView({required this.onAnimeSelected, super.key});
+
+  final AnimeSelected onAnimeSelected;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => getIt<WatchlistCubit>()..load(),
-      child: const WatchlistScaffold(),
+      child: WatchlistScaffold(onAnimeSelected: onAnimeSelected),
     );
   }
 }
 
 class WatchlistScaffold extends StatelessWidget {
-  const WatchlistScaffold({super.key});
+  const WatchlistScaffold({required this.onAnimeSelected, super.key});
+
+  final AnimeSelected onAnimeSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +62,10 @@ class WatchlistScaffold extends StatelessWidget {
                 ViewStatus.success => Column(
                     children: [
                       for (final anime in state.visibleAnimes)
-                        AnimeRow(anime: anime),
+                        InkWell(
+                          onTap: () => onAnimeSelected(anime.id, anime.title),
+                          child: AnimeRow(anime: anime),
+                        ),
                     ],
                   ),
               },

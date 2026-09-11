@@ -11,7 +11,7 @@ class CountingAnimeDetailsGateway implements AnimeDetailsGateway {
   int mostPendingAtOnce = 0;
 
   @override
-  Future<AnimeDetails> findByMalId(int malId) async {
+  Future<AnimeDetails> findById(int id) async {
     _pending++;
 
     if (_pending > mostPendingAtOnce) {

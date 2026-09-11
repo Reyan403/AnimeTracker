@@ -9,11 +9,11 @@ import 'counting_anime_details_gateway.dart';
 import 'fake_anime_details_gateway.dart';
 
 const entries = [
-  WatchlistEntry(malId: 1, title: 'Cowboy Bebop', status: WatchStatus.toWatch),
-  WatchlistEntry(malId: 2, title: 'Introuvable', status: WatchStatus.watching),
+  WatchlistEntry(id: 1, title: 'Cowboy Bebop', status: WatchStatus.toWatch),
+  WatchlistEntry(id: 2, title: 'Introuvable', status: WatchStatus.watching),
 ];
 
-const bebop = AnimeDetails(studio: 'Sunrise', year: 1998, episodeCount: 26);
+const bebop = AnimeDetails(format: 'Série TV', year: 1998, episodeCount: 26);
 
 Stream<List<Anime>> watchlistOf(Map<int, AnimeDetails> details) =>
     LoadWatchlistUseCase(FakeAnimeDetailsGateway(details))(entries);
@@ -38,7 +38,7 @@ void main() {
   test('it fills the details fetched from the gateway', () async {
     final animes = await watchlistOf(const {1: bebop}).last;
 
-    expect(animes.first.details?.studio, 'Sunrise');
+    expect(animes.first.details?.format, 'Série TV');
     expect(animes.first.details?.episodeCount, 26);
     expect(animes.first.isLoadingDetails, isFalse);
   });

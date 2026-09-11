@@ -7,11 +7,11 @@ class FakeAnimeDetailsGateway implements AnimeDetailsGateway {
   final Map<int, AnimeDetails> detailsByMalId;
 
   @override
-  Future<AnimeDetails> findByMalId(int malId) async {
-    final details = detailsByMalId[malId];
+  Future<AnimeDetails> findById(int id) async {
+    final details = detailsByMalId[id];
 
     if (details == null) {
-      throw AnimeDetailsUnavailableException(malId);
+      throw AnimeDetailsUnavailableException(id);
     }
 
     return details;

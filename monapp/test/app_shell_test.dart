@@ -13,7 +13,7 @@ import 'fake_anime_catalogue_gateway.dart';
 import 'fake_anime_details_gateway.dart';
 
 const entries = [
-  WatchlistEntry(malId: 1, title: 'Cowboy Bebop', status: WatchStatus.toWatch),
+  WatchlistEntry(id: 1, title: 'Cowboy Bebop', status: WatchStatus.toWatch),
 ];
 
 const frieren = CatalogueAnime(

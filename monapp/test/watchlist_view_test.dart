@@ -16,13 +16,14 @@ import 'counting_anime_details_gateway.dart';
 import 'fake_anime_details_gateway.dart';
 
 const entries = [
-  WatchlistEntry(malId: 1, title: 'Cowboy Bebop', status: WatchStatus.toWatch),
-  WatchlistEntry(malId: 2, title: 'Vinland Saga', status: WatchStatus.watching),
-  WatchlistEntry(malId: 3, title: 'Death Note', status: WatchStatus.completed),
+  WatchlistEntry(id: 1, title: 'Cowboy Bebop', status: WatchStatus.toWatch),
+  WatchlistEntry(id: 2, title: 'Vinland Saga', status: WatchStatus.watching),
+  WatchlistEntry(id: 3, title: 'Death Note', status: WatchStatus.completed),
 ];
 
-const bebop = AnimeDetails(studio: 'Sunrise', year: 1998, episodeCount: 26);
-const vinland = AnimeDetails(studio: 'Wit Studio', year: 2019, episodeCount: 24);
+const bebop = AnimeDetails(format: 'Série TV', year: 1998, episodeCount: 26);
+const vinland =
+    AnimeDetails(format: 'Série TV', year: 2019, episodeCount: 24);
 
 Future<void> pumpWith(WidgetTester tester, AnimeDetailsGateway gateway) async {
   await getIt.reset();
@@ -53,7 +54,7 @@ void main() {
     expect(find.byType(PlaqueRowSkeleton), findsNothing);
   });
 
-  testWidgets('a loaded row shows the studio line coming from the gateway',
+  testWidgets('a loaded row shows the line coming from the gateway',
       (tester) async {
     await pumpWith(
       tester,
@@ -62,7 +63,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Vinland Saga'), findsOneWidget);
-    expect(find.text('Wit Studio · 2019 · 24 épisodes'), findsOneWidget);
+    expect(find.text('Série TV · 2019 · 24 épisodes'), findsOneWidget);
     expect(find.text('1 en cours · 1 en attente · 1 terminées'), findsOneWidget);
   });
 
@@ -101,11 +102,11 @@ void main() {
     await tester.pump();
 
     expect(find.text('Vinland Saga'), findsOneWidget);
-    expect(find.text('Sunrise · 1998 · 26 épisodes'), findsNothing);
+    expect(find.text('Série TV · 1998 · 26 épisodes'), findsNothing);
 
     await tester.pump(const Duration(milliseconds: 400));
     await tester.pumpAndSettle();
 
-    expect(find.text('Sunrise · 1998 · 26 épisodes'), findsOneWidget);
+    expect(find.text('Série TV · 1998 · 26 épisodes'), findsOneWidget);
   });
 }

@@ -22,6 +22,7 @@ class AnimeSheetCover extends StatelessWidget {
       height: height,
       width: double.infinity,
       fit: BoxFit.cover,
+      webHtmlElementStrategy: WebHtmlElementStrategy.fallback,
       errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
       frameBuilder: (context, child, frame, wasSynchronouslyLoaded) =>
           frame == null && !wasSynchronouslyLoaded

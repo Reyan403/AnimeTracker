@@ -7,6 +7,7 @@ import 'package:monapp/layers/functional/Catalogue/domain/use_cases/browse_catal
 import 'package:monapp/layers/functional/Catalogue/presentation/catalogue_view.dart';
 import 'package:monapp/layers/functional/Catalogue/domain/use_cases/load_anime_sheet_use_case.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_sheet_cubit.dart';
+import 'package:monapp/layers/functional/Catalogue/presentation/widgets/catalogue_row.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/catalogue_cubit.dart';
 import 'package:monapp/layers/technical/Injection/injection.dart';
 import 'package:monapp/layers/technical/Theme/widgets/plaque_row_skeleton.dart';
@@ -55,7 +56,7 @@ FakeAnimeCatalogueGateway stockedGateway() => FakeAnimeCatalogueGateway(
     );
 
 Future<void> scrollToBottom(WidgetTester tester) async {
-  await tester.drag(find.byType(ListView), const Offset(0, -600));
+  await tester.drag(find.byType(CustomScrollView), const Offset(0, -600));
   await tester.pumpAndSettle();
 }
 
@@ -183,5 +184,29 @@ void main() {
       find.text('Spike Spiegel chasse les primes à bord du Bebop.'),
       findsOneWidget,
     );
+  });
+
+  testWidgets('it only builds the rows that are on screen', (tester) async {
+    final many = [
+      for (var number = 1; number <= 60; number++)
+        CatalogueAnime(
+          id: number,
+          title: 'Animé $number',
+          format: 'Série TV',
+          year: 2020,
+          episodeCount: 12,
+        ),
+    ];
+
+    await pumpWith(
+      tester,
+      FakeAnimeCatalogueGateway(mostPopular: many, pageSize: 60),
+    );
+    await tester.pumpAndSettle();
+
+    final built = tester.widgetList(find.byType(CatalogueRow)).length;
+
+    expect(built, lessThan(15));
+    expect(find.text('Animé 1'), findsOneWidget);
   });
 }

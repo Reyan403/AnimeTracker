@@ -64,6 +64,27 @@ class _CatalogueScaffoldState extends State<CatalogueScaffold> {
     return false;
   }
 
+  Widget _results(CatalogueState state) => switch (state.status) {
+        CatalogueStatus.loading => const SliverToBoxAdapter(
+            child: PlaqueRowSkeleton(),
+          ),
+        CatalogueStatus.failure => SliverToBoxAdapter(
+            child: CatalogueError(
+              onRetry: context.read<CatalogueCubit>().load,
+            ),
+          ),
+        CatalogueStatus.empty => SliverToBoxAdapter(
+            child: CatalogueEmpty(isSearching: state.isSearching),
+          ),
+        CatalogueStatus.success => SliverList.builder(
+            itemCount: state.animes.length,
+            itemBuilder: (context, index) => InkWell(
+              onTap: () => _openSheet(context, state.animes[index]),
+              child: CatalogueRow(anime: state.animes[index]),
+            ),
+          ),
+      };
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -74,39 +95,49 @@ class _CatalogueScaffoldState extends State<CatalogueScaffold> {
         child: BlocBuilder<CatalogueCubit, CatalogueState>(
           builder: (context, state) => NotificationListener<ScrollNotification>(
             onNotification: _loadMoreWhenNearBottom,
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(
-                AppSpacing.lg,
-                AppSpacing.lg,
-                AppSpacing.lg,
-                AppSpacing.xl,
-              ),
-              children: [
-                Text('Catalogue', style: theme.textTheme.displaySmall),
-                const SizedBox(height: AppSpacing.lg),
-                CatalogueSearchField(
-                  controller: _controller,
-                  onChanged: cubit.search,
-                  onCleared: _clear,
-                ),
-                const SizedBox(height: AppSpacing.xl),
-                switch (state.status) {
-                  CatalogueStatus.loading => const PlaqueRowSkeleton(),
-                  CatalogueStatus.failure => CatalogueError(onRetry: cubit.load),
-                  CatalogueStatus.empty =>
-                    CatalogueEmpty(isSearching: state.isSearching),
-                  CatalogueStatus.success => Column(
+            child: CustomScrollView(
+              slivers: [
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.lg,
+                    AppSpacing.lg,
+                    AppSpacing.lg,
+                    AppSpacing.xl,
+                  ),
+                  sliver: SliverToBoxAdapter(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        for (final anime in state.animes)
-                          InkWell(
-                            onTap: () => _openSheet(context, anime),
-                            child: CatalogueRow(anime: anime),
-                          ),
-                        if (state.isAppending)
-                          const PlaqueRowSkeleton(rowCount: 1),
+                        Text('Catalogue', style: theme.textTheme.displaySmall),
+                        const SizedBox(height: AppSpacing.lg),
+                        CatalogueSearchField(
+                          controller: _controller,
+                          onChanged: cubit.search,
+                          onCleared: _clear,
+                        ),
                       ],
                     ),
-                },
+                  ),
+                ),
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                  ),
+                  sliver: _results(state),
+                ),
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.lg,
+                    0,
+                    AppSpacing.lg,
+                    AppSpacing.xl,
+                  ),
+                  sliver: SliverToBoxAdapter(
+                    child: state.isAppending
+                        ? const PlaqueRowSkeleton(rowCount: 1)
+                        : const SizedBox.shrink(),
+                  ),
+                ),
               ],
             ),
           ),

@@ -21,7 +21,14 @@ abstract final class CatalogueAnimeDto {
       format: _formatOf(attributes['subtype'] as String?),
       year: _yearOf(attributes['startDate'] as String?),
       episodeCount: attributes['episodeCount'] as int? ?? 0,
+      posterUrl: _posterOf(attributes),
     );
+  }
+
+  static String? _posterOf(Map<String, dynamic> attributes) {
+    final poster = attributes['posterImage'] as Map<String, dynamic>?;
+
+    return poster?['small'] as String? ?? poster?['original'] as String?;
   }
 
   static String _formatOf(String? subtype) =>

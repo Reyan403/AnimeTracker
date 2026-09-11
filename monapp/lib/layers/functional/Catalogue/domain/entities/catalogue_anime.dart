@@ -7,6 +7,7 @@ class CatalogueAnime extends Equatable {
     required this.format,
     required this.year,
     required this.episodeCount,
+    this.posterUrl,
   });
 
   final int id;
@@ -14,7 +15,8 @@ class CatalogueAnime extends Equatable {
   final String format;
   final int year;
   final int episodeCount;
+  final String? posterUrl;
 
   @override
-  List<Object?> get props => [id, title, format, year, episodeCount];
+  List<Object?> get props => [id, title, format, year, episodeCount, posterUrl];
 }

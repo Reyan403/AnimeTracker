@@ -8,6 +8,10 @@ const payload = {
     'subtype': 'TV',
     'startDate': '2007-02-15',
     'episodeCount': 500,
+    'posterImage': {
+      'small': 'https://media.kitsu.app/anime/poster_images/7442/small.jpg',
+      'original': 'https://media.kitsu.app/anime/poster_images/7442/original.png',
+    },
   },
 };
 
@@ -54,5 +58,32 @@ void main() {
     expect(anime.year, 0);
     expect(anime.episodeCount, 0);
     expect(anime.format, CatalogueAnimeDto.unknownFormat);
+  });
+
+  test('it keeps the small poster of the anime', () {
+    final anime = CatalogueAnimeDto.fromJson(payload);
+
+    expect(
+      anime.posterUrl,
+      'https://media.kitsu.app/anime/poster_images/7442/small.jpg',
+    );
+  });
+
+  test('it falls back on the original poster', () {
+    final anime = CatalogueAnimeDto.fromJson(
+      payloadWith(const {
+        'posterImage': {
+          'original': 'https://media.kitsu.app/anime/poster_images/7442/original.png',
+        },
+      }),
+    );
+
+    expect(anime.posterUrl, endsWith('original.png'));
+  });
+
+  test('an anime without poster has none', () {
+    final anime = CatalogueAnimeDto.fromJson(payloadWith(const {'posterImage': null}));
+
+    expect(anime.posterUrl, isNull);
   });
 }

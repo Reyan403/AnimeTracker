@@ -22,7 +22,7 @@ class AnimePoster extends StatelessWidget {
       width: AppSpacing.plaqueWidth,
       height: AppSpacing.plaqueHeight,
       fit: BoxFit.cover,
-      errorBuilder: (context, _, __) => AnimePlaque(title: title),
+      errorBuilder: (context, error, stackTrace) => AnimePlaque(title: title),
       frameBuilder: (context, child, frame, wasSynchronouslyLoaded) =>
           frame == null && !wasSynchronouslyLoaded
               ? AnimePlaque(title: title)

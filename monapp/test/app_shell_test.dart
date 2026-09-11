@@ -3,14 +3,26 @@ import 'package:monapp/layers/functional/Anime/domain/entities/watch_status.dart
 import 'package:monapp/layers/functional/Anime/domain/entities/watchlist_entry.dart';
 import 'package:monapp/layers/functional/Anime/domain/use_cases/load_watchlist_use_case.dart';
 import 'package:monapp/layers/functional/Anime/presentation/cubit/watchlist_cubit.dart';
+import 'package:monapp/layers/functional/Catalogue/domain/entities/catalogue_anime.dart';
+import 'package:monapp/layers/functional/Catalogue/domain/use_cases/browse_catalogue_use_case.dart';
+import 'package:monapp/layers/functional/Catalogue/presentation/cubit/catalogue_cubit.dart';
 import 'package:monapp/layers/technical/Injection/injection.dart';
 import 'package:monapp/main.dart';
 
+import 'fake_anime_catalogue_gateway.dart';
 import 'fake_anime_details_gateway.dart';
 
 const entries = [
   WatchlistEntry(malId: 1, title: 'Cowboy Bebop', status: WatchStatus.toWatch),
 ];
+
+const frieren = CatalogueAnime(
+  malId: 52991,
+  title: 'Sousou no Frieren',
+  studio: 'Madhouse',
+  year: 2023,
+  episodeCount: 28,
+);
 
 Future<void> pumpShell(WidgetTester tester) async {
   await getIt.reset();
@@ -20,6 +32,13 @@ Future<void> pumpShell(WidgetTester tester) async {
     )
     ..registerFactory<WatchlistCubit>(
       () => WatchlistCubit(getIt<LoadWatchlistUseCase>(), entries),
+    )
+    ..registerFactory<CatalogueCubit>(
+      () => CatalogueCubit(
+        BrowseCatalogueUseCase(
+          FakeAnimeCatalogueGateway(mostPopular: const [frieren]),
+        ),
+      ),
     );
 
   await tester.pumpWidget(const AnimeTrackerApp());
@@ -40,19 +59,19 @@ void main() {
     expect(find.text('Ma liste'), findsOneWidget);
   });
 
-  testWidgets('tapping Catalogue swaps the visible screen', (tester) async {
+  testWidgets('tapping Catalogue shows the animes of the API', (tester) async {
     await pumpShell(tester);
 
-    await tester.tap(find.text('Catalogue'));
+    await tester.tap(find.text('Catalogue').last);
     await tester.pumpAndSettle();
 
-    expect(find.text('Cherche un animé à ajouter à ta liste.'), findsOneWidget);
+    expect(find.text('Sousou no Frieren'), findsOneWidget);
   });
 
   testWidgets('coming back to Liste keeps it loaded', (tester) async {
     await pumpShell(tester);
 
-    await tester.tap(find.text('Catalogue'));
+    await tester.tap(find.text('Catalogue').last);
     await tester.pumpAndSettle();
     await tester.tap(find.text('Liste'));
     await tester.pumpAndSettle();

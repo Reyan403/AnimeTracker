@@ -5,10 +5,13 @@ import 'package:monapp/layers/functional/Anime/domain/entities/watchlist_entry.d
 import 'package:monapp/layers/functional/Anime/domain/gateways/anime_details_gateway.dart';
 import 'package:monapp/layers/functional/Anime/domain/use_cases/load_watchlist_use_case.dart';
 import 'package:monapp/layers/functional/Anime/presentation/cubit/watchlist_cubit.dart';
-import 'package:monapp/layers/technical/Theme/widgets/plaque_row_skeleton.dart';
+import 'package:monapp/layers/functional/Catalogue/domain/use_cases/browse_catalogue_use_case.dart';
+import 'package:monapp/layers/functional/Catalogue/presentation/cubit/catalogue_cubit.dart';
 import 'package:monapp/layers/technical/Injection/injection.dart';
+import 'package:monapp/layers/technical/Theme/widgets/plaque_row_skeleton.dart';
 import 'package:monapp/main.dart';
 
+import 'fake_anime_catalogue_gateway.dart';
 import 'fake_anime_details_gateway.dart';
 
 const entries = [
@@ -25,6 +28,11 @@ Future<void> pumpWith(WidgetTester tester, AnimeDetailsGateway gateway) async {
   getIt
     ..registerLazySingleton<LoadWatchlistUseCase>(
       () => LoadWatchlistUseCase(gateway),
+    )
+    ..registerFactory<CatalogueCubit>(
+      () => CatalogueCubit(
+        BrowseCatalogueUseCase(FakeAnimeCatalogueGateway()),
+      ),
     )
     ..registerFactory<WatchlistCubit>(
       () => WatchlistCubit(getIt<LoadWatchlistUseCase>(), entries),

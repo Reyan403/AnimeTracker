@@ -1,43 +1,115 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:monapp/layers/functional/Catalogue/domain/entities/catalogue_anime.dart';
+import 'package:monapp/layers/functional/Catalogue/domain/gateways/anime_catalogue_gateway.dart';
+import 'package:monapp/layers/functional/Catalogue/domain/use_cases/browse_catalogue_use_case.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/catalogue_view.dart';
+import 'package:monapp/layers/functional/Catalogue/presentation/cubit/catalogue_cubit.dart';
+import 'package:monapp/layers/technical/Injection/injection.dart';
+import 'package:monapp/layers/technical/Theme/widgets/plaque_row_skeleton.dart';
 
-Future<void> pumpCatalogue(WidgetTester tester) =>
-    tester.pumpWidget(const MaterialApp(home: CatalogueView()));
+import 'fake_anime_catalogue_gateway.dart';
+
+const bebop = CatalogueAnime(
+  malId: 1,
+  title: 'Cowboy Bebop',
+  studio: 'Sunrise',
+  year: 1998,
+  episodeCount: 26,
+);
+
+const frieren = CatalogueAnime(
+  malId: 52991,
+  title: 'Sousou no Frieren',
+  studio: 'Madhouse',
+  year: 2023,
+  episodeCount: 28,
+);
+
+FakeAnimeCatalogueGateway stockedGateway() => FakeAnimeCatalogueGateway(
+      mostPopular: const [bebop],
+      resultsByQuery: const {
+        'frieren': [frieren],
+      },
+    );
+
+Future<void> pumpWith(
+  WidgetTester tester,
+  AnimeCatalogueGateway gateway,
+) async {
+  await getIt.reset();
+  getIt.registerFactory<CatalogueCubit>(
+    () => CatalogueCubit(BrowseCatalogueUseCase(gateway)),
+  );
+
+  await tester.pumpWidget(const MaterialApp(home: CatalogueView()));
+}
+
+Future<void> typeQuery(WidgetTester tester, String query) async {
+  await tester.enterText(find.byType(TextField), query);
+  await tester.pump(CatalogueCubit.typingPause);
+  await tester.pumpAndSettle();
+}
 
 void main() {
-  testWidgets('it offers a search field', (tester) async {
-    await pumpCatalogue(tester);
+  testWidgets('it shows a skeleton while the catalogue loads', (tester) async {
+    await pumpWith(tester, stockedGateway());
+
+    expect(find.byType(PlaqueRowSkeleton), findsOneWidget);
+
+    await tester.pumpAndSettle();
+    expect(find.byType(PlaqueRowSkeleton), findsNothing);
+  });
+
+  testWidgets('it lists the animes coming from the API', (tester) async {
+    await pumpWith(tester, stockedGateway());
+    await tester.pumpAndSettle();
 
     expect(find.text('Catalogue'), findsOneWidget);
-    expect(find.widgetWithText(TextField, 'Rechercher un animé'),
-        findsOneWidget);
-    expect(find.text('Cherche un animé à ajouter à ta liste.'), findsOneWidget);
+    expect(find.text('Cowboy Bebop'), findsOneWidget);
+    expect(find.text('Sunrise · 1998 · 26 épisodes'), findsOneWidget);
   });
 
-  testWidgets('the clear button appears only once something is typed',
-      (tester) async {
-    await pumpCatalogue(tester);
+  testWidgets('a search replaces the list with its results', (tester) async {
+    await pumpWith(tester, stockedGateway());
+    await tester.pumpAndSettle();
 
-    expect(find.byTooltip('Effacer'), findsNothing);
+    await typeQuery(tester, 'frieren');
 
-    await tester.enterText(find.byType(TextField), 'frieren');
-    await tester.pump();
-
-    expect(find.byTooltip('Effacer'), findsOneWidget);
+    expect(find.text('Sousou no Frieren'), findsOneWidget);
+    expect(find.text('Cowboy Bebop'), findsNothing);
   });
 
-  testWidgets('clearing empties the field and restores the prompt',
+  testWidgets('clearing the search restores the popular animes',
       (tester) async {
-    await pumpCatalogue(tester);
+    await pumpWith(tester, stockedGateway());
+    await tester.pumpAndSettle();
 
-    await tester.enterText(find.byType(TextField), 'frieren');
-    await tester.pump();
+    await typeQuery(tester, 'frieren');
     await tester.tap(find.byTooltip('Effacer'));
-    await tester.pump();
+    await tester.pumpAndSettle();
 
     expect(find.text('frieren'), findsNothing);
-    expect(find.text('Cherche un animé à ajouter à ta liste.'), findsOneWidget);
-    expect(find.byTooltip('Effacer'), findsNothing);
+    expect(find.text('Cowboy Bebop'), findsOneWidget);
+  });
+
+  testWidgets('a search without match says so', (tester) async {
+    await pumpWith(tester, stockedGateway());
+    await tester.pumpAndSettle();
+
+    await typeQuery(tester, 'introuvable');
+
+    expect(
+      find.text('Aucun animé ne correspond à cette recherche.'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('an unreachable service offers a retry', (tester) async {
+    await pumpWith(tester, FakeAnimeCatalogueGateway(isDown: true));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Impossible de charger le catalogue'), findsOneWidget);
+    expect(find.text('Réessayer'), findsOneWidget);
   });
 }

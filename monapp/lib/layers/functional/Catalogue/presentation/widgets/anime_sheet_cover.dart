@@ -1,3 +1,4 @@
+import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../technical/Theme/app_colors.dart';
@@ -17,17 +18,15 @@ class AnimeSheetCover extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return Image.network(
-      url,
+    return CachedNetworkImage(
+      imageUrl: url,
       height: height,
       width: double.infinity,
       fit: BoxFit.cover,
+      memCacheHeight: 2 * height ~/ 1,
+      placeholder: (context, address) =>
+          Container(height: height, color: AppColors.plaqueBackground),
       errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
-      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) =>
-          frame == null && !wasSynchronouslyLoaded
-              ? Container(height: height, color: AppColors.plaqueBackground)
-              : child,
-      excludeFromSemantics: true,
     );
   }
 }

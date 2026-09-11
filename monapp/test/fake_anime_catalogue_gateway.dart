@@ -12,6 +12,7 @@ class FakeAnimeCatalogueGateway implements AnimeCatalogueGateway {
     this.isDown = false,
     this.failingPage,
     this.repeatsPages = false,
+    this.crashingPage,
   });
 
   final List<CatalogueAnime> mostPopular;
@@ -20,6 +21,7 @@ class FakeAnimeCatalogueGateway implements AnimeCatalogueGateway {
   final bool isDown;
   final int? failingPage;
   final bool repeatsPages;
+  final int? crashingPage;
   final List<String> receivedQueries = [];
   final List<int> receivedPages = [];
 
@@ -34,6 +36,10 @@ class FakeAnimeCatalogueGateway implements AnimeCatalogueGateway {
   CataloguePage _pageOf(List<CatalogueAnime> animes, String query, int page) {
     receivedQueries.add(query);
     receivedPages.add(page);
+
+    if (page == crashingPage) {
+      throw StateError('the service answered something unexpected');
+    }
 
     if (isDown || page == failingPage) {
       throw const CatalogueUnavailableException();

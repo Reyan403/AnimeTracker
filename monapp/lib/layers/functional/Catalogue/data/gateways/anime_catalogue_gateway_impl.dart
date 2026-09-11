@@ -1,7 +1,3 @@
-import 'dart:async';
-
-import 'package:http/http.dart' as http;
-
 import '../../../../technical/KitsuApi/kitsu_client.dart';
 import '../../domain/entities/catalogue_page.dart';
 import '../../domain/gateways/anime_catalogue_gateway.dart';
@@ -30,15 +26,7 @@ class AnimeCatalogueGatewayImpl implements AnimeCatalogueGateway {
   Future<CataloguePage> _pageAt(String path) async {
     try {
       return CataloguePageDto.fromJson(await _client.getJson(path));
-    } on KitsuRequestFailedException {
-      throw const CatalogueUnavailableException();
-    } on TimeoutException {
-      throw const CatalogueUnavailableException();
-    } on http.ClientException {
-      throw const CatalogueUnavailableException();
-    } on FormatException {
-      throw const CatalogueUnavailableException();
-    } on TypeError {
+    } catch (_) {
       throw const CatalogueUnavailableException();
     }
   }

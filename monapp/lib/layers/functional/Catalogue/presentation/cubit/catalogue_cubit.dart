@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entities/catalogue_anime.dart';
 import '../../domain/entities/catalogue_page.dart';
-import '../../domain/gateways/anime_catalogue_gateway.dart';
 import '../../domain/use_cases/browse_catalogue_use_case.dart';
 import 'catalogue_state.dart';
 
@@ -56,7 +55,7 @@ class CatalogueCubit extends Cubit<CatalogueState> {
           isAppending: false,
         ),
       );
-    } on CatalogueUnavailableException {
+    } catch (_) {
       _emitWhenCurrent(
         request,
         state.copyWith(hasMore: false, isAppending: false),
@@ -76,7 +75,7 @@ class CatalogueCubit extends Cubit<CatalogueState> {
 
     try {
       _emitWhenCurrent(request, _browsed(await _browseCatalogue(query)));
-    } on CatalogueUnavailableException {
+    } catch (_) {
       _emitWhenCurrent(
         request,
         state.copyWith(

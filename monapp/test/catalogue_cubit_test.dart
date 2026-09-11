@@ -179,4 +179,30 @@ void main() {
     expect(cubit.state.animes, [bebop]);
     expect(cubit.state.page, 2);
   });
+
+  test('an unexpected failure shows the error instead of loading forever',
+      () async {
+    final cubit = cubitOn(FakeAnimeCatalogueGateway(crashingPage: 1));
+
+    await cubit.load();
+
+    expect(cubit.state.status, CatalogueStatus.failure);
+  });
+
+  test('an unexpected failure while appending keeps what is shown', () async {
+    final cubit = cubitOn(
+      FakeAnimeCatalogueGateway(
+        mostPopular: const [bebop, mob],
+        pageSize: 1,
+        crashingPage: 2,
+      ),
+    );
+
+    await cubit.load();
+    await cubit.loadMore();
+
+    expect(cubit.state.animes, [bebop]);
+    expect(cubit.state.status, CatalogueStatus.success);
+    expect(cubit.state.isAppending, isFalse);
+  });
 }

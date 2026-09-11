@@ -26,7 +26,7 @@ void main() {
     await client.getJson('anime?page%5Blimit%5D=25');
 
     expect(asked.toString(),
-        'https://kitsu.io/api/edge/anime?page%5Blimit%5D=25');
+        'https://kitsu.app/api/edge/anime?page%5Blimit%5D=25');
   });
 
   test('it decodes the payload as UTF-8', () async {

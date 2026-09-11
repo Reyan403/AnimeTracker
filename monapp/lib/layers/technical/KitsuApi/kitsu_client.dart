@@ -20,7 +20,7 @@ class KitsuClient {
     'Accept': 'application/vnd.api+json',
   };
 
-  static final Uri _baseUrl = Uri.parse('https://kitsu.io/api/edge/');
+  static final Uri _baseUrl = Uri.parse('https://kitsu.app/api/edge/');
 
   final http.Client _httpClient;
 

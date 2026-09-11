@@ -13,7 +13,7 @@ const anime = {
 
 const payload = {
   'data': [anime],
-  'links': {'next': 'https://kitsu.io/api/edge/anime?page%5Boffset%5D=25'},
+  'links': {'next': 'https://kitsu.app/api/edge/anime?page%5Boffset%5D=25'},
 };
 
 void main() {
@@ -30,7 +30,7 @@ void main() {
   test('the last page has no link to follow', () {
     final page = CataloguePageDto.fromJson(const {
       'data': [anime],
-      'links': {'first': 'https://kitsu.io/api/edge/anime'},
+      'links': {'first': 'https://kitsu.app/api/edge/anime'},
     });
 
     expect(page.hasMore, isFalse);

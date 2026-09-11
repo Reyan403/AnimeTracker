@@ -18,23 +18,23 @@ abstract final class CatalogueAnimeDto {
     return CatalogueAnime(
       id: int.parse(json['id'] as String),
       title: attributes['canonicalTitle'] as String? ?? '',
-      format: _formatOf(attributes['subtype'] as String?),
-      year: _yearOf(attributes['startDate'] as String?),
+      format: formatOf(attributes['subtype'] as String?),
+      year: yearOf(attributes['startDate'] as String?),
       episodeCount: attributes['episodeCount'] as int? ?? 0,
-      posterUrl: _posterOf(attributes),
+      posterUrl: posterOf(attributes),
     );
   }
 
-  static String? _posterOf(Map<String, dynamic> attributes) {
+  static String? posterOf(Map<String, dynamic> attributes) {
     final poster = attributes['posterImage'] as Map<String, dynamic>?;
 
     return poster?['small'] as String? ?? poster?['original'] as String?;
   }
 
-  static String _formatOf(String? subtype) =>
+  static String formatOf(String? subtype) =>
       _formats[subtype] ?? subtype ?? unknownFormat;
 
-  static int _yearOf(String? startDate) {
+  static int yearOf(String? startDate) {
     if (startDate == null || startDate.length < 4) {
       return 0;
     }

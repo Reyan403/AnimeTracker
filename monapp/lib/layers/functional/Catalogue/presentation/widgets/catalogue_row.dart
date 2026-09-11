@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../technical/Theme/app_spacing.dart';
-import '../../../../technical/Theme/widgets/anime_plaque.dart';
+import '../../../../technical/Theme/widgets/anime_poster.dart';
 import '../../domain/entities/catalogue_anime.dart';
 
 class CatalogueRow extends StatelessWidget {
@@ -24,7 +24,7 @@ class CatalogueRow extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AnimePlaque(title: anime.title),
+          AnimePoster(title: anime.title, imageUrl: anime.posterUrl),
           const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(

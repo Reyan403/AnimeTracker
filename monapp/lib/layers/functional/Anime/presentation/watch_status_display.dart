@@ -6,10 +6,4 @@ extension WatchStatusDisplay on WatchStatus {
         WatchStatus.watching => 'En cours',
         WatchStatus.completed => 'Terminé',
       };
-
-  String get countLabel => switch (this) {
-        WatchStatus.toWatch => 'en attente',
-        WatchStatus.watching => 'en cours',
-        WatchStatus.completed => 'terminées',
-      };
 }

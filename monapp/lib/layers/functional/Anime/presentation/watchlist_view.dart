@@ -48,7 +48,7 @@ class WatchlistScaffold extends StatelessWidget {
               AppSpacing.xl,
             ),
             children: [
-              WatchlistHeader(state: state),
+              const WatchlistHeader(),
               const SizedBox(height: AppSpacing.lg),
               WatchStatusTabs(
                 state: state,

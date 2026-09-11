@@ -4,6 +4,7 @@ import '../../../../technical/Theme/app_spacing.dart';
 import '../../domain/entities/anime.dart';
 import '../../domain/entities/anime_details.dart';
 import '../../../../technical/Theme/widgets/anime_poster.dart';
+import '../../../../technical/Theme/widgets/skeleton_bar.dart';
 
 class AnimeRow extends StatelessWidget {
   const AnimeRow({required this.anime, super.key});
@@ -31,10 +32,13 @@ class AnimeRow extends StatelessWidget {
               children: [
                 Text(anime.title, style: theme.textTheme.titleMedium),
                 const SizedBox(height: AppSpacing.sm),
-                Text(
-                  details == null ? 'Fiche indisponible' : _metaLine(details),
-                  style: theme.textTheme.bodyMedium,
-                ),
+                if (anime.isLoadingDetails)
+                  const SkeletonBar(widthFactor: 0.5, height: 14)
+                else
+                  Text(
+                    details == null ? 'Fiche indisponible' : _metaLine(details),
+                    style: theme.textTheme.bodyMedium,
+                  ),
               ],
             ),
           ),

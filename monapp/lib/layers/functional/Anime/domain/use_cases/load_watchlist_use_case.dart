@@ -8,13 +8,36 @@ class LoadWatchlistUseCase {
 
   final AnimeDetailsGateway _gateway;
 
-  Future<List<Anime>> call(List<WatchlistEntry> entries) =>
-      Future.wait(entries.map(_loaded));
+  Stream<List<Anime>> call(List<WatchlistEntry> entries) async* {
+    final animes = [for (final entry in entries) _awaited(entry)];
 
-  Future<Anime> _loaded(WatchlistEntry entry) async => Anime(
+    yield List.of(animes);
+
+    final lookups = [
+      for (var index = 0; index < entries.length; index++)
+        _lookedUp(index, entries[index]),
+    ];
+
+    await for (final (index, anime) in Stream.fromFutures(lookups)) {
+      animes[index] = anime;
+
+      yield List.of(animes);
+    }
+  }
+
+  static Anime _awaited(WatchlistEntry entry) => Anime(
         title: entry.title,
         status: entry.status,
-        details: await _detailsOrNull(entry.malId),
+        isLoadingDetails: true,
+      );
+
+  Future<(int, Anime)> _lookedUp(int index, WatchlistEntry entry) async => (
+        index,
+        Anime(
+          title: entry.title,
+          status: entry.status,
+          details: await _detailsOrNull(entry.malId),
+        ),
       );
 
   Future<AnimeDetails?> _detailsOrNull(int malId) async {

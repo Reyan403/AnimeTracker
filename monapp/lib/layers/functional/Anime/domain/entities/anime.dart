@@ -6,9 +6,11 @@ class Anime {
     required this.title,
     required this.status,
     this.details,
+    this.isLoadingDetails = false,
   });
 
   final String title;
   final WatchStatus status;
   final AnimeDetails? details;
+  final bool isLoadingDetails;
 }

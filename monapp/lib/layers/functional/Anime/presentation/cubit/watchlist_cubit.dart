@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entities/anime.dart';
@@ -13,20 +15,18 @@ class WatchlistCubit extends Cubit<WatchlistState> {
   final LoadWatchlistUseCase _loadWatchlist;
   final List<WatchlistEntry> _entries;
 
+  StreamSubscription<List<Anime>>? _loading;
+
   Future<void> load() async {
+    await _loading?.cancel();
     emit(state.copyWith(status: ViewStatus.loading));
 
-    try {
-      final animes = await _loadWatchlist(_entries);
-      emit(
-        state.copyWith(
-          animes: animes,
-          status: _statusFor(animes, state.selected),
-        ),
-      );
-    } catch (_) {
-      emit(state.copyWith(status: ViewStatus.failure));
-    }
+    _loading = _loadWatchlist(_entries).listen(
+      _show,
+      onError: (_) => emit(state.copyWith(status: ViewStatus.failure)),
+    );
+
+    return _loading!.asFuture<void>().catchError((_) {});
   }
 
   void selectStatus(WatchStatus status) => emit(
@@ -36,8 +36,29 @@ class WatchlistCubit extends Cubit<WatchlistState> {
         ),
       );
 
+  @override
+  Future<void> close() async {
+    await _loading?.cancel();
+
+    return super.close();
+  }
+
+  void _show(List<Anime> animes) {
+    if (isClosed) {
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        animes: animes,
+        status: _statusFor(animes, state.selected),
+      ),
+    );
+  }
+
   static ViewStatus _statusFor(List<Anime> animes, WatchStatus selected) {
-    if (animes.isNotEmpty && animes.every((anime) => anime.details == null)) {
+    if (animes.isNotEmpty &&
+        animes.every((anime) => anime.details == null && !anime.isLoadingDetails)) {
       return ViewStatus.failure;
     }
 

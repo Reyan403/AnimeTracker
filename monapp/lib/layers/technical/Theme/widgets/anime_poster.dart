@@ -1,4 +1,3 @@
-import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../app_spacing.dart';
@@ -20,14 +19,18 @@ class AnimePoster extends StatelessWidget {
       return AnimePlaque(title: title);
     }
 
-    return CachedNetworkImage(
-      imageUrl: url,
+    return Image.network(
+      url,
       width: AppSpacing.plaqueWidth,
       height: AppSpacing.plaqueHeight,
       fit: BoxFit.cover,
-      memCacheWidth: _decodedWidth,
-      placeholder: (context, address) => AnimePlaque(title: title),
+      cacheWidth: _decodedWidth,
       errorBuilder: (context, error, stackTrace) => AnimePlaque(title: title),
+      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) =>
+          frame == null && !wasSynchronouslyLoaded
+              ? AnimePlaque(title: title)
+              : child,
+      excludeFromSemantics: true,
     );
   }
 }

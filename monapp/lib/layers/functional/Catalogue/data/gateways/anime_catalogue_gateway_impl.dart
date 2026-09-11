@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:http/http.dart' as http;
 
-import '../../../../technical/JikanApi/jikan_client.dart';
+import '../../../../technical/KitsuApi/kitsu_client.dart';
 import '../../domain/entities/catalogue_page.dart';
 import '../../domain/gateways/anime_catalogue_gateway.dart';
 import '../models/catalogue_page_dto.dart';
@@ -12,22 +12,25 @@ class AnimeCatalogueGatewayImpl implements AnimeCatalogueGateway {
 
   static const int pageSize = 25;
 
-  final JikanClient _client;
+  final KitsuClient _client;
 
   @override
   Future<CataloguePage> findMostPopular(int page) =>
-      _pageAt('top/anime?page=$page&limit=$pageSize');
+      _pageAt('anime?sort=-userCount&${_slice(page)}');
 
   @override
   Future<CataloguePage> search(String query, int page) => _pageAt(
-        'anime?q=${Uri.encodeQueryComponent(query)}'
-        '&page=$page&limit=$pageSize',
+        'anime?filter%5Btext%5D=${Uri.encodeQueryComponent(query)}'
+        '&${_slice(page)}',
       );
+
+  static String _slice(int page) =>
+      'page%5Blimit%5D=$pageSize&page%5Boffset%5D=${(page - 1) * pageSize}';
 
   Future<CataloguePage> _pageAt(String path) async {
     try {
       return CataloguePageDto.fromJson(await _client.getJson(path));
-    } on JikanRequestFailedException {
+    } on KitsuRequestFailedException {
       throw const CatalogueUnavailableException();
     } on TimeoutException {
       throw const CatalogueUnavailableException();

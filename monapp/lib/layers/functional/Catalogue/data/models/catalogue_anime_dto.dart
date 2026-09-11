@@ -1,25 +1,37 @@
 import '../../domain/entities/catalogue_anime.dart';
 
 abstract final class CatalogueAnimeDto {
-  static const String unknownStudio = 'Studio inconnu';
+  static const String unknownFormat = 'Format inconnu';
 
-  static CatalogueAnime fromJson(Map<String, dynamic> json) => CatalogueAnime(
-        malId: json['mal_id'] as int,
-        title: json['title'] as String,
-        studio: _studioOf(json),
-        year: json['year'] as int? ?? 0,
-        episodeCount: json['episodes'] as int? ?? 0,
-      );
+  static const Map<String, String> _formats = {
+    'TV': 'Série TV',
+    'movie': 'Film',
+    'OVA': 'OVA',
+    'ONA': 'ONA',
+    'special': 'Épisode spécial',
+    'music': 'Clip',
+  };
 
-  static String _studioOf(Map<String, dynamic> json) {
-    final studios = json['studios'] as List<dynamic>?;
+  static CatalogueAnime fromJson(Map<String, dynamic> json) {
+    final attributes = json['attributes'] as Map<String, dynamic>? ?? const {};
 
-    if (studios == null || studios.isEmpty) {
-      return unknownStudio;
+    return CatalogueAnime(
+      id: int.parse(json['id'] as String),
+      title: attributes['canonicalTitle'] as String? ?? '',
+      format: _formatOf(attributes['subtype'] as String?),
+      year: _yearOf(attributes['startDate'] as String?),
+      episodeCount: attributes['episodeCount'] as int? ?? 0,
+    );
+  }
+
+  static String _formatOf(String? subtype) =>
+      _formats[subtype] ?? subtype ?? unknownFormat;
+
+  static int _yearOf(String? startDate) {
+    if (startDate == null || startDate.length < 4) {
+      return 0;
     }
 
-    final name = (studios.first as Map<String, dynamic>)['name'] as String?;
-
-    return name ?? unknownStudio;
+    return int.tryParse(startDate.substring(0, 4)) ?? 0;
   }
 }

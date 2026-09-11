@@ -2,38 +2,57 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:monapp/layers/functional/Catalogue/data/models/catalogue_anime_dto.dart';
 
 const payload = {
-  'mal_id': 1,
-  'title': 'Cowboy Bebop',
-  'studios': [
-    {'name': 'Sunrise'},
-  ],
-  'year': 1998,
-  'episodes': 26,
+  'id': '7442',
+  'attributes': {
+    'canonicalTitle': 'Naruto: Shippuuden',
+    'subtype': 'TV',
+    'startDate': '2007-02-15',
+    'episodeCount': 500,
+  },
 };
 
+Map<String, dynamic> payloadWith(Map<String, dynamic> attributes) => {
+      ...payload,
+      'attributes': {
+        ...payload['attributes']! as Map<String, dynamic>,
+        ...attributes,
+      },
+    };
+
 void main() {
-  test('it reads the fields Jikan returns for an anime', () {
+  test('it reads the fields Kitsu returns for an anime', () {
     final anime = CatalogueAnimeDto.fromJson(payload);
 
-    expect(anime.malId, 1);
-    expect(anime.title, 'Cowboy Bebop');
-    expect(anime.studio, 'Sunrise');
-    expect(anime.year, 1998);
-    expect(anime.episodeCount, 26);
+    expect(anime.id, 7442);
+    expect(anime.title, 'Naruto: Shippuuden');
+    expect(anime.episodeCount, 500);
   });
 
-  test('an anime without studio falls back to an unknown one', () {
-    final anime = CatalogueAnimeDto.fromJson({...payload, 'studios': []});
-
-    expect(anime.studio, CatalogueAnimeDto.unknownStudio);
+  test('it keeps only the year of the release date', () {
+    expect(CatalogueAnimeDto.fromJson(payload).year, 2007);
   });
 
-  test('a running anime without year nor episode count stays readable', () {
+  test('it says the format in French', () {
+    expect(CatalogueAnimeDto.fromJson(payload).format, 'Série TV');
+    expect(
+      CatalogueAnimeDto.fromJson(payloadWith({'subtype': 'movie'})).format,
+      'Film',
+    );
+  });
+
+  test('an unknown format is shown as Kitsu named it', () {
+    final anime = CatalogueAnimeDto.fromJson(payloadWith({'subtype': 'PV'}));
+
+    expect(anime.format, 'PV');
+  });
+
+  test('an anime without date nor episode count stays readable', () {
     final anime = CatalogueAnimeDto.fromJson(
-      {...payload, 'year': null, 'episodes': null},
+      payloadWith({'startDate': null, 'episodeCount': null, 'subtype': null}),
     );
 
     expect(anime.year, 0);
     expect(anime.episodeCount, 0);
+    expect(anime.format, CatalogueAnimeDto.unknownFormat);
   });
 }

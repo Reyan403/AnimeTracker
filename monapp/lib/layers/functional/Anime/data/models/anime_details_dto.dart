@@ -12,17 +12,23 @@ abstract final class AnimeDetailsDto {
     'music': 'Clip',
   };
 
-  static AnimeDetails fromJson(Map<String, dynamic> json) {
-    final data = json['data'] as Map<String, dynamic>? ?? const {};
-    final attributes = data['attributes'] as Map<String, dynamic>? ?? const {};
+  static Map<int, AnimeDetails> fromJson(Map<String, dynamic> json) {
+    final data = json['data'] as List<dynamic>? ?? const [];
 
-    return AnimeDetails(
-      format: _formats[attributes['subtype']] ?? unknownFormat,
-      year: _yearOf(attributes['startDate'] as String?),
-      episodeCount: attributes['episodeCount'] as int? ?? 0,
-      posterUrl: _posterOf(attributes),
-    );
+    return {
+      for (final node in data)
+        int.parse((node as Map<String, dynamic>)['id'] as String):
+            _detailsOf(node['attributes'] as Map<String, dynamic>? ?? const {}),
+    };
   }
+
+  static AnimeDetails _detailsOf(Map<String, dynamic> attributes) =>
+      AnimeDetails(
+        format: _formats[attributes['subtype']] ?? unknownFormat,
+        year: _yearOf(attributes['startDate'] as String?),
+        episodeCount: attributes['episodeCount'] as int? ?? 0,
+        posterUrl: _posterOf(attributes),
+      );
 
   static int _yearOf(String? startDate) {
     if (startDate == null || startDate.length < 4) {

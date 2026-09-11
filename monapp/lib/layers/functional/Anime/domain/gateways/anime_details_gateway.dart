@@ -1,14 +1,12 @@
 import '../entities/anime_details.dart';
 
 abstract interface class AnimeDetailsGateway {
-  Future<AnimeDetails> findById(int id);
+  Future<Map<int, AnimeDetails>> findAllByIds(List<int> ids);
 }
 
 class AnimeDetailsUnavailableException implements Exception {
-  const AnimeDetailsUnavailableException(this.id);
-
-  final int id;
+  const AnimeDetailsUnavailableException();
 
   @override
-  String toString() => 'No details available for anime $id';
+  String toString() => 'No details available for the watchlist';
 }

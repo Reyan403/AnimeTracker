@@ -2,18 +2,20 @@ import 'package:monapp/layers/functional/Anime/domain/entities/anime_details.dar
 import 'package:monapp/layers/functional/Anime/domain/gateways/anime_details_gateway.dart';
 
 class FakeAnimeDetailsGateway implements AnimeDetailsGateway {
-  const FakeAnimeDetailsGateway(this.detailsByMalId);
+  const FakeAnimeDetailsGateway(this.detailsById, {this.isDown = false});
 
-  final Map<int, AnimeDetails> detailsByMalId;
+  final Map<int, AnimeDetails> detailsById;
+  final bool isDown;
 
   @override
-  Future<AnimeDetails> findById(int id) async {
-    final details = detailsByMalId[id];
-
-    if (details == null) {
-      throw AnimeDetailsUnavailableException(id);
+  Future<Map<int, AnimeDetails>> findAllByIds(List<int> ids) async {
+    if (isDown) {
+      throw const AnimeDetailsUnavailableException();
     }
 
-    return details;
+    return {
+      for (final id in ids)
+        if (detailsById[id] != null) id: detailsById[id]!,
+    };
   }
 }

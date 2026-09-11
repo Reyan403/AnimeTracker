@@ -9,20 +9,18 @@ class LoadWatchlistUseCase {
   final AnimeDetailsGateway _gateway;
 
   Stream<List<Anime>> call(List<WatchlistEntry> entries) async* {
-    final animes = [for (final entry in entries) _awaited(entry)];
+    yield [for (final entry in entries) _awaited(entry)];
 
-    yield List.of(animes);
+    final details = await _detailsOf(entries);
 
-    final lookups = [
-      for (var index = 0; index < entries.length; index++)
-        _lookedUp(index, entries[index]),
+    yield [
+      for (final entry in entries)
+        Anime(
+          title: entry.title,
+          status: entry.status,
+          details: details[entry.id],
+        ),
     ];
-
-    await for (final (index, anime) in Stream.fromFutures(lookups)) {
-      animes[index] = anime;
-
-      yield List.of(animes);
-    }
   }
 
   static Anime _awaited(WatchlistEntry entry) => Anime(
@@ -31,20 +29,13 @@ class LoadWatchlistUseCase {
         isLoadingDetails: true,
       );
 
-  Future<(int, Anime)> _lookedUp(int index, WatchlistEntry entry) async => (
-        index,
-        Anime(
-          title: entry.title,
-          status: entry.status,
-          details: await _detailsOrNull(entry.id),
-        ),
-      );
-
-  Future<AnimeDetails?> _detailsOrNull(int id) async {
+  Future<Map<int, AnimeDetails>> _detailsOf(List<WatchlistEntry> entries) async {
     try {
-      return await _gateway.findById(id);
+      return await _gateway.findAllByIds([
+        for (final entry in entries) entry.id,
+      ]);
     } on AnimeDetailsUnavailableException {
-      return null;
+      return const {};
     }
   }
 }

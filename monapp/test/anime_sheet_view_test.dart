@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:monapp/layers/functional/Catalogue/domain/entities/anime_sheet.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/anime_sheet_view.dart';
+import 'package:monapp/layers/functional/Catalogue/domain/use_cases/load_anime_sheet_use_case.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_sheet_cubit.dart';
 import 'package:monapp/layers/technical/Injection/injection.dart';
 
 import 'fake_anime_sheet_gateway.dart';
+import 'fake_french_synopsis_gateway.dart';
 
 const onePiece = AnimeSheet(
   id: 12,
@@ -27,7 +29,11 @@ const onePiece = AnimeSheet(
 
 Future<void> pumpSheet(WidgetTester tester, FakeAnimeSheetGateway gateway) async {
   await getIt.reset();
-  getIt.registerFactory<AnimeSheetCubit>(() => AnimeSheetCubit(gateway));
+  getIt.registerFactory<AnimeSheetCubit>(
+    () => AnimeSheetCubit(
+      LoadAnimeSheetUseCase(gateway, FakeFrenchSynopsisGateway()),
+    ),
+  );
 
   await tester.pumpWidget(
     const MaterialApp(home: AnimeSheetView(animeId: 12, title: 'One Piece')),

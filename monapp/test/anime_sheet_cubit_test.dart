@@ -1,9 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:monapp/layers/functional/Catalogue/domain/entities/anime_sheet.dart';
+import 'package:monapp/layers/functional/Catalogue/domain/use_cases/load_anime_sheet_use_case.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_sheet_cubit.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_sheet_state.dart';
 
 import 'fake_anime_sheet_gateway.dart';
+import 'fake_french_synopsis_gateway.dart';
 
 const onePiece = AnimeSheet(
   id: 12,
@@ -12,10 +14,14 @@ const onePiece = AnimeSheet(
   synopsis: 'Gol D. Roger était connu comme le Roi des Pirates.',
 );
 
+AnimeSheetCubit cubitOn(FakeAnimeSheetGateway gateway) => AnimeSheetCubit(
+      LoadAnimeSheetUseCase(gateway, FakeFrenchSynopsisGateway()),
+    );
+
 void main() {
   test('it loads the sheet of the asked anime', () async {
     final gateway = FakeAnimeSheetGateway(sheetsById: const {12: onePiece});
-    final cubit = AnimeSheetCubit(gateway);
+    final cubit = cubitOn(gateway);
 
     await cubit.load(12);
 
@@ -25,7 +31,7 @@ void main() {
   });
 
   test('an unknown anime leaves the sheet in failure', () async {
-    final cubit = AnimeSheetCubit(FakeAnimeSheetGateway());
+    final cubit = cubitOn(FakeAnimeSheetGateway());
 
     await cubit.load(12);
 
@@ -33,7 +39,7 @@ void main() {
   });
 
   test('an unexpected failure is reported too', () async {
-    final cubit = AnimeSheetCubit(FakeAnimeSheetGateway(crashes: true));
+    final cubit = cubitOn(FakeAnimeSheetGateway(crashes: true));
 
     await cubit.load(12);
 
@@ -41,7 +47,7 @@ void main() {
   });
 
   test('a retry starts over from the loading state', () async {
-    final cubit = AnimeSheetCubit(
+    final cubit = cubitOn(
       FakeAnimeSheetGateway(sheetsById: const {12: onePiece}),
     );
     await cubit.load(12);

@@ -5,6 +5,7 @@ import 'package:monapp/layers/functional/Catalogue/domain/entities/anime_sheet.d
 import 'package:monapp/layers/functional/Catalogue/domain/gateways/anime_catalogue_gateway.dart';
 import 'package:monapp/layers/functional/Catalogue/domain/use_cases/browse_catalogue_use_case.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/catalogue_view.dart';
+import 'package:monapp/layers/functional/Catalogue/domain/use_cases/load_anime_sheet_use_case.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_sheet_cubit.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/catalogue_cubit.dart';
 import 'package:monapp/layers/technical/Injection/injection.dart';
@@ -12,6 +13,7 @@ import 'package:monapp/layers/technical/Theme/widgets/plaque_row_skeleton.dart';
 
 import 'fake_anime_catalogue_gateway.dart';
 import 'fake_anime_sheet_gateway.dart';
+import 'fake_french_synopsis_gateway.dart';
 
 const bebop = CatalogueAnime(
   id: 1,
@@ -68,7 +70,10 @@ Future<void> pumpWith(
     )
     ..registerFactory<AnimeSheetCubit>(
       () => AnimeSheetCubit(
-        FakeAnimeSheetGateway(sheetsById: const {1: bebopSheet}),
+        LoadAnimeSheetUseCase(
+          FakeAnimeSheetGateway(sheetsById: const {1: bebopSheet}),
+          FakeFrenchSynopsisGateway(),
+        ),
       ),
     );
 

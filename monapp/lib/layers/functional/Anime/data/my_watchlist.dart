@@ -4,52 +4,52 @@ import '../domain/entities/watchlist_entry.dart';
 abstract final class MyWatchlist {
   static const List<WatchlistEntry> entries = [
     WatchlistEntry(
-      malId: 52991,
+      id: 46474,
       title: 'Frieren : Au-delà du voyage',
       status: WatchStatus.watching,
     ),
     WatchlistEntry(
-      malId: 37521,
+      id: 41084,
       title: 'Vinland Saga',
       status: WatchStatus.watching,
     ),
     WatchlistEntry(
-      malId: 52701,
+      id: 46320,
       title: 'Dungeon Meshi',
       status: WatchStatus.watching,
     ),
     WatchlistEntry(
-      malId: 1,
+      id: 1,
       title: 'Cowboy Bebop',
       status: WatchStatus.toWatch,
     ),
     WatchlistEntry(
-      malId: 32182,
+      id: 11578,
       title: 'Mob Psycho 100',
       status: WatchStatus.toWatch,
     ),
     WatchlistEntry(
-      malId: 50265,
+      id: 45398,
       title: 'Spy x Family',
       status: WatchStatus.toWatch,
     ),
     WatchlistEntry(
-      malId: 5114,
+      id: 3936,
       title: 'Fullmetal Alchemist: Brotherhood',
       status: WatchStatus.completed,
     ),
     WatchlistEntry(
-      malId: 16498,
+      id: 7442,
       title: "L'Attaque des Titans",
       status: WatchStatus.completed,
     ),
     WatchlistEntry(
-      malId: 40748,
+      id: 42765,
       title: 'Jujutsu Kaisen',
       status: WatchStatus.completed,
     ),
     WatchlistEntry(
-      malId: 1535,
+      id: 1376,
       title: 'Death Note',
       status: WatchStatus.completed,
     ),

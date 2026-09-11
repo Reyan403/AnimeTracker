@@ -36,13 +36,13 @@ class LoadWatchlistUseCase {
         Anime(
           title: entry.title,
           status: entry.status,
-          details: await _detailsOrNull(entry.malId),
+          details: await _detailsOrNull(entry.id),
         ),
       );
 
-  Future<AnimeDetails?> _detailsOrNull(int malId) async {
+  Future<AnimeDetails?> _detailsOrNull(int id) async {
     try {
-      return await _gateway.findByMalId(malId);
+      return await _gateway.findById(id);
     } on AnimeDetailsUnavailableException {
       return null;
     }

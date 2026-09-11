@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:monapp/layers/functional/Anime/presentation/widgets/anime_plaque.dart';
+import 'package:monapp/layers/technical/Theme/widgets/anime_plaque.dart';
 
 Future<String> pumpInitials(WidgetTester tester, String title) async {
   await tester.pumpWidget(

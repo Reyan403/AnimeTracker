@@ -5,7 +5,7 @@ import 'package:monapp/layers/functional/Anime/domain/entities/watchlist_entry.d
 import 'package:monapp/layers/functional/Anime/domain/gateways/anime_details_gateway.dart';
 import 'package:monapp/layers/functional/Anime/domain/use_cases/load_watchlist_use_case.dart';
 import 'package:monapp/layers/functional/Anime/presentation/cubit/watchlist_cubit.dart';
-import 'package:monapp/layers/functional/Anime/presentation/widgets/watchlist_skeleton.dart';
+import 'package:monapp/layers/technical/Theme/widgets/plaque_row_skeleton.dart';
 import 'package:monapp/layers/technical/Injection/injection.dart';
 import 'package:monapp/main.dart';
 
@@ -38,10 +38,10 @@ void main() {
       (tester) async {
     await pumpWith(tester, const FakeAnimeDetailsGateway({1: bebop}));
 
-    expect(find.byType(WatchlistSkeleton), findsOneWidget);
+    expect(find.byType(PlaqueRowSkeleton), findsOneWidget);
 
     await tester.pumpAndSettle();
-    expect(find.byType(WatchlistSkeleton), findsNothing);
+    expect(find.byType(PlaqueRowSkeleton), findsNothing);
   });
 
   testWidgets('a loaded row shows the studio line coming from the gateway',

@@ -163,4 +163,20 @@ void main() {
     expect(cubit.state.isAppending, isFalse);
     expect(cubit.state.hasMore, isFalse);
   });
+
+  test('a page that repeats what is shown adds nothing', () async {
+    final cubit = cubitOn(
+      FakeAnimeCatalogueGateway(
+        mostPopular: const [bebop, mob],
+        pageSize: 1,
+        repeatsPages: true,
+      ),
+    );
+
+    await cubit.load();
+    await cubit.loadMore();
+
+    expect(cubit.state.animes, [bebop]);
+    expect(cubit.state.page, 2);
+  });
 }

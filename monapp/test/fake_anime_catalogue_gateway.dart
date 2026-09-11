@@ -11,6 +11,7 @@ class FakeAnimeCatalogueGateway implements AnimeCatalogueGateway {
     this.pageSize = 25,
     this.isDown = false,
     this.failingPage,
+    this.repeatsPages = false,
   });
 
   final List<CatalogueAnime> mostPopular;
@@ -18,6 +19,7 @@ class FakeAnimeCatalogueGateway implements AnimeCatalogueGateway {
   final int pageSize;
   final bool isDown;
   final int? failingPage;
+  final bool repeatsPages;
   final List<String> receivedQueries = [];
   final List<int> receivedPages = [];
 
@@ -37,7 +39,7 @@ class FakeAnimeCatalogueGateway implements AnimeCatalogueGateway {
       throw const CatalogueUnavailableException();
     }
 
-    final start = (page - 1) * pageSize;
+    final start = repeatsPages ? 0 : (page - 1) * pageSize;
 
     if (start >= animes.length) {
       return CataloguePage.last;

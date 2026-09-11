@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../domain/entities/catalogue_anime.dart';
 import '../../domain/entities/catalogue_page.dart';
 import '../../domain/gateways/anime_catalogue_gateway.dart';
 import '../../domain/use_cases/browse_catalogue_use_case.dart';
@@ -49,7 +50,7 @@ class CatalogueCubit extends Cubit<CatalogueState> {
       _emitWhenCurrent(
         request,
         state.copyWith(
-          animes: [...state.animes, ...page.animes],
+          animes: _withoutAlreadyShown(page.animes),
           page: nextPage,
           hasMore: page.hasMore,
           isAppending: false,
@@ -86,6 +87,12 @@ class CatalogueCubit extends Cubit<CatalogueState> {
         ),
       );
     }
+  }
+
+  List<CatalogueAnime> _withoutAlreadyShown(List<CatalogueAnime> animes) {
+    final shown = state.animes.map((anime) => anime.id).toSet();
+
+    return [...state.animes, ...animes.where((anime) => shown.add(anime.id))];
   }
 
   CatalogueState _browsed(CataloguePage page) => state.copyWith(

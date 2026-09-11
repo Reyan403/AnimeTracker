@@ -1,60 +1,69 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:monapp/layers/functional/Anime/data/models/anime_details_dto.dart';
 
-const payload = {
-  'studios': [
-    {'name': 'Toei Animation'},
-  ],
-  'year': 1999,
-  'episodes': 1000,
-  'images': {
-    'jpg': {
-      'image_url': 'https://cdn.myanimelist.net/images/anime/1244/138851.jpg',
-      'large_image_url':
-          'https://cdn.myanimelist.net/images/anime/1244/138851l.jpg',
-    },
+const attributes = {
+  'canonicalTitle': 'Attack on Titan',
+  'subtype': 'TV',
+  'startDate': '2013-04-07',
+  'episodeCount': 25,
+  'posterImage': {
+    'small': 'https://media.kitsu.app/anime/poster_images/7442/small.jpg',
+    'original': 'https://media.kitsu.app/anime/poster_images/7442/original.png',
   },
 };
 
-void main() {
-  test('it reads the fields Jikan returns for an anime', () {
-    final details = AnimeDetailsDto.fromJson(payload);
+Map<String, dynamic> payloadWith(Map<String, dynamic> changes) => {
+      'data': {
+        'id': '7442',
+        'attributes': {...attributes, ...changes},
+      },
+    };
 
-    expect(details.studio, 'Toei Animation');
-    expect(details.year, 1999);
-    expect(details.episodeCount, 1000);
+void main() {
+  test('it reads what the Liste shows of an anime', () {
+    final details = AnimeDetailsDto.fromJson(payloadWith(const {}));
+
+    expect(details.format, 'Série TV');
+    expect(details.year, 2013);
+    expect(details.episodeCount, 25);
   });
 
-  test('it keeps the poster of the anime', () {
+  test('it keeps the small poster', () {
     expect(
-      AnimeDetailsDto.fromJson(payload).posterUrl,
-      'https://cdn.myanimelist.net/images/anime/1244/138851.jpg',
+      AnimeDetailsDto.fromJson(payloadWith(const {})).posterUrl,
+      'https://media.kitsu.app/anime/poster_images/7442/small.jpg',
     );
   });
 
-  test('it falls back on the large poster', () {
-    final details = AnimeDetailsDto.fromJson({
-      ...payload,
-      'images': {
-        'jpg': {
-          'large_image_url':
-              'https://cdn.myanimelist.net/images/anime/1244/138851l.jpg',
-        },
-      },
-    });
+  test('it falls back on the original poster', () {
+    final details = AnimeDetailsDto.fromJson(
+      payloadWith(const {
+        'posterImage': {'original': 'https://media.kitsu.app/o.png'},
+      }),
+    );
 
-    expect(details.posterUrl, endsWith('138851l.jpg'));
+    expect(details.posterUrl, 'https://media.kitsu.app/o.png');
   });
 
-  test('an anime without image has no poster', () {
-    final details = AnimeDetailsDto.fromJson({...payload, 'images': null});
+  test('an anime without poster has none', () {
+    final details = AnimeDetailsDto.fromJson(
+      payloadWith(const {'posterImage': null}),
+    );
 
     expect(details.posterUrl, isNull);
   });
 
-  test('an anime without studio falls back to an unknown one', () {
-    final details = AnimeDetailsDto.fromJson({...payload, 'studios': []});
+  test('an unknown format and missing counts stay readable', () {
+    final details = AnimeDetailsDto.fromJson(
+      payloadWith(const {
+        'subtype': null,
+        'startDate': null,
+        'episodeCount': null,
+      }),
+    );
 
-    expect(details.studio, AnimeDetailsDto.unknownStudio);
+    expect(details.format, AnimeDetailsDto.unknownFormat);
+    expect(details.year, 0);
+    expect(details.episodeCount, 0);
   });
 }

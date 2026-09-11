@@ -16,7 +16,6 @@ import '../../functional/Catalogue/domain/use_cases/browse_catalogue_use_case.da
 import '../../functional/Catalogue/domain/use_cases/load_anime_sheet_use_case.dart';
 import '../../functional/Catalogue/presentation/cubit/anime_sheet_cubit.dart';
 import '../../functional/Catalogue/presentation/cubit/catalogue_cubit.dart';
-import '../JikanApi/jikan_client.dart';
 import '../KitsuApi/kitsu_client.dart';
 import '../TmdbApi/tmdb_client.dart';
 
@@ -31,7 +30,6 @@ void initializeDependencies() {
 
   getIt
     ..registerLazySingleton<http.Client>(http.Client.new)
-    ..registerLazySingleton<JikanClient>(() => JikanClient(getIt()))
     ..registerLazySingleton<KitsuClient>(() => KitsuClient(getIt()))
     ..registerLazySingleton<TmdbClient>(
       () => TmdbClient(getIt(), apiKey: tmdbApiKey),

@@ -1,27 +1,40 @@
 import '../../domain/entities/anime_details.dart';
 
 abstract final class AnimeDetailsDto {
-  static const String unknownStudio = 'Studio inconnu';
+  static const String unknownFormat = 'Format inconnu';
+
+  static const Map<String, String> _formats = {
+    'TV': 'Série TV',
+    'movie': 'Film',
+    'OVA': 'OVA',
+    'ONA': 'ONA',
+    'special': 'Épisode spécial',
+    'music': 'Clip',
+  };
 
   static AnimeDetails fromJson(Map<String, dynamic> json) {
-    final studios = json['studios'] as List<dynamic>?;
-    final firstStudio =
-        studios == null || studios.isEmpty ? null : studios.first;
+    final data = json['data'] as Map<String, dynamic>? ?? const {};
+    final attributes = data['attributes'] as Map<String, dynamic>? ?? const {};
 
     return AnimeDetails(
-      studio: firstStudio == null
-          ? unknownStudio
-          : (firstStudio as Map<String, dynamic>)['name'] as String,
-      year: json['year'] as int? ?? 0,
-      episodeCount: json['episodes'] as int? ?? 0,
-      posterUrl: _posterOf(json),
+      format: _formats[attributes['subtype']] ?? unknownFormat,
+      year: _yearOf(attributes['startDate'] as String?),
+      episodeCount: attributes['episodeCount'] as int? ?? 0,
+      posterUrl: _posterOf(attributes),
     );
   }
 
-  static String? _posterOf(Map<String, dynamic> json) {
-    final images = json['images'] as Map<String, dynamic>?;
-    final jpg = images?['jpg'] as Map<String, dynamic>?;
+  static int _yearOf(String? startDate) {
+    if (startDate == null || startDate.length < 4) {
+      return 0;
+    }
 
-    return jpg?['image_url'] as String? ?? jpg?['large_image_url'] as String?;
+    return int.tryParse(startDate.substring(0, 4)) ?? 0;
+  }
+
+  static String? _posterOf(Map<String, dynamic> attributes) {
+    final poster = attributes['posterImage'] as Map<String, dynamic>?;
+
+    return poster?['small'] as String? ?? poster?['original'] as String?;
   }
 }

@@ -21,9 +21,13 @@ class CatalogueCubit extends Cubit<CatalogueState> {
 
   void search(String query) {
     _pendingSearch?.cancel();
-    emit(state.copyWith(query: query, status: CatalogueStatus.loading));
+    emit(state.copyWith(query: query, status: _statusWhileTyping));
     _pendingSearch = Timer(typingPause, () => _browse(query));
   }
+
+  CatalogueStatus get _statusWhileTyping => state.animes.isEmpty
+      ? CatalogueStatus.loading
+      : CatalogueStatus.success;
 
   Future<void> clear() {
     _pendingSearch?.cancel();

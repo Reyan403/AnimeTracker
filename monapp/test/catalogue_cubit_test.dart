@@ -59,8 +59,6 @@ void main() {
     final cubit = cubitOn(pagedGateway());
 
     cubit.search('frieren');
-    expect(cubit.state.status, CatalogueStatus.loading);
-
     await letTypingSettle();
 
     expect(cubit.state.animes, [frieren]);
@@ -204,5 +202,28 @@ void main() {
     expect(cubit.state.animes, [bebop]);
     expect(cubit.state.status, CatalogueStatus.success);
     expect(cubit.state.isAppending, isFalse);
+  });
+
+  test('the shown animes stay while a new search is typed', () async {
+    final cubit = cubitOn(pagedGateway());
+    await cubit.load();
+
+    cubit.search('frieren');
+
+    expect(cubit.state.status, CatalogueStatus.success);
+    expect(cubit.state.animes, [bebop]);
+
+    await letTypingSettle();
+
+    expect(cubit.state.animes, [frieren]);
+  });
+
+  test('a first search with nothing shown yet waits on the skeleton',
+      () async {
+    final cubit = cubitOn(pagedGateway());
+
+    cubit.search('frieren');
+
+    expect(cubit.state.status, CatalogueStatus.loading);
   });
 }

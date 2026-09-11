@@ -26,12 +26,26 @@ const frieren = CatalogueAnime(
   episodeCount: 28,
 );
 
+const mob = CatalogueAnime(
+  malId: 32182,
+  title: 'Mob Psycho 100',
+  studio: 'Bones',
+  year: 2016,
+  episodeCount: 12,
+);
+
 FakeAnimeCatalogueGateway stockedGateway() => FakeAnimeCatalogueGateway(
-      mostPopular: const [bebop],
+      mostPopular: const [bebop, mob],
       resultsByQuery: const {
         'frieren': [frieren],
       },
+      pageSize: 1,
     );
+
+Future<void> scrollToBottom(WidgetTester tester) async {
+  await tester.drag(find.byType(ListView), const Offset(0, -600));
+  await tester.pumpAndSettle();
+}
 
 Future<void> pumpWith(
   WidgetTester tester,
@@ -111,5 +125,28 @@ void main() {
 
     expect(find.text('Impossible de charger le catalogue'), findsOneWidget);
     expect(find.text('Réessayer'), findsOneWidget);
+  });
+
+  testWidgets('reaching the bottom loads the next page', (tester) async {
+    await pumpWith(tester, stockedGateway());
+    await tester.pumpAndSettle();
+
+    expect(find.text('Mob Psycho 100'), findsNothing);
+
+    await scrollToBottom(tester);
+
+    expect(find.text('Cowboy Bebop'), findsOneWidget);
+    expect(find.text('Mob Psycho 100'), findsOneWidget);
+  });
+
+  testWidgets('it stops asking once the last page is shown', (tester) async {
+    final gateway = stockedGateway();
+    await pumpWith(tester, gateway);
+    await tester.pumpAndSettle();
+
+    await scrollToBottom(tester);
+    await scrollToBottom(tester);
+
+    expect(gateway.receivedPages, [1, 2]);
   });
 }

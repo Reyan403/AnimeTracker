@@ -26,6 +26,8 @@ class CatalogueView extends StatelessWidget {
 class CatalogueScaffold extends StatefulWidget {
   const CatalogueScaffold({super.key});
 
+  static const double loadMoreMargin = 400;
+
   @override
   State<CatalogueScaffold> createState() => _CatalogueScaffoldState();
 }
@@ -44,6 +46,14 @@ class _CatalogueScaffoldState extends State<CatalogueScaffold> {
     context.read<CatalogueCubit>().clear();
   }
 
+  bool _loadMoreWhenNearBottom(ScrollNotification notification) {
+    if (notification.metrics.extentAfter < CatalogueScaffold.loadMoreMargin) {
+      context.read<CatalogueCubit>().loadMore();
+    }
+
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -52,35 +62,40 @@ class _CatalogueScaffoldState extends State<CatalogueScaffold> {
     return Scaffold(
       body: SafeArea(
         child: BlocBuilder<CatalogueCubit, CatalogueState>(
-          builder: (context, state) => ListView(
-            padding: const EdgeInsets.fromLTRB(
-              AppSpacing.lg,
-              AppSpacing.lg,
-              AppSpacing.lg,
-              AppSpacing.xl,
-            ),
-            children: [
-              Text('Catalogue', style: theme.textTheme.displaySmall),
-              const SizedBox(height: AppSpacing.lg),
-              CatalogueSearchField(
-                controller: _controller,
-                onChanged: cubit.search,
-                onCleared: _clear,
+          builder: (context, state) => NotificationListener<ScrollNotification>(
+            onNotification: _loadMoreWhenNearBottom,
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.lg,
+                AppSpacing.lg,
+                AppSpacing.xl,
               ),
-              const SizedBox(height: AppSpacing.xl),
-              switch (state.status) {
-                CatalogueStatus.loading => const PlaqueRowSkeleton(),
-                CatalogueStatus.failure => CatalogueError(onRetry: cubit.load),
-                CatalogueStatus.empty =>
-                  CatalogueEmpty(isSearching: state.isSearching),
-                CatalogueStatus.success => Column(
-                    children: [
-                      for (final anime in state.animes)
-                        CatalogueRow(anime: anime),
-                    ],
-                  ),
-              },
-            ],
+              children: [
+                Text('Catalogue', style: theme.textTheme.displaySmall),
+                const SizedBox(height: AppSpacing.lg),
+                CatalogueSearchField(
+                  controller: _controller,
+                  onChanged: cubit.search,
+                  onCleared: _clear,
+                ),
+                const SizedBox(height: AppSpacing.xl),
+                switch (state.status) {
+                  CatalogueStatus.loading => const PlaqueRowSkeleton(),
+                  CatalogueStatus.failure => CatalogueError(onRetry: cubit.load),
+                  CatalogueStatus.empty =>
+                    CatalogueEmpty(isSearching: state.isSearching),
+                  CatalogueStatus.success => Column(
+                      children: [
+                        for (final anime in state.animes)
+                          CatalogueRow(anime: anime),
+                        if (state.isAppending)
+                          const PlaqueRowSkeleton(rowCount: 1),
+                      ],
+                    ),
+                },
+              ],
+            ),
           ),
         ),
       ),

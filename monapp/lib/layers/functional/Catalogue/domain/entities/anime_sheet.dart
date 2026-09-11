@@ -41,6 +41,27 @@ class AnimeSheet extends Equatable {
   final String? posterUrl;
   final String? coverUrl;
 
+  AnimeSheet withSynopsis(String synopsis) => AnimeSheet(
+        id: id,
+        title: title,
+        format: format,
+        synopsis: synopsis,
+        status: status,
+        startYear: startYear,
+        endYear: endYear,
+        episodeCount: episodeCount,
+        episodeMinutes: episodeMinutes,
+        totalMinutes: totalMinutes,
+        rating: rating,
+        ratingRank: ratingRank,
+        popularityRank: popularityRank,
+        memberCount: memberCount,
+        favoriteCount: favoriteCount,
+        ageRating: ageRating,
+        posterUrl: posterUrl,
+        coverUrl: coverUrl,
+      );
+
   @override
   List<Object?> get props => [
         id,

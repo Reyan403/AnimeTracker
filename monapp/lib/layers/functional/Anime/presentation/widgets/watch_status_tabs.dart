@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../l10n/app_localizations.dart';
+import '../../../../technical/Theme/app_palette.dart';
 import '../../../../technical/Theme/app_spacing.dart';
 import '../../domain/entities/watch_status.dart';
 import '../cubit/watchlist_state.dart';
@@ -25,6 +26,13 @@ class WatchStatusTabs extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+        border: Border.all(color: AppPalette.of(context).ink, width: 2.5),
+        boxShadow: [
+          BoxShadow(
+            color: AppPalette.of(context).hardShadow,
+            offset: const Offset(4, 4),
+          ),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.xs),

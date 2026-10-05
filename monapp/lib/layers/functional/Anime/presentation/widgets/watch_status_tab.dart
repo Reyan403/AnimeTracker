@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../technical/Theme/app_motion.dart';
+import '../../../../technical/Theme/app_palette.dart';
 import '../../../../technical/Theme/app_spacing.dart';
 
 class WatchStatusTab extends StatelessWidget {
@@ -42,6 +43,12 @@ class WatchStatusTab extends StatelessWidget {
           decoration: BoxDecoration(
             color: isSelected ? scheme.primary : Colors.transparent,
             borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+            border: Border.all(
+              color: isSelected
+                  ? AppPalette.of(context).ink
+                  : Colors.transparent,
+              width: 2.5,
+            ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

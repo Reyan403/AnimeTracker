@@ -17,26 +17,30 @@ class WatchStatusChip extends StatelessWidget {
     final color = status.colorOf(AppPalette.of(context));
     final label = status.labelOf(AppLocalizations.of(context));
 
-    return AnimatedContainer(
-      duration: AppMotion.resolve(context, AppMotion.standard),
-      curve: AppMotion.curve,
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.sm + AppSpacing.xs,
-        vertical: AppSpacing.xs,
-      ),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.14),
-        borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-      ),
-      child: AnimatedSwitcher(
-        duration: AppMotion.resolve(context, AppMotion.fast),
-        child: Text(
-          label,
-          key: ValueKey(status),
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: color,
-                fontWeight: FontWeight.w700,
-              ),
+    return Transform.rotate(
+      angle: -0.035,
+      child: AnimatedContainer(
+        duration: AppMotion.resolve(context, AppMotion.standard),
+        curve: AppMotion.curve,
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.sm + AppSpacing.xs,
+          vertical: AppSpacing.xs,
+        ),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.18),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+        ),
+        child: AnimatedSwitcher(
+          duration: AppMotion.resolve(context, AppMotion.fast),
+          child: Text(
+            label,
+            key: ValueKey(status),
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: color,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 0.4,
+            ),
+          ),
         ),
       ),
     );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../app_motion.dart';
+import '../app_palette.dart';
 import '../app_spacing.dart';
 
 class StateMessage extends StatelessWidget {
@@ -33,14 +35,36 @@ class StateMessage extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          DecoratedBox(
-            decoration: BoxDecoration(
-              color: scheme.primaryContainer,
-              shape: BoxShape.circle,
+          TweenAnimationBuilder<double>(
+            tween: Tween(begin: 0, end: 1),
+            duration: AppMotion.resolve(
+              context,
+              const Duration(milliseconds: 600),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              child: Icon(icon, size: 40, color: scheme.onPrimaryContainer),
+            curve: Curves.elasticOut,
+            builder: (context, progress, child) => Transform.scale(
+              scale: progress,
+              child: Transform.rotate(
+                angle: -0.12 * (1 - progress),
+                child: child,
+              ),
+            ),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: AppPalette.of(context).sun,
+                shape: BoxShape.circle,
+                border: Border.all(color: AppPalette.of(context).ink, width: 3),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppPalette.of(context).hardShadow,
+                    offset: const Offset(4, 4),
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                child: Icon(icon, size: 40, color: const Color(0xFF1B1535)),
+              ),
             ),
           ),
           const SizedBox(height: AppSpacing.lg),

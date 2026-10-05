@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../l10n/app_localizations.dart';
 import '../../../../technical/Theme/app_spacing.dart';
+import '../../../../technical/Theme/widgets/pop_card.dart';
 import '../cubit/settings_cubit.dart';
 
 class SpoilerGuardSwitch extends StatelessWidget {
@@ -20,7 +21,7 @@ class SpoilerGuardSwitch extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: AppSpacing.sm),
-        Card(
+        PopCard(
           child: BlocBuilder<SettingsCubit, SettingsState>(
             builder: (context, state) => SwitchListTile(
               value: state.isSpoilerGuardEnabled,

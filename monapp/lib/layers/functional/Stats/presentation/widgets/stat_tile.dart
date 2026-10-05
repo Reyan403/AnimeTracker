@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../technical/Theme/app_spacing.dart';
+import '../../../../technical/Theme/widgets/pop_card.dart';
 import '../../../../technical/Theme/widgets/animated_count.dart';
 
 class StatTile extends StatelessWidget {
@@ -20,7 +21,7 @@ class StatTile extends StatelessWidget {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
 
-    return Card(
+    return PopCard(
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),
         child: Column(

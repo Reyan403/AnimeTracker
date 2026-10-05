@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../l10n/app_localizations.dart';
 import '../../../../technical/Theme/app_spacing.dart';
+import '../../../../technical/Theme/widgets/pop_card.dart';
 import '../../../../technical/Theme/widgets/state_message.dart';
 import '../cubit/evening_cubit.dart';
 import '../cubit/evening_state.dart';
@@ -20,7 +21,7 @@ class EveningSection extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final cubit = context.read<EveningCubit>();
 
-    return Card(
+    return PopCard(
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),
         child: BlocBuilder<EveningCubit, EveningState>(
@@ -51,30 +52,30 @@ class EveningSection extends StatelessWidget {
                   child: switch (state.status) {
                     EveningStatus.idle => const SizedBox.shrink(),
                     EveningStatus.loading => const Padding(
-                        padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
-                        child: LinearProgressIndicator(),
-                      ),
+                      padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+                      child: LinearProgressIndicator(),
+                    ),
                     EveningStatus.none => StateMessage(
-                        icon: Icons.search_off,
-                        title: l10n.eveningNone,
-                        description: l10n.eveningNoneHint,
-                      ),
+                      icon: Icons.search_off,
+                      title: l10n.eveningNone,
+                      description: l10n.eveningNoneHint,
+                    ),
                     EveningStatus.failure => StateMessage(
-                        icon: Icons.cloud_off_outlined,
-                        title: l10n.eveningErrorTitle,
-                        description: l10n.serviceUnavailable,
-                        actionLabel: l10n.retry,
-                        onAction: cubit.suggest,
-                      ),
+                      icon: Icons.cloud_off_outlined,
+                      title: l10n.eveningErrorTitle,
+                      description: l10n.serviceUnavailable,
+                      actionLabel: l10n.retry,
+                      onAction: cubit.suggest,
+                    ),
                     EveningStatus.suggested => EveningSuggestionCard(
-                        suggestion: suggestion!,
-                        onOpen: () => onAnimeSelected(
-                          suggestion.anime.id,
-                          suggestion.anime.title,
-                        ),
-                        onAnother: cubit.suggestAnother,
-                        onAdd: cubit.addSuggestionToWatchlist,
+                      suggestion: suggestion!,
+                      onOpen: () => onAnimeSelected(
+                        suggestion.anime.id,
+                        suggestion.anime.title,
                       ),
+                      onAnother: cubit.suggestAnother,
+                      onAdd: cubit.addSuggestionToWatchlist,
+                    ),
                   },
                 ),
               ],

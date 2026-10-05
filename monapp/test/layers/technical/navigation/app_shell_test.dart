@@ -160,6 +160,12 @@ class FakeAnimeSheetCubit extends Cubit<AnimeSheetState>
   void revealSynopsis() {}
 }
 
+Future<void> advance(WidgetTester tester) async {
+  await tester.pump();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 1));
+}
+
 void main() {
   setUp(() {
     getIt
@@ -176,21 +182,26 @@ void main() {
   tearDown(getIt.reset);
 
   testWidgets('barre de navigation basse sur un écran étroit', (tester) async {
-    await pumpApp(tester, const AppShell());
+    await pumpApp(tester, const AppShell(), settle: false);
 
     expect(find.byType(NavigationBar), findsOneWidget);
     expect(find.byType(NavigationRail), findsNothing);
   });
 
   testWidgets('rail de navigation sur un écran large', (tester) async {
-    await pumpApp(tester, const AppShell(), size: const Size(1200, 800));
+    await pumpApp(
+      tester,
+      const AppShell(),
+      size: const Size(1200, 800),
+      settle: false,
+    );
 
     expect(find.byType(NavigationRail), findsOneWidget);
     expect(find.byType(NavigationBar), findsNothing);
   });
 
   testWidgets('change d onglet avec un fondu', (tester) async {
-    await pumpApp(tester, const AppShell());
+    await pumpApp(tester, const AppShell(), settle: false);
 
     expect(find.text('Ma liste'), findsOneWidget);
 
@@ -204,23 +215,23 @@ void main() {
 
     expect(tester.hasRunningAnimations, isTrue);
 
-    await tester.pumpAndSettle();
+    await advance(tester);
 
     expect(find.text('Berserk'), findsOneWidget);
   });
 
   testWidgets('ouvre la fiche depuis Ma liste', (tester) async {
-    await pumpApp(tester, const AppShell());
+    await pumpApp(tester, const AppShell(), settle: false);
 
     await tester.tap(find.text('Monster'));
-    await tester.pumpAndSettle();
+    await advance(tester);
 
     expect(find.text('Un thriller.'), findsOneWidget);
     expect(find.text('Synopsis'), findsOneWidget);
   });
 
   testWidgets('ouvre la fiche depuis le catalogue', (tester) async {
-    await pumpApp(tester, const AppShell());
+    await pumpApp(tester, const AppShell(), settle: false);
 
     await tester.tap(
       find.descendant(
@@ -228,20 +239,20 @@ void main() {
         matching: find.text('Catalogue'),
       ),
     );
-    await tester.pumpAndSettle();
+    await advance(tester);
     await tester.tap(find.text('Berserk'));
-    await tester.pumpAndSettle();
+    await advance(tester);
 
     expect(find.text('Un thriller.'), findsOneWidget);
   });
 
   testWidgets('la vue Ma liste change d onglet de statut', (tester) async {
-    await pumpApp(tester, const AppShell());
+    await pumpApp(tester, const AppShell(), settle: false);
 
     expect(find.text('Monster'), findsOneWidget);
 
     await tester.tap(find.text('À voir'));
-    await tester.pumpAndSettle();
+    await advance(tester);
 
     expect(find.text('Monster'), findsNothing);
   });

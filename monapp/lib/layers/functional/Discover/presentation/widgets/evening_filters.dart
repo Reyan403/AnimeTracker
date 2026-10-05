@@ -29,6 +29,7 @@ class EveningFilters extends StatelessWidget {
         const SizedBox(height: AppSpacing.sm),
         Wrap(
           spacing: AppSpacing.sm,
+          runSpacing: AppSpacing.md,
           children: [
             for (final option in EveningMood.values)
               ChoiceChip(

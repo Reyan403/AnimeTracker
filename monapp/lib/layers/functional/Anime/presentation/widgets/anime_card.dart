@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../l10n/app_localizations.dart';
 import '../../../../technical/Theme/anime_meta_line.dart';
 import '../../../../technical/Theme/app_spacing.dart';
+import '../../../../technical/Theme/widgets/pop_card.dart';
 import '../../../../technical/Theme/widgets/anime_poster.dart';
 import '../../../../technical/Theme/widgets/skeleton_bar.dart';
 import '../../domain/entities/anime.dart';
@@ -33,8 +34,9 @@ class AnimeCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final details = anime.details;
 
-    return Card(
+    return PopCard(
       clipBehavior: Clip.antiAlias,
+      isInteractive: true,
       child: InkWell(
         onTap: onTap,
         child: Padding(

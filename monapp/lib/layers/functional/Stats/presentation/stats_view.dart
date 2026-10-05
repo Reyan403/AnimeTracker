@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../technical/Injection/injection.dart';
 import '../../../technical/Theme/app_spacing.dart';
+import '../../../technical/Theme/widgets/pop_title.dart';
 import '../../../technical/Theme/widgets/sliver_content_padding.dart';
 import '../../Settings/presentation/cubit/settings_cubit.dart';
 import '../../Settings/presentation/widgets/spoiler_guard_switch.dart';
@@ -34,6 +35,7 @@ class StatsScaffold extends StatelessWidget {
     final cubit = context.read<StatsCubit>();
 
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: SafeArea(
         child: BlocBuilder<StatsCubit, StatsState>(
           builder: (context, state) => CustomScrollView(
@@ -42,10 +44,7 @@ class StatsScaffold extends StatelessWidget {
                 top: AppSpacing.lg,
                 bottom: AppSpacing.lg,
                 sliver: SliverToBoxAdapter(
-                  child: Text(
-                    AppLocalizations.of(context).statsTitle,
-                    style: Theme.of(context).textTheme.displaySmall,
-                  ),
+                  child: PopTitle(AppLocalizations.of(context).statsTitle),
                 ),
               ),
               SliverContentPadding(

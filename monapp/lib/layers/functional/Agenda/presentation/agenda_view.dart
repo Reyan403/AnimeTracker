@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../technical/Injection/injection.dart';
 import '../../../technical/Theme/app_spacing.dart';
+import '../../../technical/Theme/widgets/pop_title.dart';
 import '../../../technical/Theme/widgets/sliver_content_padding.dart';
 import 'cubit/agenda_cubit.dart';
 import 'cubit/agenda_state.dart';
@@ -35,6 +36,7 @@ class AgendaScaffold extends StatelessWidget {
     final cubit = context.read<AgendaCubit>();
 
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: SafeArea(
         child: BlocBuilder<AgendaCubit, AgendaState>(
           builder: (context, state) => CustomScrollView(
@@ -43,10 +45,7 @@ class AgendaScaffold extends StatelessWidget {
                 top: AppSpacing.lg,
                 bottom: AppSpacing.lg,
                 sliver: SliverToBoxAdapter(
-                  child: Text(
-                    AppLocalizations.of(context).agendaTitle,
-                    style: Theme.of(context).textTheme.displaySmall,
-                  ),
+                  child: PopTitle(AppLocalizations.of(context).agendaTitle),
                 ),
               ),
               AgendaResultsSliver(

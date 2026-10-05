@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../technical/Injection/injection.dart';
 import '../../../technical/Theme/app_spacing.dart';
+import '../../../technical/Theme/widgets/pop_title.dart';
 import '../../../technical/Theme/widgets/anime_poster.dart';
 import '../../../technical/Theme/widgets/plaque_row_skeleton.dart';
 import '../../../technical/Theme/widgets/sliver_content_padding.dart';
@@ -61,6 +62,7 @@ class _CatalogueScaffoldState extends State<CatalogueScaffold> {
     final cubit = context.read<CatalogueCubit>();
 
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: SafeArea(
         child: BlocBuilder<CatalogueCubit, CatalogueState>(
           builder: (context, state) => NotificationListener<ScrollNotification>(
@@ -74,10 +76,7 @@ class _CatalogueScaffoldState extends State<CatalogueScaffold> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          AppLocalizations.of(context).catalogueTitle,
-                          style: Theme.of(context).textTheme.displaySmall,
-                        ),
+                        PopTitle(AppLocalizations.of(context).catalogueTitle),
                         const SizedBox(height: AppSpacing.lg),
                         CatalogueSearchField(
                           controller: _controller,

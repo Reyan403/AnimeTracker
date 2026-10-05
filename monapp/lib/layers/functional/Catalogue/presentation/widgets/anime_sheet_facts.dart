@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../l10n/app_localizations.dart';
 import '../../../../technical/Theme/app_spacing.dart';
+import '../../../../technical/Theme/widgets/pop_card.dart';
 import '../../domain/entities/anime_sheet.dart';
 
 class AnimeSheetFacts extends StatelessWidget {
@@ -58,32 +59,32 @@ class AnimeSheetFacts extends StatelessWidget {
   }
 
   Map<String, String> _facts(AppLocalizations l10n) => {
-        l10n.factFormat: sheet.format,
-        if (sheet.status != null) l10n.factStatus: sheet.status!,
-        if (_broadcast(sheet) != null) l10n.factBroadcast: _broadcast(sheet)!,
-        if (_episodes(l10n, sheet) != null)
-          l10n.factEpisodes: _episodes(l10n, sheet)!,
-        if (_watchTime(l10n, sheet) != null)
-          l10n.factTotalDuration: _watchTime(l10n, sheet)!,
-        if (sheet.rating != null)
-          l10n.factRating: l10n.ratingPercent(sheet.rating!),
-        if (sheet.ratingRank != null)
-          l10n.factRatingRank: l10n.rankOrdinal(sheet.ratingRank!),
-        if (sheet.popularityRank != null)
-          l10n.factPopularity: l10n.rankOrdinal(sheet.popularityRank!),
-        if (sheet.memberCount != null)
-          l10n.factMembers: grouped(sheet.memberCount!),
-        if (sheet.favoriteCount != null)
-          l10n.factFavorites: grouped(sheet.favoriteCount!),
-        if (sheet.ageRating != null) l10n.factAudience: sheet.ageRating!,
-      };
+    l10n.factFormat: sheet.format,
+    if (sheet.status != null) l10n.factStatus: sheet.status!,
+    if (_broadcast(sheet) != null) l10n.factBroadcast: _broadcast(sheet)!,
+    if (_episodes(l10n, sheet) != null)
+      l10n.factEpisodes: _episodes(l10n, sheet)!,
+    if (_watchTime(l10n, sheet) != null)
+      l10n.factTotalDuration: _watchTime(l10n, sheet)!,
+    if (sheet.rating != null)
+      l10n.factRating: l10n.ratingPercent(sheet.rating!),
+    if (sheet.ratingRank != null)
+      l10n.factRatingRank: l10n.rankOrdinal(sheet.ratingRank!),
+    if (sheet.popularityRank != null)
+      l10n.factPopularity: l10n.rankOrdinal(sheet.popularityRank!),
+    if (sheet.memberCount != null)
+      l10n.factMembers: grouped(sheet.memberCount!),
+    if (sheet.favoriteCount != null)
+      l10n.factFavorites: grouped(sheet.favoriteCount!),
+    if (sheet.ageRating != null) l10n.factAudience: sheet.ageRating!,
+  };
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final facts = _facts(AppLocalizations.of(context));
 
-    return Card(
+    return PopCard(
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.md,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../app_motion.dart';
+import '../app_palette.dart';
 import '../app_spacing.dart';
 import 'anime_plaque.dart';
 
@@ -52,14 +53,20 @@ class AnimePoster extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final url = imageUrl;
-    final poster = ClipRRect(
-      borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-      child: SizedBox(
-        width: width,
-        height: height,
-        child: url == null || url.isEmpty
-            ? AnimePlaque(title: title)
-            : _image(context, url),
+    final poster = DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+        border: Border.all(color: AppPalette.of(context).ink, width: 2.5),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppSpacing.radiusMd - 2.5),
+        child: SizedBox(
+          width: width,
+          height: height,
+          child: url == null || url.isEmpty
+              ? AnimePlaque(title: title)
+              : _image(context, url),
+        ),
       ),
     );
     final tag = heroTag;

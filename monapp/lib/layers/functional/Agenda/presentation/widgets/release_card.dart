@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../l10n/app_localizations.dart';
+import '../../../../technical/Theme/app_palette.dart';
 import '../../../../technical/Theme/app_spacing.dart';
+import '../../../../technical/Theme/widgets/pop_card.dart';
 import '../../../../technical/Theme/widgets/anime_poster.dart';
+import '../../../../technical/Theme/widgets/genre_tag.dart';
 import '../../domain/entities/scheduled_release.dart';
 import '../release_countdown.dart';
 
@@ -25,13 +28,16 @@ class ReleaseCard extends StatelessWidget {
     final scheme = theme.colorScheme;
     final l10n = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context).toString();
-    final date = DateFormat('EEEE d MMMM · HH:mm', locale)
-        .format(release.releaseAt.toLocal());
+    final date = DateFormat(
+      'EEEE d MMMM · HH:mm',
+      locale,
+    ).format(release.releaseAt.toLocal());
     final animeId = release.animeId;
     final episode = release.episode;
 
-    return Card(
+    return PopCard(
       clipBehavior: Clip.antiAlias,
+      isInteractive: onTap != null,
       child: InkWell(
         onTap: onTap,
         child: Padding(
@@ -56,7 +62,7 @@ class ReleaseCard extends StatelessWidget {
                     Text(
                       releaseCountdown(l10n, release, now),
                       style: theme.textTheme.titleMedium?.copyWith(
-                        color: scheme.primary,
+                        color: AppPalette.of(context).accentText,
                       ),
                     ),
                     const SizedBox(height: AppSpacing.xs),
@@ -78,14 +84,9 @@ class ReleaseCard extends StatelessWidget {
                     ),
                     if (release.isInWatchlist) ...[
                       const SizedBox(height: AppSpacing.sm),
-                      Chip(
-                        avatar: Icon(
-                          Icons.bookmark,
-                          size: 16,
-                          color: scheme.primary,
-                        ),
-                        label: Text(l10n.inWatchlistBadge),
-                        visualDensity: VisualDensity.compact,
+                      GenreTag(
+                        label: l10n.inWatchlistBadge,
+                        icon: Icons.bookmark,
                       ),
                     ],
                   ],

@@ -4,6 +4,7 @@ import '../../../../../l10n/app_localizations.dart';
 import '../../../../technical/Theme/anime_meta_line.dart';
 import '../../../../technical/Theme/app_spacing.dart';
 import '../../../../technical/Theme/widgets/anime_poster.dart';
+import '../../../../technical/Theme/widgets/genre_tag.dart';
 import '../../../Anime/presentation/anime_genre_label.dart';
 import '../../domain/entities/evening_suggestion.dart';
 
@@ -65,19 +66,20 @@ class EveningSuggestionCard extends StatelessWidget {
                 style: theme.textTheme.bodyMedium,
               ),
               if (suggestion.genres.isNotEmpty) ...[
-                const SizedBox(height: AppSpacing.sm),
+                const SizedBox(height: AppSpacing.md),
                 Wrap(
-                  spacing: AppSpacing.xs,
+                  spacing: AppSpacing.sm,
+                  runSpacing: AppSpacing.sm,
                   children: [
                     for (final genre in suggestion.genres.take(maxGenres))
-                      Chip(label: Text(genreLabel(l10n, genre))),
+                      GenreTag(label: genreLabel(l10n, genre)),
                   ],
                 ),
               ],
-              const SizedBox(height: AppSpacing.md),
+              const SizedBox(height: AppSpacing.lg),
               Wrap(
-                spacing: AppSpacing.sm,
-                runSpacing: AppSpacing.sm,
+                spacing: AppSpacing.md,
+                runSpacing: AppSpacing.md,
                 children: [
                   FilledButton(
                     onPressed: onOpen,

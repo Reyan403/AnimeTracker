@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../l10n/app_localizations.dart';
-import '../../../../technical/Theme/app_motion.dart';
+import '../../../../technical/Theme/widgets/pop_progress_bar.dart';
 import '../../../../technical/Theme/app_spacing.dart';
 import '../../domain/entities/anime.dart';
 
@@ -26,42 +26,36 @@ class EpisodeProgress extends StatelessWidget {
         ? l10n.episodeProgress(anime.episodesWatched, total)
         : l10n.episodeProgressOpen(anime.episodesWatched);
 
-    return Row(
+    final progress = anime.progress;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (anime.progress != null)
-                TweenAnimationBuilder<double>(
-                  tween: Tween(end: anime.progress),
-                  duration: AppMotion.resolve(context, AppMotion.standard),
-                  curve: AppMotion.curve,
-                  builder: (context, value, _) => LinearProgressIndicator(
-                    value: value,
-                    minHeight: 6,
-                    borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
-                  ),
-                ),
-              const SizedBox(height: AppSpacing.xs),
-              Text(
-                label,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ],
+        Row(
+          children: [
+            Expanded(
+              child: progress == null
+                  ? const SizedBox.shrink()
+                  : PopProgressBar(value: progress),
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            IconButton(
+              onPressed: anime.episodesWatched > 0 ? onPrevious : null,
+              tooltip: l10n.watchPreviousTooltip,
+              icon: const Icon(Icons.remove),
+            ),
+            IconButton.filledTonal(
+              onPressed: anime.isFinished ? null : onNext,
+              tooltip: l10n.watchNextTooltip,
+              icon: const Icon(Icons.add),
+            ),
+          ],
+        ),
+        Text(
+          label,
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
           ),
-        ),
-        IconButton(
-          onPressed: anime.episodesWatched > 0 ? onPrevious : null,
-          tooltip: l10n.watchPreviousTooltip,
-          icon: const Icon(Icons.remove),
-        ),
-        IconButton.filledTonal(
-          onPressed: anime.isFinished ? null : onNext,
-          tooltip: l10n.watchNextTooltip,
-          icon: const Icon(Icons.add),
         ),
       ],
     );

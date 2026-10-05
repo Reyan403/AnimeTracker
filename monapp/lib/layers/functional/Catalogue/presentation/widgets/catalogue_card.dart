@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../l10n/app_localizations.dart';
 import '../../../../technical/Theme/anime_meta_line.dart';
 import '../../../../technical/Theme/app_spacing.dart';
+import '../../../../technical/Theme/widgets/pop_card.dart';
 import '../../../../technical/Theme/widgets/anime_poster.dart';
 import '../../domain/entities/catalogue_anime.dart';
 import 'catalogue_add_button.dart';
@@ -26,8 +27,9 @@ class CatalogueCard extends StatelessWidget {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
 
-    return Card(
+    return PopCard(
       clipBehavior: Clip.antiAlias,
+      isInteractive: true,
       child: InkWell(
         onTap: onTap,
         child: Padding(

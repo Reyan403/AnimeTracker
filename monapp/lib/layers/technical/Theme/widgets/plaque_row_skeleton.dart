@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../app_spacing.dart';
+import 'pop_card.dart';
 import 'skeleton_bar.dart';
 import 'skeleton_box.dart';
 
@@ -16,7 +17,7 @@ class PlaqueRowSkeleton extends StatelessWidget {
         for (var index = 0; index < rowCount; index++)
           Padding(
             padding: const EdgeInsets.only(bottom: AppSpacing.md),
-            child: Card(
+            child: PopCard(
               child: Padding(
                 padding: const EdgeInsets.all(AppSpacing.md),
                 child: Row(

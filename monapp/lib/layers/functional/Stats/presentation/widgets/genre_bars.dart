@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../l10n/app_localizations.dart';
-import '../../../../technical/Theme/app_motion.dart';
+import '../../../../technical/Theme/widgets/pop_progress_bar.dart';
 import '../../../../technical/Theme/app_spacing.dart';
+import '../../../../technical/Theme/widgets/pop_card.dart';
 import '../../../Anime/presentation/anime_genre_label.dart';
 import '../../domain/entities/watch_stats.dart';
 
@@ -17,7 +18,7 @@ class GenreBars extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final maximum = genres.isEmpty ? 1 : genres.first.count;
 
-    return Card(
+    return PopCard(
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),
         child: Column(
@@ -40,19 +41,9 @@ class GenreBars extends StatelessWidget {
                       ),
                     ),
                     Expanded(
-                      child: TweenAnimationBuilder<double>(
-                        tween: Tween(end: share.count / maximum),
-                        duration: AppMotion.resolve(
-                          context,
-                          const Duration(milliseconds: 600),
-                        ),
-                        curve: AppMotion.curve,
-                        builder: (context, value, _) => LinearProgressIndicator(
-                          value: value,
-                          minHeight: 10,
-                          borderRadius:
-                              BorderRadius.circular(AppSpacing.radiusSm),
-                        ),
+                      child: PopProgressBar(
+                        value: share.count / maximum,
+                        height: 14,
                       ),
                     ),
                     const SizedBox(width: AppSpacing.sm),

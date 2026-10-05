@@ -37,6 +37,7 @@ class WatchlistScaffold extends StatelessWidget {
     final cubit = context.read<WatchlistCubit>();
 
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: SafeArea(
         child: BlocBuilder<WatchlistCubit, WatchlistState>(
           builder: (context, state) => CustomScrollView(

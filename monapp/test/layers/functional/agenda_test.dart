@@ -14,7 +14,6 @@ import 'package:monapp/layers/functional/Agenda/domain/use_cases/load_release_ag
 import 'package:monapp/layers/functional/Agenda/presentation/cubit/agenda_cubit.dart';
 import 'package:monapp/layers/functional/Agenda/presentation/cubit/agenda_state.dart';
 import 'package:monapp/layers/functional/Agenda/presentation/release_countdown.dart';
-import 'package:monapp/layers/functional/Agenda/presentation/widgets/agenda_filter.dart';
 import 'package:monapp/layers/functional/Agenda/presentation/widgets/agenda_results_sliver.dart';
 import 'package:monapp/layers/functional/Agenda/presentation/widgets/release_card.dart';
 import 'package:monapp/layers/functional/Anime/data/models/anime_details_dto.dart';
@@ -32,14 +31,13 @@ UpcomingEpisode episodeOf(
   required int days,
   int? malId,
   int episode = 3,
-}) =>
-    UpcomingEpisode(
-      title: title,
-      episode: episode,
-      airingAt: now.add(Duration(days: days)),
-      malId: malId,
-      coverUrl: 'https://example.invalid/$title.jpg',
-    );
+}) => UpcomingEpisode(
+  title: title,
+  episode: episode,
+  airingAt: now.add(Duration(days: days)),
+  malId: malId,
+  coverUrl: 'https://example.invalid/$title.jpg',
+);
 
 class FakeScheduleGateway implements ReleaseScheduleGateway {
   FakeScheduleGateway({
@@ -88,51 +86,48 @@ LoadReleaseAgendaUseCase agendaOf(
   List<WatchlistEntry> list = entries,
   bool detailsFail = false,
   DateTime? kitsuRelease,
-}) =>
-    LoadReleaseAgendaUseCase(
-      watchlistOf(
-        list,
-        {
-          1: detailsOf(malId: 100, nextRelease: kitsuRelease),
-          2: detailsOf(malId: 200),
-          3: detailsOf(malId: 300),
-        },
-        fails: detailsFail,
-      ),
-      schedule,
-      clock: () => now,
-    );
+}) => LoadReleaseAgendaUseCase(
+  watchlistOf(list, {
+    1: detailsOf(malId: 100, nextRelease: kitsuRelease),
+    2: detailsOf(malId: 200),
+    3: detailsOf(malId: 300),
+  }, fails: detailsFail),
+  schedule,
+  clock: () => now,
+);
 
 Future<List<ScheduledRelease>> firstAgenda(LoadReleaseAgendaUseCase useCase) =>
     useCase().first;
 
 ScheduledRelease releaseIn(int days, {int? animeId = 1}) => ScheduledRelease(
-      animeId: animeId,
-      title: 'Monster',
-      releaseAt: now.add(Duration(days: days)),
-      episode: 4,
-    );
+  animeId: animeId,
+  title: 'Monster',
+  releaseAt: now.add(Duration(days: days)),
+  episode: 4,
+);
 
 void main() {
   group('LoadReleaseAgendaUseCase', () {
-    test('rattache les épisodes aux animes de la liste par identifiant',
-        () async {
-      final agenda = await firstAgenda(
-        agendaOf(
-          FakeScheduleGateway(
-            listed: [
-              episodeOf('Autre titre', days: 2, malId: 100, episode: 7),
-              episodeOf('Autre titre', days: 9, malId: 100, episode: 8),
-            ],
+    test(
+      'rattache les épisodes aux animes de la liste par identifiant',
+      () async {
+        final agenda = await firstAgenda(
+          agendaOf(
+            FakeScheduleGateway(
+              listed: [
+                episodeOf('Autre titre', days: 2, malId: 100, episode: 7),
+                episodeOf('Autre titre', days: 9, malId: 100, episode: 8),
+              ],
+            ),
           ),
-        ),
-      );
+        );
 
-      expect(agenda.map((release) => release.animeId), [1, 1]);
-      expect(agenda.map((release) => release.episode), [7, 8]);
-      expect(agenda.first.title, 'En cours');
-      expect(agenda.first.isInWatchlist, isTrue);
-    });
+        expect(agenda.map((release) => release.animeId), [1, 1]);
+        expect(agenda.map((release) => release.episode), [7, 8]);
+        expect(agenda.first.title, 'En cours');
+        expect(agenda.first.isInWatchlist, isTrue);
+      },
+    );
 
     test('interroge uniquement les animes non terminés', () async {
       final schedule = FakeScheduleGateway();
@@ -180,29 +175,32 @@ void main() {
         agendaOf(
           FakeScheduleGateway(
             listed: [episodeOf('X', days: 6, malId: 100)],
-            popular: [
-              episodeOf('Tôt', days: 1),
-              episodeOf('Tard', days: 12),
-            ],
+            popular: [episodeOf('Tôt', days: 1), episodeOf('Tard', days: 12)],
           ),
         ),
       );
 
-      expect(agenda.map((release) => release.title), ['Tôt', 'En cours', 'Tard']);
+      expect(agenda.map((release) => release.title), [
+        'Tôt',
+        'En cours',
+        'Tard',
+      ]);
     });
 
-    test('utilise la date Kitsu quand AniList ne connaît pas l anime',
-        () async {
-      final agenda = await firstAgenda(
-        agendaOf(
-          FakeScheduleGateway(),
-          kitsuRelease: now.add(const Duration(days: 3)),
-        ),
-      );
+    test(
+      'utilise la date Kitsu quand AniList ne connaît pas l anime',
+      () async {
+        final agenda = await firstAgenda(
+          agendaOf(
+            FakeScheduleGateway(),
+            kitsuRelease: now.add(const Duration(days: 3)),
+          ),
+        );
 
-      expect(agenda.single.animeId, 1);
-      expect(agenda.single.episode, isNull);
-    });
+        expect(agenda.single.animeId, 1);
+        expect(agenda.single.episode, isNull);
+      },
+    );
 
     test('ne double pas un anime déjà couvert par AniList', () async {
       final agenda = await firstAgenda(
@@ -238,18 +236,20 @@ void main() {
       expect(agenda.single.animeId, 1);
     });
 
-    test('ne recharge pas les sorties populaires à chaque changement',
-        () async {
-      final schedule = FakeScheduleGateway(
-        popular: [episodeOf('Nouveau', days: 1)],
-      );
-      final useCase = agendaOf(schedule);
+    test(
+      'ne recharge pas les sorties populaires à chaque changement',
+      () async {
+        final schedule = FakeScheduleGateway(
+          popular: [episodeOf('Nouveau', days: 1)],
+        );
+        final useCase = agendaOf(schedule);
 
-      await firstAgenda(useCase);
-      await firstAgenda(useCase);
+        await firstAgenda(useCase);
+        await firstAgenda(useCase);
 
-      expect(schedule.popularCalls, 1);
-    });
+        expect(schedule.popularCalls, 1);
+      },
+    );
 
     test('retente les sorties populaires après un résultat vide', () async {
       final schedule = FakeScheduleGateway();
@@ -292,14 +292,18 @@ void main() {
   });
 
   group('AgendaCubit', () {
-    AgendaCubit cubitOf(FakeScheduleGateway schedule, {bool detailsFail = false}) {
+    AgendaCubit cubitOf(
+      FakeScheduleGateway schedule, {
+      bool detailsFail = false,
+    }) {
       final cubit = AgendaCubit(agendaOf(schedule, detailsFail: detailsFail));
       addTearDown(cubit.close);
 
       return cubit;
     }
 
-    Future<void> settle() => Future<void>.delayed(const Duration(milliseconds: 10));
+    Future<void> settle() =>
+        Future<void>.delayed(const Duration(milliseconds: 10));
 
     test('passe de chargement à succès', () async {
       final cubit = cubitOf(
@@ -330,29 +334,6 @@ void main() {
       await settle();
 
       expect(cubit.state.status, AgendaStatus.failure);
-    });
-
-    test('le filtre ne garde que les animes de la liste', () async {
-      final cubit = cubitOf(
-        FakeScheduleGateway(
-          listed: [episodeOf('X', days: 2, malId: 100)],
-          popular: [episodeOf('Nouveau', days: 1)],
-        ),
-      );
-
-      await cubit.load();
-      await settle();
-
-      expect(cubit.state.visibleReleases.length, 2);
-
-      cubit.selectFilter(onlyWatchlist: true);
-
-      expect(cubit.state.visibleReleases.single.title, 'En cours');
-
-      await cubit.load();
-      await settle();
-
-      expect(cubit.state.onlyWatchlist, isTrue);
     });
   });
 
@@ -421,16 +402,15 @@ void main() {
     AniListReleaseScheduleGateway gatewayReplying(
       http.Response Function(http.Request request) reply, {
       List<http.Request>? seen,
-    }) =>
-        AniListReleaseScheduleGateway(
-          AniListClient(
-            MockClient((request) async {
-              seen?.add(request);
+    }) => AniListReleaseScheduleGateway(
+      AniListClient(
+        MockClient((request) async {
+          seen?.add(request);
 
-              return reply(request);
-            }),
-          ),
-        );
+          return reply(request);
+        }),
+      ),
+    );
 
     test('interroge AniList avec les identifiants MyAnimeList', () async {
       final seen = <http.Request>[];
@@ -565,8 +545,9 @@ void main() {
   });
 
   group('écran', () {
-    testWidgets('la carte d un anime de la liste est cliquable avec badge',
-        (tester) async {
+    testWidgets('la carte d un anime de la liste est cliquable avec badge', (
+      tester,
+    ) async {
       var opened = false;
 
       await pumpApp(
@@ -587,8 +568,9 @@ void main() {
       expect(opened, isTrue);
     });
 
-    testWidgets('la carte d une sortie externe n a pas de badge',
-        (tester) async {
+    testWidgets('la carte d une sortie externe n a pas de badge', (
+      tester,
+    ) async {
       await pumpApp(
         tester,
         ReleaseCard(release: releaseIn(2, animeId: null), now: now.toLocal()),
@@ -597,8 +579,9 @@ void main() {
       expect(find.text('Dans ma liste'), findsNothing);
     });
 
-    testWidgets('sans numéro d épisode, la ligne ne montre que la date',
-        (tester) async {
+    testWidgets('sans numéro d épisode, la ligne ne montre que la date', (
+      tester,
+    ) async {
       await pumpApp(
         tester,
         ReleaseCard(
@@ -678,8 +661,9 @@ void main() {
       expect(find.text('Dans 2 jours'), findsOneWidget);
     });
 
-    testWidgets('une sortie externe ne déclenche aucune ouverture',
-        (tester) async {
+    testWidgets('une sortie externe ne déclenche aucune ouverture', (
+      tester,
+    ) async {
       int? opened;
 
       await pumpApp(
@@ -703,31 +687,6 @@ void main() {
       expect(opened, isNull);
     });
 
-    testWidgets('explique l absence de sortie pour la liste', (tester) async {
-      await pumpApp(
-        tester,
-        CustomScrollView(
-          slivers: [
-            AgendaResultsSliver(
-              state: AgendaState(
-                status: AgendaStatus.success,
-                releases: [releaseIn(2, animeId: null)],
-                onlyWatchlist: true,
-              ),
-              now: now.toLocal(),
-              onRetry: () {},
-              onAnimeSelected: (_, _) {},
-            ),
-          ],
-        ),
-      );
-
-      expect(
-        find.text('Aucune sortie pour les animes de votre liste.'),
-        findsOneWidget,
-      );
-    });
-
     testWidgets('réessayer relance le chargement', (tester) async {
       var retried = false;
 
@@ -747,21 +706,6 @@ void main() {
       await tester.tap(find.text('Réessayer'));
 
       expect(retried, isTrue);
-    });
-
-    testWidgets('le filtre bascule entre toutes les sorties et ma liste',
-        (tester) async {
-      bool? chosen;
-
-      await pumpApp(
-        tester,
-        AgendaFilter(onlyWatchlist: false, onChanged: (value) => chosen = value),
-      );
-
-      await tester.tap(find.text('Ma liste'));
-
-      expect(chosen, isTrue);
-      expect(find.text('Toutes les sorties'), findsOneWidget);
     });
   });
 }

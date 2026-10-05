@@ -20,9 +20,8 @@ L'Agenda affiche, du plus proche au plus lointain, les épisodes qui sortent dan
 
 1. **Given** un anime de la liste en cours de diffusion, **When** l'Agenda s'ouvre, **Then** ses prochains épisodes (jusqu'à 3) apparaissent avec le badge « Dans ma liste » et son titre de liste.
 2. **Given** des séries populaires en cours de diffusion absentes de la liste, **When** l'Agenda s'ouvre, **Then** leur prochain épisode apparaît sans badge.
-3. **Given** le filtre « Ma liste », **When** l'utilisateur le sélectionne, **Then** seules les sorties de ses animes restent affichées, avec un message si aucune.
-4. **Given** une sortie d'un anime de la liste, **When** l'utilisateur la touche, **Then** la fiche s'ouvre ; une sortie externe n'ouvre rien.
-5. **Given** un anime terminé de la liste, **When** l'Agenda se construit, **Then** il n'y figure pas et n'est pas non plus proposé comme nouveauté.
+3. **Given** une sortie d'un anime de la liste, **When** l'utilisateur la touche, **Then** la fiche s'ouvre ; une sortie externe n'ouvre rien.
+4. **Given** un anime terminé de la liste, **When** l'Agenda se construit, **Then** il n'y figure pas et n'est pas non plus proposé comme nouveauté.
 
 ### Edge Cases
 
@@ -37,8 +36,7 @@ L'Agenda affiche, du plus proche au plus lointain, les épisodes qui sortent dan
 - **FR-001**: L'Agenda MUST afficher les épisodes des 21 prochains jours triés par date.
 - **FR-002**: Les animes de la liste MUST être reconnus par leur identifiant MyAnimeList.
 - **FR-003**: Les sorties de la liste MUST être distinguées par un badge.
-- **FR-004**: L'utilisateur MUST pouvoir filtrer sur sa liste.
-- **FR-005**: Une panne du service de calendrier MUST NOT empêcher l'affichage des autres sorties.
+- **FR-004**: Une panne du service de calendrier MUST NOT empêcher l'affichage des autres sorties.
 
 ### Key Entities
 

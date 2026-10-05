@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../domain/entities/evening_duration.dart';
 import '../../domain/entities/evening_mood.dart';
 import '../../domain/use_cases/suggest_evening_watch_use_case.dart';
 import 'evening_state.dart';
@@ -10,11 +9,7 @@ class EveningCubit extends Cubit<EveningState> {
 
   final SuggestEveningWatchUseCase _suggest;
 
-  void selectMood(EveningMood mood) =>
-      emit(EveningState(mood: mood, duration: state.duration));
-
-  void selectDuration(EveningDuration duration) =>
-      emit(EveningState(mood: state.mood, duration: duration));
+  void selectMood(EveningMood mood) => emit(EveningState(mood: mood));
 
   Future<void> suggest() => _pick(excluded: const {});
 
@@ -25,7 +20,6 @@ class EveningCubit extends Cubit<EveningState> {
       EveningState(
         status: EveningStatus.loading,
         mood: state.mood,
-        duration: state.duration,
         shownIds: excluded,
       ),
     );
@@ -33,7 +27,6 @@ class EveningCubit extends Cubit<EveningState> {
     try {
       final suggestion = await _suggest(
         mood: state.mood,
-        duration: state.duration,
         excludedIds: excluded,
       );
 
@@ -53,7 +46,6 @@ class EveningCubit extends Cubit<EveningState> {
               ? EveningStatus.none
               : EveningStatus.suggested,
           mood: state.mood,
-          duration: state.duration,
           suggestion: suggestion,
           shownIds: {...excluded, ?suggestion?.anime.id},
         ),
@@ -61,11 +53,7 @@ class EveningCubit extends Cubit<EveningState> {
     } on EveningSuggestionUnavailableException {
       if (!isClosed) {
         emit(
-          EveningState(
-            status: EveningStatus.failure,
-            mood: state.mood,
-            duration: state.duration,
-          ),
+          EveningState(status: EveningStatus.failure, mood: state.mood),
         );
       }
     }

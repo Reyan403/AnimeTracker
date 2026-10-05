@@ -7,7 +7,6 @@ import '../../../technical/Theme/app_spacing.dart';
 import '../../../technical/Theme/widgets/sliver_content_padding.dart';
 import 'cubit/agenda_cubit.dart';
 import 'cubit/agenda_state.dart';
-import 'widgets/agenda_filter.dart';
 import 'widgets/agenda_results_sliver.dart';
 
 typedef AgendaAnimeSelected = void Function(int animeId, String title);
@@ -47,19 +46,6 @@ class AgendaScaffold extends StatelessWidget {
                   child: Text(
                     AppLocalizations.of(context).agendaTitle,
                     style: Theme.of(context).textTheme.displaySmall,
-                  ),
-                ),
-              ),
-              SliverContentPadding(
-                bottom: AppSpacing.md,
-                sliver: SliverToBoxAdapter(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: AgendaFilter(
-                      onlyWatchlist: state.onlyWatchlist,
-                      onChanged: (onlyWatchlist) =>
-                          cubit.selectFilter(onlyWatchlist: onlyWatchlist),
-                    ),
                   ),
                 ),
               ),

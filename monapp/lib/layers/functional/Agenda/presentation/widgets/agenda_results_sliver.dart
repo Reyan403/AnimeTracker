@@ -26,7 +26,7 @@ class AgendaResultsSliver extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final releases = state.visibleReleases;
+    final releases = state.releases;
 
     return switch (state.status) {
       AgendaStatus.loading => const SliverContentPadding(
@@ -46,13 +46,6 @@ class AgendaResultsSliver extends StatelessWidget {
             icon: Icons.event_busy_outlined,
             title: l10n.agendaEmpty,
             description: l10n.agendaEmptyHint,
-          ),
-        ),
-      AgendaStatus.success when releases.isEmpty => SliverToBoxAdapter(
-          child: StateMessage(
-            icon: Icons.event_busy_outlined,
-            title: l10n.agendaEmptyMine,
-            description: l10n.agendaEmptyMineHint,
           ),
         ),
       AgendaStatus.success => SliverContentPadding(

@@ -13,7 +13,6 @@ import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_shee
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_sheet_state.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/catalogue_cubit.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/catalogue_state.dart';
-import 'package:monapp/layers/functional/Discover/domain/entities/evening_duration.dart';
 import 'package:monapp/layers/functional/Discover/domain/entities/evening_mood.dart';
 import 'package:monapp/layers/functional/Discover/presentation/cubit/evening_cubit.dart';
 import 'package:monapp/layers/functional/Discover/presentation/cubit/evening_state.dart';
@@ -30,14 +29,14 @@ import '../../../support/pump_app.dart';
 class FakeWatchlistCubit extends Cubit<WatchlistState>
     implements WatchlistCubit {
   FakeWatchlistCubit()
-      : super(
-          const WatchlistState(
-            status: ViewStatus.success,
-            animes: [
-              Anime(id: 1, title: 'Monster', status: WatchStatus.watching),
-            ],
-          ),
-        );
+    : super(
+        const WatchlistState(
+          status: ViewStatus.success,
+          animes: [
+            Anime(id: 1, title: 'Monster', status: WatchStatus.watching),
+          ],
+        ),
+      );
 
   @override
   Future<void> load() async {}
@@ -73,9 +72,7 @@ class FakeStatsCubit extends Cubit<StatsState> implements StatsCubit {
 class FakeRecommendationsCubit extends Cubit<RecommendationsState>
     implements RecommendationsCubit {
   FakeRecommendationsCubit()
-      : super(
-          const RecommendationsState(status: RecommendationsStatus.empty),
-        );
+    : super(const RecommendationsState(status: RecommendationsStatus.empty));
 
   @override
   Future<void> load() async {}
@@ -91,9 +88,6 @@ class FakeEveningCubit extends Cubit<EveningState> implements EveningCubit {
   void selectMood(EveningMood mood) {}
 
   @override
-  void selectDuration(EveningDuration duration) {}
-
-  @override
   Future<void> suggest() async {}
 
   @override
@@ -105,28 +99,25 @@ class FakeAgendaCubit extends Cubit<AgendaState> implements AgendaCubit {
 
   @override
   Future<void> load() async {}
-
-  @override
-  void selectFilter({required bool onlyWatchlist}) {}
 }
 
 class FakeCatalogueCubit extends Cubit<CatalogueState>
     implements CatalogueCubit {
   FakeCatalogueCubit()
-      : super(
-          const CatalogueState(
-            status: CatalogueStatus.success,
-            animes: [
-              CatalogueAnime(
-                id: 9,
-                title: 'Berserk',
-                format: 'TV',
-                year: 1997,
-                episodeCount: 25,
-              ),
-            ],
-          ),
-        );
+    : super(
+        const CatalogueState(
+          status: CatalogueStatus.success,
+          animes: [
+            CatalogueAnime(
+              id: 9,
+              title: 'Berserk',
+              format: 'TV',
+              year: 1997,
+              episodeCount: 25,
+            ),
+          ],
+        ),
+      );
 
   @override
   Future<void> load() async {}
@@ -147,17 +138,17 @@ class FakeCatalogueCubit extends Cubit<CatalogueState>
 class FakeAnimeSheetCubit extends Cubit<AnimeSheetState>
     implements AnimeSheetCubit {
   FakeAnimeSheetCubit()
-      : super(
-          const AnimeSheetState(
-            status: AnimeSheetStatus.success,
-            sheet: AnimeSheet(
-              id: 1,
-              title: 'Monster',
-              format: 'TV',
-              synopsis: 'Un thriller.',
-            ),
+    : super(
+        const AnimeSheetState(
+          status: AnimeSheetStatus.success,
+          sheet: AnimeSheet(
+            id: 1,
+            title: 'Monster',
+            format: 'TV',
+            synopsis: 'Un thriller.',
           ),
-        );
+        ),
+      );
 
   @override
   Future<void> load(int id) async {}

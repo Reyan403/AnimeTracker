@@ -158,9 +158,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get eveningMoodLabel => 'Mon humeur';
 
   @override
-  String get eveningTimeLabel => 'Mon temps';
-
-  @override
   String get moodAny => 'Peu importe';
 
   @override
@@ -174,18 +171,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get moodMystery => 'Mystère';
-
-  @override
-  String get durationShort => '30 min';
-
-  @override
-  String get durationMedium => '1 h';
-
-  @override
-  String get durationLong => '2 h';
-
-  @override
-  String get durationUnlimited => 'Toute la soirée';
 
   @override
   String get eveningSuggestAction => 'Surprends-moi';
@@ -323,19 +308,6 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get spoilerGuardSubtitle =>
       'Floute le synopsis des animes que vous n\'avez pas terminés.';
-
-  @override
-  String get agendaFilterAll => 'Toutes les sorties';
-
-  @override
-  String get agendaFilterMine => 'Ma liste';
-
-  @override
-  String get agendaEmptyMine => 'Aucune sortie pour les animes de votre liste.';
-
-  @override
-  String get agendaEmptyMineHint =>
-      'Affichez toutes les sorties pour voir les nouveautés populaires.';
 
   @override
   String releaseEpisode(int number) {

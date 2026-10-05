@@ -15,16 +15,13 @@ class AgendaCubit extends Cubit<AgendaState> {
 
   Future<void> load() async {
     unawaited(_loading?.cancel());
-    emit(AgendaState(onlyWatchlist: state.onlyWatchlist));
+    emit(const AgendaState());
 
     _loading = _loadAgenda().listen(
       _show,
-      onError: (_) => emit(state.copyWith(status: AgendaStatus.failure)),
+      onError: (_) => emit(const AgendaState(status: AgendaStatus.failure)),
     );
   }
-
-  void selectFilter({required bool onlyWatchlist}) =>
-      emit(state.copyWith(onlyWatchlist: onlyWatchlist));
 
   @override
   Future<void> close() async {
@@ -39,7 +36,7 @@ class AgendaCubit extends Cubit<AgendaState> {
     }
 
     emit(
-      state.copyWith(
+      AgendaState(
         status: releases.isEmpty ? AgendaStatus.empty : AgendaStatus.success,
         releases: releases,
       ),

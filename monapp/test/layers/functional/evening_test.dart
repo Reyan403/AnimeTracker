@@ -8,7 +8,6 @@ import 'package:monapp/layers/functional/Anime/data/models/anime_details_dto.dar
 import 'package:monapp/layers/functional/Anime/domain/entities/watch_status.dart';
 import 'package:monapp/layers/functional/Anime/domain/entities/watchlist_entry.dart';
 import 'package:monapp/layers/functional/Anime/presentation/anime_genre_label.dart';
-import 'package:monapp/layers/functional/Discover/domain/entities/evening_duration.dart';
 import 'package:monapp/layers/functional/Discover/domain/entities/evening_mood.dart';
 import 'package:monapp/layers/functional/Discover/domain/use_cases/suggest_evening_watch_use_case.dart';
 import 'package:monapp/layers/functional/Discover/presentation/cubit/evening_cubit.dart';
@@ -39,30 +38,24 @@ SuggestEveningWatchUseCase useCase({int seed = 1}) =>
 void main() {
   group('SuggestEveningWatchUseCase', () {
     test('filtre par humeur', () async {
-      final suggestion = await useCase()(
-        mood: EveningMood.action,
-        duration: EveningDuration.unlimited,
-      );
+      final suggestion = await useCase()(mood: EveningMood.action);
 
       expect(suggestion?.anime.id, 2);
       expect(suggestion?.matchedGenres.single.slug, 'action');
       expect(suggestion?.isContinuing, isTrue);
     });
 
-    test('filtre par durée', () async {
-      final suggestion = await useCase()(
-        mood: EveningMood.action,
-        duration: EveningDuration.short,
-      );
+    test(
+      'ne propose rien quand aucun anime ne correspond à l humeur',
+      () async {
+        final suggestion = await useCase()(mood: EveningMood.emotional);
 
-      expect(suggestion, isNull);
-    });
+        expect(suggestion, isNull);
+      },
+    );
 
-    test('garde un anime à durée inconnue', () async {
-      final suggestion = await useCase()(
-        mood: EveningMood.mystery,
-        duration: EveningDuration.short,
-      );
+    test('propose un anime à voir quand son genre correspond', () async {
+      final suggestion = await useCase()(mood: EveningMood.mystery);
 
       expect(suggestion?.anime.id, 4);
       expect(suggestion?.isContinuing, isFalse);
@@ -70,10 +63,7 @@ void main() {
 
     test('ne propose jamais un anime terminé', () async {
       for (var seed = 0; seed < 20; seed++) {
-        final suggestion = await useCase(seed: seed)(
-          mood: EveningMood.any,
-          duration: EveningDuration.unlimited,
-        );
+        final suggestion = await useCase(seed: seed)(mood: EveningMood.any);
 
         expect(suggestion?.anime.id, isNot(3));
       }
@@ -82,7 +72,6 @@ void main() {
     test('exclut les suggestions déjà montrées', () async {
       final suggestion = await useCase()(
         mood: EveningMood.relaxed,
-        duration: EveningDuration.unlimited,
         excludedIds: {1},
       );
 
@@ -93,10 +82,7 @@ void main() {
       var continuing = 0;
 
       for (var seed = 0; seed < 300; seed++) {
-        final suggestion = await useCase(seed: seed)(
-          mood: EveningMood.any,
-          duration: EveningDuration.unlimited,
-        );
+        final suggestion = await useCase(seed: seed)(mood: EveningMood.any);
 
         if (suggestion!.isContinuing) {
           continuing++;
@@ -112,7 +98,7 @@ void main() {
       );
 
       expect(
-        failing(mood: EveningMood.any, duration: EveningDuration.unlimited),
+        failing(mood: EveningMood.any),
         throwsA(isA<EveningSuggestionUnavailableException>()),
       );
     });
@@ -120,10 +106,7 @@ void main() {
     test('une liste vide ne donne rien', () async {
       final empty = SuggestEveningWatchUseCase(watchlistOf(const [], const {}));
 
-      expect(
-        await empty(mood: EveningMood.any, duration: EveningDuration.long),
-        isNull,
-      );
+      expect(await empty(mood: EveningMood.any), isNull);
     });
 
     test('exception lisible', () {
@@ -166,9 +149,7 @@ void main() {
     });
 
     test('signale l absence de résultat', () async {
-      final evening = cubit()
-        ..selectMood(EveningMood.action)
-        ..selectDuration(EveningDuration.short);
+      final evening = cubit()..selectMood(EveningMood.emotional);
 
       await evening.suggest();
 
@@ -184,10 +165,6 @@ void main() {
       expect(evening.state.status, EveningStatus.idle);
       expect(evening.state.suggestion, isNull);
       expect(evening.state.mood, EveningMood.relaxed);
-
-      evening.selectDuration(EveningDuration.long);
-
-      expect(evening.state.duration, EveningDuration.long);
     });
 
     test('signale une erreur', () async {
@@ -222,8 +199,9 @@ void main() {
       );
     }
 
-    testWidgets('affiche filtres puis suggestion et ouvre la fiche',
-        (tester) async {
+    testWidgets('affiche filtres puis suggestion et ouvre la fiche', (
+      tester,
+    ) async {
       int? opened;
 
       await pumpSection(tester, onSelected: (id, _) => opened = id);
@@ -257,8 +235,7 @@ void main() {
     testWidgets('explique quand rien ne correspond', (tester) async {
       await pumpSection(tester);
 
-      await tester.tap(find.text('Action'));
-      await tester.tap(find.text('30 min'));
+      await tester.tap(find.text('Émotion'));
       await tester.pump();
       await tester.tap(find.text('Surprends-moi'));
       await tester.pumpAndSettle();
@@ -308,9 +285,19 @@ void main() {
       expect(genreLabel(l10n, genre('unknown', 'Étrange')), 'Étrange');
 
       for (final slug in [
-        'action', 'adventure', 'drama', 'fantasy', 'horror', 'mystery',
-        'romance', 'science-fiction', 'sports', 'supernatural', 'thriller',
-        'psychological', 'mecha',
+        'action',
+        'adventure',
+        'drama',
+        'fantasy',
+        'horror',
+        'mystery',
+        'romance',
+        'science-fiction',
+        'sports',
+        'supernatural',
+        'thriller',
+        'psychological',
+        'mecha',
       ]) {
         expect(genreLabel(l10n, genre(slug)), isNot(slug));
       }

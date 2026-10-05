@@ -3,7 +3,6 @@ import 'dart:math';
 import '../../../Anime/domain/entities/anime.dart';
 import '../../../Anime/domain/entities/watch_status.dart';
 import '../../../Anime/domain/use_cases/load_watchlist_use_case.dart';
-import '../entities/evening_duration.dart';
 import '../entities/evening_mood.dart';
 import '../entities/evening_suggestion.dart';
 
@@ -25,7 +24,6 @@ class SuggestEveningWatchUseCase {
 
   Future<EveningSuggestion?> call({
     required EveningMood mood,
-    required EveningDuration duration,
     Set<int> excludedIds = const {},
   }) async {
     final animes = await _loadWatchlist()
@@ -37,7 +35,7 @@ class SuggestEveningWatchUseCase {
 
     final candidates = [
       for (final anime in animes)
-        if (_fits(anime, mood, duration) && !excludedIds.contains(anime.id))
+        if (_fits(anime, mood) && !excludedIds.contains(anime.id))
           anime,
     ];
 
@@ -57,7 +55,7 @@ class SuggestEveningWatchUseCase {
     );
   }
 
-  static bool _fits(Anime anime, EveningMood mood, EveningDuration duration) {
+  static bool _fits(Anime anime, EveningMood mood) {
     final details = anime.details;
 
     if (details == null ||
@@ -66,13 +64,7 @@ class SuggestEveningWatchUseCase {
       return false;
     }
 
-    final minutes = duration.minutes;
-    final fitsTime =
-        minutes == null || details.episodeMinutes == 0 || details.episodeMinutes <= minutes;
-    final fitsMood = mood.genreSlugs.isEmpty ||
-        mood.genreSlugs.any(details.hasGenre);
-
-    return fitsTime && fitsMood;
+    return mood.genreSlugs.isEmpty || mood.genreSlugs.any(details.hasGenre);
   }
 
   Anime _pickWeighted(List<Anime> candidates) {

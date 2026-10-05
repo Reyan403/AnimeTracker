@@ -310,12 +310,6 @@ abstract class AppLocalizations {
   /// **'Mon humeur'**
   String get eveningMoodLabel;
 
-  /// No description provided for @eveningTimeLabel.
-  ///
-  /// In fr, this message translates to:
-  /// **'Mon temps'**
-  String get eveningTimeLabel;
-
   /// No description provided for @moodAny.
   ///
   /// In fr, this message translates to:
@@ -345,30 +339,6 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Mystère'**
   String get moodMystery;
-
-  /// No description provided for @durationShort.
-  ///
-  /// In fr, this message translates to:
-  /// **'30 min'**
-  String get durationShort;
-
-  /// No description provided for @durationMedium.
-  ///
-  /// In fr, this message translates to:
-  /// **'1 h'**
-  String get durationMedium;
-
-  /// No description provided for @durationLong.
-  ///
-  /// In fr, this message translates to:
-  /// **'2 h'**
-  String get durationLong;
-
-  /// No description provided for @durationUnlimited.
-  ///
-  /// In fr, this message translates to:
-  /// **'Toute la soirée'**
-  String get durationUnlimited;
 
   /// No description provided for @eveningSuggestAction.
   ///
@@ -627,30 +597,6 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Floute le synopsis des animes que vous n\'avez pas terminés.'**
   String get spoilerGuardSubtitle;
-
-  /// No description provided for @agendaFilterAll.
-  ///
-  /// In fr, this message translates to:
-  /// **'Toutes les sorties'**
-  String get agendaFilterAll;
-
-  /// No description provided for @agendaFilterMine.
-  ///
-  /// In fr, this message translates to:
-  /// **'Ma liste'**
-  String get agendaFilterMine;
-
-  /// No description provided for @agendaEmptyMine.
-  ///
-  /// In fr, this message translates to:
-  /// **'Aucune sortie pour les animes de votre liste.'**
-  String get agendaEmptyMine;
-
-  /// No description provided for @agendaEmptyMineHint.
-  ///
-  /// In fr, this message translates to:
-  /// **'Affichez toutes les sorties pour voir les nouveautés populaires.'**
-  String get agendaEmptyMineHint;
 
   /// No description provided for @releaseEpisode.
   ///

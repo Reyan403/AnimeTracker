@@ -34,9 +34,7 @@ class EveningSection extends StatelessWidget {
                 const SizedBox(height: AppSpacing.md),
                 EveningFilters(
                   mood: state.mood,
-                  duration: state.duration,
                   onMoodSelected: cubit.selectMood,
-                  onDurationSelected: cubit.selectDuration,
                 ),
                 const SizedBox(height: AppSpacing.md),
                 FilledButton.icon(

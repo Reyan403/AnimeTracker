@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../technical/Theme/app_colors.dart';
-import '../../../../technical/Theme/app_spacing.dart';
+import '../../../../../l10n/app_localizations.dart';
 
 class CatalogueSearchField extends StatelessWidget {
   const CatalogueSearchField({
@@ -17,48 +16,28 @@ class CatalogueSearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
 
-    return TextField(
+    return SearchBar(
       controller: controller,
       onChanged: onChanged,
+      hintText: l10n.searchHint,
+      elevation: const WidgetStatePropertyAll(0),
+      leading: const Icon(Icons.search),
+      trailing: [
+        ListenableBuilder(
+          listenable: controller,
+          builder: (context, _) => controller.text.isEmpty
+              ? const SizedBox.shrink()
+              : IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: onCleared,
+                  tooltip: l10n.clearTooltip,
+                ),
+        ),
+      ],
       textInputAction: TextInputAction.search,
       onSubmitted: (_) => FocusScope.of(context).unfocus(),
-      style: theme.textTheme.titleSmall,
-      decoration: InputDecoration(
-        hintText: 'Rechercher un animé',
-        hintStyle: theme.textTheme.bodyMedium,
-        filled: true,
-        fillColor: AppColors.paper,
-        prefixIcon: const Icon(
-          Icons.search,
-          size: 20,
-          color: AppColors.inkMuted,
-        ),
-        suffixIcon: controller.text.isEmpty
-            ? null
-            : IconButton(
-                icon: const Icon(
-                  Icons.close,
-                  size: 18,
-                  color: AppColors.inkMuted,
-                ),
-                onPressed: onCleared,
-                tooltip: 'Effacer',
-              ),
-        border: _border(AppColors.rule),
-        enabledBorder: _border(AppColors.rule),
-        focusedBorder: _border(AppColors.accent),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.md,
-          vertical: AppSpacing.md,
-        ),
-      ),
     );
   }
-
-  static OutlineInputBorder _border(Color colour) => OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppSpacing.squareRadius),
-        borderSide: BorderSide(color: colour, width: AppSpacing.hairline),
-      );
 }

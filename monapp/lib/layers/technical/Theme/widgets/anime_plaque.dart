@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../app_colors.dart';
-import '../app_spacing.dart';
+import '../app_palette.dart';
 
 class AnimePlaque extends StatelessWidget {
   const AnimePlaque({required this.title, super.key});
@@ -16,16 +15,17 @@ class AnimePlaque extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: AppSpacing.plaqueWidth,
-      height: AppSpacing.plaqueHeight,
-      color: AppColors.plaqueBackground,
-      alignment: const Alignment(0, 0.45),
-      child: Text(
-        _initials,
-        style: const TextStyle(
-          fontSize: 28,
-          color: AppColors.plaqueInk,
+    final palette = AppPalette.of(context);
+
+    return ColoredBox(
+      color: palette.posterFallback,
+      child: Center(
+        child: Text(
+          _initials,
+          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                color: palette.posterFallbackInk,
+                fontWeight: FontWeight.w700,
+              ),
         ),
       ),
     );

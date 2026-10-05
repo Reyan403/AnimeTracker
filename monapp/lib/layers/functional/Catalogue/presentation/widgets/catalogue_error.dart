@@ -1,36 +1,24 @@
 import 'package:flutter/material.dart';
 
-import '../../../../technical/Theme/app_spacing.dart';
+import '../../../../../l10n/app_localizations.dart';
+import '../../../../technical/Theme/widgets/state_message.dart';
 
 class CatalogueError extends StatelessWidget {
-  const CatalogueError({
-    required this.onRetry,
-    this.title = 'Impossible de charger le catalogue',
-    super.key,
-  });
+  const CatalogueError({required this.onRetry, this.title, super.key});
 
   final VoidCallback onRetry;
-  final String title;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: theme.textTheme.titleMedium,
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        Text(
-          'Le service Kitsu ne répond pas pour le moment.',
-          style: theme.textTheme.bodyMedium,
-        ),
-        const SizedBox(height: AppSpacing.md),
-        OutlinedButton(onPressed: onRetry, child: const Text('Réessayer')),
-      ],
+    return StateMessage(
+      icon: Icons.cloud_off_outlined,
+      title: title ?? l10n.catalogueErrorTitle,
+      description: l10n.serviceUnavailable,
+      actionLabel: l10n.retry,
+      onAction: onRetry,
     );
   }
 }

@@ -3,14 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../technical/Injection/injection.dart';
 import '../../../technical/Theme/app_spacing.dart';
-import '../../../technical/Theme/widgets/plaque_row_skeleton.dart';
+import '../../../technical/Theme/widgets/sliver_content_padding.dart';
 import 'cubit/watchlist_cubit.dart';
 import 'cubit/watchlist_state.dart';
-import 'widgets/anime_row.dart';
 import 'widgets/watch_status_tabs.dart';
-import 'widgets/watchlist_empty.dart';
-import 'widgets/watchlist_error.dart';
 import 'widgets/watchlist_header.dart';
+import 'widgets/watchlist_results_sliver.dart';
 
 typedef AnimeSelected = void Function(int animeId, String title);
 
@@ -40,40 +38,31 @@ class WatchlistScaffold extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: BlocBuilder<WatchlistCubit, WatchlistState>(
-          builder: (context, state) => ListView(
-            padding: const EdgeInsets.fromLTRB(
-              AppSpacing.lg,
-              AppSpacing.lg,
-              AppSpacing.lg,
-              AppSpacing.xl,
-            ),
-            children: [
-              const WatchlistHeader(),
-              const SizedBox(height: AppSpacing.lg),
-              WatchStatusTabs(
-                state: state,
-                onSelected: cubit.selectStatus,
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              switch (state.status) {
-                ViewStatus.loading => const PlaqueRowSkeleton(),
-                ViewStatus.failure => WatchlistError(onRetry: cubit.load),
-                ViewStatus.empty => const WatchlistEmpty(),
-                ViewStatus.success => Column(
+          builder: (context, state) => CustomScrollView(
+            slivers: [
+              SliverContentPadding(
+                top: AppSpacing.lg,
+                bottom: AppSpacing.lg,
+                sliver: SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      for (final anime in state.visibleAnimes)
-                        InkWell(
-                          key: ValueKey(anime.id),
-                          onTap: () => onAnimeSelected(anime.id, anime.title),
-                          child: AnimeRow(
-                            anime: anime,
-                            onStatusSelected: (status) =>
-                                cubit.changeStatus(anime.id, status),
-                          ),
-                        ),
+                      const WatchlistHeader(),
+                      const SizedBox(height: AppSpacing.lg),
+                      WatchStatusTabs(
+                        state: state,
+                        onSelected: cubit.selectStatus,
+                      ),
                     ],
                   ),
-              },
+                ),
+              ),
+              WatchlistResultsSliver(
+                state: state,
+                onRetry: cubit.load,
+                onAnimeSelected: onAnimeSelected,
+                onStatusChanged: cubit.changeStatus,
+              ),
             ],
           ),
         ),

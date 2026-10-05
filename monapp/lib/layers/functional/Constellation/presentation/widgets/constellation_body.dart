@@ -21,13 +21,7 @@ class ConstellationBody extends StatelessWidget {
     super.key,
   });
 
-  static EdgeInsets skyInset(double safeTop) => EdgeInsets.only(
-    top:
-        safeTop +
-        SkyHeader.height +
-        AppSpacing.minTouchTarget +
-        AppSpacing.md,
-  );
+  static const EdgeInsets skyInset = EdgeInsets.only(top: AppSpacing.md);
 
   final ConstellationState state;
   final ConstellationCubit cubit;
@@ -37,7 +31,6 @@ class ConstellationBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final constellation = state.constellation;
-    final safeTop = MediaQuery.paddingOf(context).top;
     final isSuccess = state.status == ConstellationStatus.success;
     final star = state.selectedStar;
 
@@ -58,25 +51,30 @@ class ConstellationBody extends StatelessWidget {
             actionLabel: l10n.retry,
             onAction: cubit.load,
           ),
-          ConstellationStatus.success => ConstellationSky(
-            constellation: constellation!,
-            inset: skyInset(safeTop),
-            selectedId: state.selectedStarId,
-            genreSlug: state.genreSlug,
-            onStarTapped: cubit.select,
-          ),
+          ConstellationStatus.success => const SizedBox.shrink(),
         },
         SafeArea(
+          bottom: false,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SkyHeader(onBack: onBack),
-              if (isSuccess)
+              if (isSuccess) ...[
                 GenreLegend(
                   genres: constellation!.genres,
                   selectedSlug: state.genreSlug,
                   onSelected: cubit.filterByGenre,
                 ),
+                Expanded(
+                  child: ConstellationSky(
+                    constellation: constellation,
+                    inset: skyInset,
+                    selectedId: state.selectedStarId,
+                    genreSlug: state.genreSlug,
+                    onStarTapped: cubit.select,
+                  ),
+                ),
+              ],
             ],
           ),
         ),

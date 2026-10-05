@@ -51,7 +51,7 @@ void main() {
         StarLayout.positionOf(
           star,
           tester.getSize(sky),
-          ConstellationBody.skyInset(0),
+          ConstellationBody.skyInset,
         );
   }
 

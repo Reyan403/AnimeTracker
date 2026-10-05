@@ -16,7 +16,7 @@ class GenreLegend extends StatelessWidget {
     super.key,
   });
 
-  static const int maxGenres = 8;
+  static const double maxHeightFraction = 1 / 3;
 
   final List<AnimeGenre> genres;
   final ValueChanged<String?> onSelected;
@@ -26,29 +26,37 @@ class GenreLegend extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final palette = AppPalette.of(context);
-    final shown = genres.take(maxGenres).toList();
+    final maxHeight = MediaQuery.sizeOf(context).height * maxHeightFraction;
 
     return Semantics(
       label: l10n.constellationFilterHint,
       container: true,
-      child: SizedBox(
-        height: AppSpacing.minTouchTarget,
-        child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-          itemCount: shown.length,
-          separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.sm),
-          itemBuilder: (context, index) {
-            final genre = shown[index];
-            final isSelected = genre.slug == selectedSlug;
-
-            return GenreLegendChip(
-              label: genreLabel(l10n, genre),
-              color: StarPalette.colorAt(palette, index),
-              isSelected: isSelected,
-              onTap: () => onSelected(isSelected ? null : genre.slug),
-            );
-          },
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: maxHeight),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.md,
+            0,
+            AppSpacing.md,
+            AppSpacing.sm,
+          ),
+          child: Wrap(
+            spacing: AppSpacing.sm,
+            runSpacing: AppSpacing.xs,
+            children: [
+              for (var index = 0; index < genres.length; index++)
+                GenreLegendChip(
+                  label: genreLabel(l10n, genres[index]),
+                  color: StarPalette.colorAt(palette, index),
+                  isSelected: genres[index].slug == selectedSlug,
+                  onTap: () => onSelected(
+                    genres[index].slug == selectedSlug
+                        ? null
+                        : genres[index].slug,
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

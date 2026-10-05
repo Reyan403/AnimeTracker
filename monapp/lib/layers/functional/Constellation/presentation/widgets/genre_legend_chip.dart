@@ -39,10 +39,10 @@ class GenreLegendChip extends StatelessWidget {
           onTap: onTap,
           child: ConstrainedBox(
             constraints: const BoxConstraints(
-              minHeight: AppSpacing.minTouchTarget,
+              minHeight: AppSpacing.xl + AppSpacing.xs,
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm + 2),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -51,12 +51,12 @@ class GenreLegendChip extends StatelessWidget {
                       color: color,
                       shape: BoxShape.circle,
                     ),
-                    child: const SizedBox.square(dimension: AppSpacing.sm + 2),
+                    child: const SizedBox.square(dimension: AppSpacing.sm),
                   ),
-                  const SizedBox(width: AppSpacing.sm),
+                  const SizedBox(width: AppSpacing.xs + 2),
                   Text(
                     label,
-                    style: theme.textTheme.labelLarge?.copyWith(
+                    style: theme.textTheme.labelMedium?.copyWith(
                       color: palette.starGlow,
                       fontWeight: isSelected ? FontWeight.w800 : null,
                     ),

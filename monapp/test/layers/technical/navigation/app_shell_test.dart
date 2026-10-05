@@ -105,6 +105,9 @@ class FakeAgendaCubit extends Cubit<AgendaState> implements AgendaCubit {
 
   @override
   Future<void> load() async {}
+
+  @override
+  void selectFilter({required bool onlyWatchlist}) {}
 }
 
 class FakeCatalogueCubit extends Cubit<CatalogueState>

@@ -247,7 +247,7 @@ abstract class AppLocalizations {
   /// No description provided for @agendaEmptyHint.
   ///
   /// In fr, this message translates to:
-  /// **'Ajoutez des animes en cours de diffusion depuis le catalogue.'**
+  /// **'Aucune sortie annoncée pour les prochaines semaines.'**
   String get agendaEmptyHint;
 
   /// No description provided for @agendaErrorTitle.
@@ -285,12 +285,6 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Il y a {days} jours'**
   String releaseDaysAgo(int days);
-
-  /// No description provided for @nextEpisodeToWatch.
-  ///
-  /// In fr, this message translates to:
-  /// **'Prochain à voir : épisode {number}'**
-  String nextEpisodeToWatch(int number);
 
   /// No description provided for @navDiscover.
   ///
@@ -633,6 +627,42 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Floute le synopsis des animes que vous n\'avez pas terminés.'**
   String get spoilerGuardSubtitle;
+
+  /// No description provided for @agendaFilterAll.
+  ///
+  /// In fr, this message translates to:
+  /// **'Toutes les sorties'**
+  String get agendaFilterAll;
+
+  /// No description provided for @agendaFilterMine.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ma liste'**
+  String get agendaFilterMine;
+
+  /// No description provided for @agendaEmptyMine.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune sortie pour les animes de votre liste.'**
+  String get agendaEmptyMine;
+
+  /// No description provided for @agendaEmptyMineHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Affichez toutes les sorties pour voir les nouveautés populaires.'**
+  String get agendaEmptyMineHint;
+
+  /// No description provided for @releaseEpisode.
+  ///
+  /// In fr, this message translates to:
+  /// **'Épisode {number}'**
+  String releaseEpisode(int number);
+
+  /// No description provided for @inWatchlistBadge.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dans ma liste'**
+  String get inWatchlistBadge;
 
   /// No description provided for @retry.
   ///

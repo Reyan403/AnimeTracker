@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 
 import '../../functional/Agenda/domain/use_cases/load_release_agenda_use_case.dart';
 import '../../functional/Agenda/presentation/cubit/agenda_cubit.dart';
+import '../../functional/Agenda/data/gateways/anilist_release_schedule_gateway.dart';
+import '../../functional/Agenda/domain/gateways/release_schedule_gateway.dart';
 import '../../functional/Anime/data/gateways/anime_details_gateway_impl.dart';
 import '../../functional/Discover/data/gateways/kitsu_recommendation_gateway.dart';
 import '../../functional/Discover/domain/gateways/recommendation_gateway.dart';
@@ -45,6 +47,7 @@ import '../../functional/Catalogue/domain/use_cases/browse_catalogue_use_case.da
 import '../../functional/Catalogue/domain/use_cases/load_anime_sheet_use_case.dart';
 import '../../functional/Catalogue/presentation/cubit/anime_sheet_cubit.dart';
 import '../../functional/Catalogue/presentation/cubit/catalogue_cubit.dart';
+import '../AniListApi/anilist_client.dart';
 import '../KitsuApi/kitsu_client.dart';
 import '../Preferences/app_preferences.dart';
 import '../TmdbApi/tmdb_client.dart';
@@ -64,6 +67,10 @@ Future<void> initializeDependencies() async {
     ..registerSingleton<AppPreferences>(preferences)
     ..registerLazySingleton<http.Client>(http.Client.new)
     ..registerLazySingleton<KitsuClient>(() => KitsuClient(getIt()))
+    ..registerLazySingleton<AniListClient>(() => AniListClient(getIt()))
+    ..registerLazySingleton<ReleaseScheduleGateway>(
+      () => AniListReleaseScheduleGateway(getIt()),
+    )
     ..registerLazySingleton<TmdbClient>(
       () => TmdbClient(getIt(), apiKey: tmdbApiKey),
     )
@@ -117,7 +124,10 @@ Future<void> initializeDependencies() async {
       () => WatchPreviousEpisodeUseCase(getIt<WatchlistGateway>()),
     )
     ..registerLazySingleton<LoadReleaseAgendaUseCase>(
-      () => LoadReleaseAgendaUseCase(getIt<LoadWatchlistUseCase>()),
+      () => LoadReleaseAgendaUseCase(
+        getIt<LoadWatchlistUseCase>(),
+        getIt<ReleaseScheduleGateway>(),
+      ),
     )
     ..registerLazySingleton<ComputeWatchStatsUseCase>(
       () => ComputeWatchStatsUseCase(getIt<LoadWatchlistUseCase>()),

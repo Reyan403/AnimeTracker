@@ -2,18 +2,20 @@ import 'package:equatable/equatable.dart';
 
 class ScheduledRelease extends Equatable {
   const ScheduledRelease({
-    required this.animeId,
     required this.title,
     required this.releaseAt,
-    required this.nextEpisodeToWatch,
+    this.animeId,
+    this.episode,
     this.posterUrl,
   });
 
-  final int animeId;
   final String title;
   final DateTime releaseAt;
-  final int nextEpisodeToWatch;
+  final int? animeId;
+  final int? episode;
   final String? posterUrl;
+
+  bool get isInWatchlist => animeId != null;
 
   int daysUntil(DateTime now) {
     final today = DateTime(now.year, now.month, now.day);
@@ -23,6 +25,5 @@ class ScheduledRelease extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [animeId, title, releaseAt, nextEpisodeToWatch, posterUrl];
+  List<Object?> get props => [title, releaseAt, animeId, episode, posterUrl];
 }

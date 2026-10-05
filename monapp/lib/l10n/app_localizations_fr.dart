@@ -121,7 +121,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get agendaEmptyHint =>
-      'Ajoutez des animes en cours de diffusion depuis le catalogue.';
+      'Aucune sortie annoncée pour les prochaines semaines.';
 
   @override
   String get agendaErrorTitle => 'Impossible de charger l\'agenda';
@@ -143,11 +143,6 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String releaseDaysAgo(int days) {
     return 'Il y a $days jours';
-  }
-
-  @override
-  String nextEpisodeToWatch(int number) {
-    return 'Prochain à voir : épisode $number';
   }
 
   @override
@@ -328,6 +323,27 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get spoilerGuardSubtitle =>
       'Floute le synopsis des animes que vous n\'avez pas terminés.';
+
+  @override
+  String get agendaFilterAll => 'Toutes les sorties';
+
+  @override
+  String get agendaFilterMine => 'Ma liste';
+
+  @override
+  String get agendaEmptyMine => 'Aucune sortie pour les animes de votre liste.';
+
+  @override
+  String get agendaEmptyMineHint =>
+      'Affichez toutes les sorties pour voir les nouveautés populaires.';
+
+  @override
+  String releaseEpisode(int number) {
+    return 'Épisode $number';
+  }
+
+  @override
+  String get inWatchlistBadge => 'Dans ma liste';
 
   @override
   String get retry => 'Réessayer';

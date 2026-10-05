@@ -26,6 +26,7 @@ class AgendaResultsSliver extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final releases = state.visibleReleases;
 
     return switch (state.status) {
       AgendaStatus.loading => const SliverContentPadding(
@@ -47,21 +48,31 @@ class AgendaResultsSliver extends StatelessWidget {
             description: l10n.agendaEmptyHint,
           ),
         ),
+      AgendaStatus.success when releases.isEmpty => SliverToBoxAdapter(
+          child: StateMessage(
+            icon: Icons.event_busy_outlined,
+            title: l10n.agendaEmptyMine,
+            description: l10n.agendaEmptyMineHint,
+          ),
+        ),
       AgendaStatus.success => SliverContentPadding(
           bottom: 32,
           sliver: ResponsiveCardSliver(
-            itemCount: state.releases.length,
-            cardHeight: 140,
+            itemCount: releases.length,
+            cardHeight: 150,
             itemBuilder: (context, index) {
-              final release = state.releases[index];
+              final release = releases[index];
+              final animeId = release.animeId;
 
               return StaggeredAppear(
-                key: ValueKey(release.animeId),
+                key: ObjectKey(release),
                 index: index,
                 child: ReleaseCard(
                   release: release,
                   now: now,
-                  onTap: () => onAnimeSelected(release.animeId, release.title),
+                  onTap: animeId == null
+                      ? null
+                      : () => onAnimeSelected(animeId, release.title),
                 ),
               );
             },

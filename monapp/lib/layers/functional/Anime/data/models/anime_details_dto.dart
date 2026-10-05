@@ -3,6 +3,7 @@ import '../../domain/entities/anime_genre.dart';
 
 abstract final class AnimeDetailsDto {
   static const String unknownFormat = 'Format inconnu';
+  static const String _malSite = 'myanimelist/anime';
 
   static const Map<String, String> _formats = {
     'TV': 'Série TV',
@@ -15,13 +16,16 @@ abstract final class AnimeDetailsDto {
 
   static Map<int, AnimeDetails> fromJson(Map<String, dynamic> json) {
     final data = json['data'] as List<dynamic>? ?? const [];
-    final genres = _genresById(json['included'] as List<dynamic>? ?? const []);
+    final included = json['included'] as List<dynamic>? ?? const [];
+    final genres = _genresById(included);
+    final malIds = _malIdsById(included);
 
     return {
       for (final node in data)
         int.parse((node as Map<String, dynamic>)['id'] as String): _detailsOf(
           node['attributes'] as Map<String, dynamic>? ?? const {},
           _genresOf(node, genres),
+          _malIdOf(node, malIds),
         ),
     };
   }
@@ -29,6 +33,7 @@ abstract final class AnimeDetailsDto {
   static AnimeDetails _detailsOf(
     Map<String, dynamic> attributes,
     List<AnimeGenre> genres,
+    int? malId,
   ) =>
       AnimeDetails(
         format: _formats[attributes['subtype']] ?? unknownFormat,
@@ -40,6 +45,7 @@ abstract final class AnimeDetailsDto {
         ),
         episodeMinutes: attributes['episodeLength'] as int? ?? 0,
         genres: genres,
+        malId: malId,
       );
 
   static Map<String, AnimeGenre> _genresById(List<dynamic> included) => {
@@ -53,17 +59,55 @@ abstract final class AnimeDetailsDto {
             ),
       };
 
+  static Map<String, int> _malIdsById(List<dynamic> included) {
+    final malIds = <String, int>{};
+
+    for (final node in included) {
+      final mapping = node as Map<String, dynamic>;
+      final attributes = mapping['attributes'] as Map<String, dynamic>?;
+      final malId = int.tryParse(attributes?['externalId'] as String? ?? '');
+
+      if (mapping['type'] == 'mappings' &&
+          attributes?['externalSite'] == _malSite &&
+          malId != null) {
+        malIds[mapping['id'] as String] = malId;
+      }
+    }
+
+    return malIds;
+  }
+
   static List<AnimeGenre> _genresOf(
     Map<String, dynamic> node,
     Map<String, AnimeGenre> genres,
+  ) =>
+      [
+        for (final link in _linksOf(node, 'categories'))
+          ?genres[link['id'] as String],
+      ];
+
+  static int? _malIdOf(Map<String, dynamic> node, Map<String, int> malIds) {
+    for (final link in _linksOf(node, 'mappings')) {
+      final malId = malIds[link['id'] as String];
+
+      if (malId != null) {
+        return malId;
+      }
+    }
+
+    return null;
+  }
+
+  static List<Map<String, dynamic>> _linksOf(
+    Map<String, dynamic> node,
+    String relation,
   ) {
     final relationships = node['relationships'] as Map<String, dynamic>?;
-    final categories = relationships?['categories'] as Map<String, dynamic>?;
-    final linked = categories?['data'] as List<dynamic>? ?? const [];
+    final linked = relationships?[relation] as Map<String, dynamic>?;
 
     return [
-      for (final link in linked)
-        ?genres[(link as Map<String, dynamic>)['id'] as String],
+      for (final link in linked?['data'] as List<dynamic>? ?? const [])
+        link as Map<String, dynamic>,
     ];
   }
 

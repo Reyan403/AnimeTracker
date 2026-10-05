@@ -15,6 +15,8 @@ AnimeDetails detailsOf({
   int minutes = 24,
   int episodes = 12,
   List<String> genres = const [],
+  int? malId,
+  DateTime? nextRelease,
 }) =>
     AnimeDetails(
       format: 'TV',
@@ -22,6 +24,8 @@ AnimeDetails detailsOf({
       episodeCount: episodes,
       episodeMinutes: minutes,
       genres: [for (final slug in genres) genre(slug)],
+      malId: malId,
+      nextRelease: nextRelease,
     );
 
 LoadWatchlistUseCase watchlistOf(

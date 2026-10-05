@@ -9,6 +9,7 @@ class AnimeDetails {
     this.nextRelease,
     this.episodeMinutes = 0,
     this.genres = const [],
+    this.malId,
     this.isCached = false,
   });
 
@@ -19,6 +20,7 @@ class AnimeDetails {
   final DateTime? nextRelease;
   final int episodeMinutes;
   final List<AnimeGenre> genres;
+  final int? malId;
   final bool isCached;
 
   bool hasGenre(String slug) => genres.any((genre) => genre.slug == slug);
@@ -31,6 +33,7 @@ class AnimeDetails {
         nextRelease: nextRelease,
         episodeMinutes: episodeMinutes,
         genres: genres,
+        malId: malId,
         isCached: true,
       );
 }

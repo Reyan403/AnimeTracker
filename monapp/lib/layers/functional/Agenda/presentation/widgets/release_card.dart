@@ -11,13 +11,13 @@ class ReleaseCard extends StatelessWidget {
   const ReleaseCard({
     required this.release,
     required this.now,
-    required this.onTap,
+    this.onTap,
     super.key,
   });
 
   final ScheduledRelease release;
   final DateTime now;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +27,8 @@ class ReleaseCard extends StatelessWidget {
     final locale = Localizations.localeOf(context).toString();
     final date = DateFormat('EEEE d MMMM · HH:mm', locale)
         .format(release.releaseAt.toLocal());
+    final animeId = release.animeId;
+    final episode = release.episode;
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -40,7 +42,9 @@ class ReleaseCard extends StatelessWidget {
               AnimePoster(
                 title: release.title,
                 imageUrl: release.posterUrl,
-                heroTag: AnimePoster.heroTagFor('agenda', release.animeId),
+                heroTag: animeId == null
+                    ? null
+                    : AnimePoster.heroTagFor('agenda', animeId),
                 width: 64,
                 height: 92,
               ),
@@ -64,18 +68,26 @@ class ReleaseCard extends StatelessWidget {
                     ),
                     const SizedBox(height: AppSpacing.xs),
                     Text(
-                      date,
+                      [
+                        if (episode != null) l10n.releaseEpisode(episode),
+                        date,
+                      ].join(' · '),
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: scheme.onSurfaceVariant,
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.xs),
-                    Text(
-                      l10n.nextEpisodeToWatch(release.nextEpisodeToWatch),
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: scheme.onSurfaceVariant,
+                    if (release.isInWatchlist) ...[
+                      const SizedBox(height: AppSpacing.sm),
+                      Chip(
+                        avatar: Icon(
+                          Icons.bookmark,
+                          size: 16,
+                          color: scheme.primary,
+                        ),
+                        label: Text(l10n.inWatchlistBadge),
+                        visualDensity: VisualDensity.compact,
                       ),
-                    ),
+                    ],
                   ],
                 ),
               ),

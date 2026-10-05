@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../Theme/app_colors.dart';
-import '../Theme/app_spacing.dart';
+import '../../../l10n/app_localizations.dart';
 import 'app_destination.dart';
-import 'app_navigation_item.dart';
 
 class AppNavigationBar extends StatelessWidget {
   const AppNavigationBar({
@@ -17,31 +15,19 @@ class AppNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: const BoxDecoration(
-        color: AppColors.paper,
-        border: Border(
-          top: BorderSide(
-            color: AppColors.rule,
-            width: AppSpacing.hairline,
+    final l10n = AppLocalizations.of(context);
+
+    return NavigationBar(
+      selectedIndex: selected.index,
+      onDestinationSelected: (index) => onSelected(AppDestination.values[index]),
+      destinations: [
+        for (final destination in AppDestination.values)
+          NavigationDestination(
+            icon: Icon(destination.icon),
+            selectedIcon: Icon(destination.selectedIcon),
+            label: destination.labelOf(l10n),
           ),
-        ),
-      ),
-      child: SafeArea(
-        top: false,
-        child: Row(
-          children: [
-            for (final destination in AppDestination.values)
-              Expanded(
-                child: AppNavigationItem(
-                  destination: destination,
-                  isSelected: destination == selected,
-                  onTap: () => onSelected(destination),
-                ),
-              ),
-          ],
-        ),
-      ),
+      ],
     );
   }
 }

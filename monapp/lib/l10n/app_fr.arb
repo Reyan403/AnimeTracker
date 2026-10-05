@@ -1,0 +1,64 @@
+{
+  "@@locale": "fr",
+  "appTitle": "Anime Tracker",
+  "watchlistTitle": "Ma liste",
+  "catalogueTitle": "Catalogue",
+  "navWatchlist": "Liste",
+  "navCatalogue": "Catalogue",
+  "statusToWatch": "À voir",
+  "statusWatching": "En cours",
+  "statusCompleted": "Terminé",
+  "changeCategoryTooltip": "Changer de catégorie",
+  "addToWatchTooltip": "Ajouter à « À voir »",
+  "alreadyListedTooltip": "Déjà dans ma liste",
+  "sheetUnavailable": "Fiche indisponible",
+  "episodesCount": "{count, plural, =1{1 épisode} other{{count} épisodes}}",
+  "@episodesCount": {
+    "placeholders": {"count": {"type": "int"}}
+  },
+  "episodesOfMinutes": "{count, plural, =1{1 épisode de {minutes} min} other{{count} épisodes de {minutes} min}}",
+  "@episodesOfMinutes": {
+    "placeholders": {"count": {"type": "int"}, "minutes": {"type": "int"}}
+  },
+  "minutesPerEpisode": "{minutes} min par épisode",
+  "@minutesPerEpisode": {
+    "placeholders": {"minutes": {"type": "int"}}
+  },
+  "hoursTotal": "{hours} h",
+  "@hoursTotal": {
+    "placeholders": {"hours": {"type": "int"}}
+  },
+  "rankOrdinal": "{rank}e",
+  "@rankOrdinal": {
+    "placeholders": {"rank": {"type": "int"}}
+  },
+  "ratingPercent": "{rating} %",
+  "@ratingPercent": {
+    "placeholders": {"rating": {"type": "int"}}
+  },
+  "retry": "Réessayer",
+  "serviceUnavailable": "Le service Kitsu ne répond pas pour le moment.",
+  "watchlistEmpty": "Aucun animé dans cet onglet.",
+  "watchlistEmptyHint": "Ajoutez un animé depuis le catalogue.",
+  "watchlistErrorTitle": "Impossible de charger les fiches",
+  "catalogueEmpty": "Le catalogue est vide pour le moment.",
+  "catalogueEmptySearch": "Aucun animé ne correspond à cette recherche.",
+  "catalogueEmptySearchHint": "Essayez un autre titre.",
+  "catalogueErrorTitle": "Impossible de charger le catalogue",
+  "sheetErrorTitle": "Impossible de charger la fiche",
+  "searchHint": "Rechercher un animé",
+  "clearTooltip": "Effacer",
+  "synopsis": "Synopsis",
+  "inBrief": "En bref",
+  "factFormat": "Format",
+  "factStatus": "Statut",
+  "factBroadcast": "Diffusion",
+  "factEpisodes": "Épisodes",
+  "factTotalDuration": "Durée totale",
+  "factRating": "Note moyenne",
+  "factRatingRank": "Classement",
+  "factPopularity": "Popularité",
+  "factMembers": "Membres",
+  "factFavorites": "Favoris",
+  "factAudience": "Public"
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../technical/Theme/app_spacing.dart';
+import '../../../../../l10n/app_localizations.dart';
+import '../../../../technical/Theme/widgets/state_message.dart';
 
 class CatalogueEmpty extends StatelessWidget {
   const CatalogueEmpty({required this.isSearching, super.key});
@@ -9,16 +10,12 @@ class CatalogueEmpty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
 
-    return Padding(
-      padding: const EdgeInsets.only(top: AppSpacing.md),
-      child: Text(
-        isSearching
-            ? 'Aucun animé ne correspond à cette recherche.'
-            : 'Le catalogue est vide pour le moment.',
-        style: theme.textTheme.bodyMedium,
-      ),
+    return StateMessage(
+      icon: isSearching ? Icons.search_off : Icons.movie_outlined,
+      title: isSearching ? l10n.catalogueEmptySearch : l10n.catalogueEmpty,
+      description: isSearching ? l10n.catalogueEmptySearchHint : null,
     );
   }
 }

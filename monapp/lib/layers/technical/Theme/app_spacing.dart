@@ -5,9 +5,16 @@ abstract final class AppSpacing {
   static const double lg = 24;
   static const double xl = 32;
 
-  static const double plaqueWidth = 78;
-  static const double plaqueHeight = 104;
+  static const double plaqueWidth = 84;
+  static const double plaqueHeight = 120;
 
-  static const double hairline = 1;
-  static const double squareRadius = 2;
+  static const double radiusSm = 8;
+  static const double radiusMd = 14;
+  static const double radiusLg = 22;
+
+  static const double minTouchTarget = 48;
+  static const double contentMaxWidth = 720;
+  static const double listMaxWidth = 1100;
+  static const double expandedBreakpoint = 840;
+  static const double gridPosterWidth = 168;
 }

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../../technical/Injection/injection.dart';
 import '../../../technical/Theme/app_spacing.dart';
+import '../../../technical/Theme/widgets/anime_poster.dart';
 import '../../../technical/Theme/widgets/plaque_row_skeleton.dart';
-import '../domain/entities/catalogue_anime.dart';
-import 'anime_sheet_view.dart';
+import '../../../technical/Theme/widgets/sliver_content_padding.dart';
+import 'anime_sheet_route.dart';
 import 'cubit/catalogue_cubit.dart';
 import 'cubit/catalogue_state.dart';
-import 'widgets/catalogue_empty.dart';
-import 'widgets/catalogue_error.dart';
-import 'widgets/catalogue_row.dart';
+import 'widgets/catalogue_results_sliver.dart';
 import 'widgets/catalogue_search_field.dart';
 
 class CatalogueView extends StatelessWidget {
@@ -48,14 +48,6 @@ class _CatalogueScaffoldState extends State<CatalogueScaffold> {
     context.read<CatalogueCubit>().clear();
   }
 
-  void _openSheet(BuildContext context, CatalogueAnime anime) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => AnimeSheetView(animeId: anime.id, title: anime.title),
-      ),
-    );
-  }
-
   bool _loadMoreWhenNearBottom(ScrollNotification notification) {
     if (notification.metrics.extentAfter < CatalogueScaffold.loadMoreMargin) {
       context.read<CatalogueCubit>().loadMore();
@@ -64,41 +56,8 @@ class _CatalogueScaffoldState extends State<CatalogueScaffold> {
     return false;
   }
 
-  Widget _row(BuildContext context, CatalogueState state, int index) {
-    final anime = state.animes[index];
-
-    return InkWell(
-      key: ValueKey(anime.id),
-      onTap: () => _openSheet(context, anime),
-      child: CatalogueRow(
-        anime: anime,
-        isListed: state.isListed(anime),
-        onAdd: () => context.read<CatalogueCubit>().addToWatchlist(anime),
-      ),
-    );
-  }
-
-  Widget _results(CatalogueState state) => switch (state.status) {
-        CatalogueStatus.loading => const SliverToBoxAdapter(
-            child: PlaqueRowSkeleton(),
-          ),
-        CatalogueStatus.failure => SliverToBoxAdapter(
-            child: CatalogueError(
-              onRetry: context.read<CatalogueCubit>().load,
-            ),
-          ),
-        CatalogueStatus.empty => SliverToBoxAdapter(
-            child: CatalogueEmpty(isSearching: state.isSearching),
-          ),
-        CatalogueStatus.success => SliverList.builder(
-            itemCount: state.animes.length,
-            itemBuilder: (context, index) => _row(context, state, index),
-          ),
-      };
-
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final cubit = context.read<CatalogueCubit>();
 
     return Scaffold(
@@ -108,18 +67,17 @@ class _CatalogueScaffoldState extends State<CatalogueScaffold> {
             onNotification: _loadMoreWhenNearBottom,
             child: CustomScrollView(
               slivers: [
-                SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(
-                    AppSpacing.lg,
-                    AppSpacing.lg,
-                    AppSpacing.lg,
-                    AppSpacing.xl,
-                  ),
+                SliverContentPadding(
+                  top: AppSpacing.lg,
+                  bottom: AppSpacing.lg,
                   sliver: SliverToBoxAdapter(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Catalogue', style: theme.textTheme.displaySmall),
+                        Text(
+                          AppLocalizations.of(context).catalogueTitle,
+                          style: Theme.of(context).textTheme.displaySmall,
+                        ),
                         const SizedBox(height: AppSpacing.lg),
                         CatalogueSearchField(
                           controller: _controller,
@@ -130,19 +88,19 @@ class _CatalogueScaffoldState extends State<CatalogueScaffold> {
                     ),
                   ),
                 ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
+                CatalogueResultsSliver(
+                  state: state,
+                  onRetry: cubit.load,
+                  onAnimeSelected: (anime) => openAnimeSheet(
+                    context,
+                    animeId: anime.id,
+                    title: anime.title,
+                    heroTag: AnimePoster.heroTagFor('catalogue', anime.id),
                   ),
-                  sliver: _results(state),
+                  onAdd: cubit.addToWatchlist,
                 ),
-                SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(
-                    AppSpacing.lg,
-                    0,
-                    AppSpacing.lg,
-                    AppSpacing.xl,
-                  ),
+                SliverContentPadding(
+                  bottom: AppSpacing.xl,
                   sliver: SliverToBoxAdapter(
                     child: state.isAppending
                         ? const PlaqueRowSkeleton(rowCount: 1)

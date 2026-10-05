@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../technical/Theme/app_colors.dart';
+import '../../../../technical/Theme/app_motion.dart';
 import '../../../../technical/Theme/app_spacing.dart';
 
 class WatchStatusTab extends StatelessWidget {
@@ -20,28 +20,50 @@ class WatchStatusTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final foreground = isSelected ? AppColors.paper : AppColors.ink;
+    final scheme = theme.colorScheme;
+    final foreground = isSelected ? scheme.onPrimary : scheme.onSurface;
 
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        color: isSelected ? AppColors.accent : AppColors.paper,
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              label,
-              style: theme.textTheme.titleSmall?.copyWith(color: foreground),
-            ),
-            const SizedBox(width: AppSpacing.sm),
-            Text(
-              '$count',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: foreground.withValues(alpha: 0.7),
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+        child: AnimatedContainer(
+          duration: AppMotion.resolve(context, AppMotion.standard),
+          curve: AppMotion.curve,
+          constraints: const BoxConstraints(
+            minHeight: AppSpacing.minTouchTarget,
+          ),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.sm,
+            vertical: AppSpacing.sm,
+          ),
+          decoration: BoxDecoration(
+            color: isSelected ? scheme.primary : Colors.transparent,
+            borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Flexible(
+                child: Text(
+                  label,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    color: foreground,
+                  ),
+                ),
               ),
-            ),
-          ],
+              const SizedBox(width: AppSpacing.xs),
+              Text(
+                '$count',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: foreground.withValues(alpha: 0.75),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

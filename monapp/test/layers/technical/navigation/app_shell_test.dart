@@ -1,0 +1,175 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:monapp/layers/functional/Anime/domain/entities/anime.dart';
+import 'package:monapp/layers/functional/Anime/domain/entities/watch_status.dart';
+import 'package:monapp/layers/functional/Anime/presentation/cubit/watchlist_cubit.dart';
+import 'package:monapp/layers/functional/Anime/presentation/cubit/watchlist_state.dart';
+import 'package:monapp/layers/functional/Catalogue/domain/entities/anime_sheet.dart';
+import 'package:monapp/layers/functional/Catalogue/domain/entities/catalogue_anime.dart';
+import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_sheet_cubit.dart';
+import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_sheet_state.dart';
+import 'package:monapp/layers/functional/Catalogue/presentation/cubit/catalogue_cubit.dart';
+import 'package:monapp/layers/functional/Catalogue/presentation/cubit/catalogue_state.dart';
+import 'package:monapp/layers/technical/Injection/injection.dart';
+import 'package:monapp/layers/technical/Navigation/app_shell.dart';
+
+import '../../../support/pump_app.dart';
+
+class FakeWatchlistCubit extends Cubit<WatchlistState>
+    implements WatchlistCubit {
+  FakeWatchlistCubit()
+      : super(
+          const WatchlistState(
+            status: ViewStatus.success,
+            animes: [
+              Anime(id: 1, title: 'Monster', status: WatchStatus.watching),
+            ],
+          ),
+        );
+
+  @override
+  Future<void> load() async {}
+
+  @override
+  void changeStatus(int animeId, WatchStatus status) {}
+
+  @override
+  void selectStatus(WatchStatus status) =>
+      emit(state.copyWith(selected: status));
+}
+
+class FakeCatalogueCubit extends Cubit<CatalogueState>
+    implements CatalogueCubit {
+  FakeCatalogueCubit()
+      : super(
+          const CatalogueState(
+            status: CatalogueStatus.success,
+            animes: [
+              CatalogueAnime(
+                id: 9,
+                title: 'Berserk',
+                format: 'TV',
+                year: 1997,
+                episodeCount: 25,
+              ),
+            ],
+          ),
+        );
+
+  @override
+  Future<void> load() async {}
+
+  @override
+  void addToWatchlist(CatalogueAnime anime) {}
+
+  @override
+  void search(String query) {}
+
+  @override
+  Future<void> clear() async {}
+
+  @override
+  Future<void> loadMore() async {}
+}
+
+class FakeAnimeSheetCubit extends Cubit<AnimeSheetState>
+    implements AnimeSheetCubit {
+  FakeAnimeSheetCubit()
+      : super(
+          const AnimeSheetState(
+            status: AnimeSheetStatus.success,
+            sheet: AnimeSheet(
+              id: 1,
+              title: 'Monster',
+              format: 'TV',
+              synopsis: 'Un thriller.',
+            ),
+          ),
+        );
+
+  @override
+  Future<void> load(int id) async {}
+}
+
+void main() {
+  setUp(() {
+    getIt
+      ..registerFactory<WatchlistCubit>(FakeWatchlistCubit.new)
+      ..registerFactory<CatalogueCubit>(FakeCatalogueCubit.new)
+      ..registerFactory<AnimeSheetCubit>(FakeAnimeSheetCubit.new);
+  });
+
+  tearDown(getIt.reset);
+
+  testWidgets('barre de navigation basse sur un écran étroit', (tester) async {
+    await pumpApp(tester, const AppShell());
+
+    expect(find.byType(NavigationBar), findsOneWidget);
+    expect(find.byType(NavigationRail), findsNothing);
+  });
+
+  testWidgets('rail de navigation sur un écran large', (tester) async {
+    await pumpApp(tester, const AppShell(), size: const Size(1200, 800));
+
+    expect(find.byType(NavigationRail), findsOneWidget);
+    expect(find.byType(NavigationBar), findsNothing);
+  });
+
+  testWidgets('change d onglet avec un fondu', (tester) async {
+    await pumpApp(tester, const AppShell());
+
+    expect(find.text('Ma liste'), findsOneWidget);
+
+    await tester.tap(
+      find.descendant(
+        of: find.byType(NavigationBar),
+        matching: find.text('Catalogue'),
+      ),
+    );
+    await tester.pump(const Duration(milliseconds: 100));
+
+    expect(tester.hasRunningAnimations, isTrue);
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('Berserk'), findsOneWidget);
+  });
+
+  testWidgets('ouvre la fiche depuis Ma liste', (tester) async {
+    await pumpApp(tester, const AppShell());
+
+    await tester.tap(find.text('Monster'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Un thriller.'), findsOneWidget);
+    expect(find.text('Synopsis'), findsOneWidget);
+  });
+
+  testWidgets('ouvre la fiche depuis le catalogue', (tester) async {
+    await pumpApp(tester, const AppShell());
+
+    await tester.tap(
+      find.descendant(
+        of: find.byType(NavigationBar),
+        matching: find.text('Catalogue'),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Berserk'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Un thriller.'), findsOneWidget);
+  });
+
+  testWidgets('la vue Ma liste change d onglet de statut', (tester) async {
+    await pumpApp(tester, const AppShell());
+
+    expect(find.text('Monster'), findsOneWidget);
+
+    await tester.tap(find.text('À voir'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Monster'), findsNothing);
+  });
+}

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../app_colors.dart';
+import 'skeleton_box.dart';
 
 class SkeletonBar extends StatelessWidget {
   const SkeletonBar({
@@ -17,7 +17,7 @@ class SkeletonBar extends StatelessWidget {
     return FractionallySizedBox(
       alignment: Alignment.centerLeft,
       widthFactor: widthFactor,
-      child: Container(height: height, color: AppColors.plaqueBackground),
+      child: SkeletonBox(height: height, radius: height / 2),
     );
   }
 }

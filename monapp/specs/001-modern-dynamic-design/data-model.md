@@ -12,7 +12,7 @@ Tokens non couverts par `ColorScheme`, déclinés en variantes claire et sombre.
 | `cardSurface` | fond d'une carte d'anime |
 | `posterFallback` | fond du visuel de repli d'une affiche |
 | `posterFallbackInk` | initiales sur le visuel de repli |
-| `statusColors` | une couleur par statut de visionnage (à voir, en cours, terminé, abandonné) |
+| `toWatch` `watching` `completed` | une couleur par statut de visionnage |
 | `skeletonBase` / `skeletonHighlight` | dégradé du squelette de chargement |
 
 Règle : chaque couple texte/fond utilisé atteint un contraste AA dans les deux variantes.

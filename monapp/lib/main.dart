@@ -6,8 +6,9 @@ import 'layers/technical/Injection/injection.dart';
 import 'layers/technical/Navigation/app_shell.dart';
 import 'layers/technical/Theme/app_theme.dart';
 
-void main() {
-  initializeDependencies();
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDependencies();
   runApp(const AnimeTrackerApp());
 }
 

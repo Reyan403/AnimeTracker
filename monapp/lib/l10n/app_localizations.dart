@@ -202,6 +202,30 @@ abstract class AppLocalizations {
   /// **'{rating} %'**
   String ratingPercent(int rating);
 
+  /// No description provided for @episodeProgress.
+  ///
+  /// In fr, this message translates to:
+  /// **'{watched}/{total} épisodes vus'**
+  String episodeProgress(int watched, int total);
+
+  /// No description provided for @episodeProgressOpen.
+  ///
+  /// In fr, this message translates to:
+  /// **'{watched, plural, =0{Pas encore commencé} =1{1 épisode vu} other{{watched} épisodes vus}}'**
+  String episodeProgressOpen(int watched);
+
+  /// No description provided for @watchNextTooltip.
+  ///
+  /// In fr, this message translates to:
+  /// **'Marquer l\'épisode suivant comme vu'**
+  String get watchNextTooltip;
+
+  /// No description provided for @watchPreviousTooltip.
+  ///
+  /// In fr, this message translates to:
+  /// **'Annuler le dernier épisode vu'**
+  String get watchPreviousTooltip;
+
   /// No description provided for @retry.
   ///
   /// In fr, this message translates to:

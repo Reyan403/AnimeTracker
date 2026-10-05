@@ -35,6 +35,12 @@ class FakeWatchlistCubit extends Cubit<WatchlistState>
   void changeStatus(int animeId, WatchStatus status) {}
 
   @override
+  void watchNextEpisode(Anime anime) {}
+
+  @override
+  void watchPreviousEpisode(Anime anime) {}
+
+  @override
   void selectStatus(WatchStatus status) =>
       emit(state.copyWith(selected: status));
 }

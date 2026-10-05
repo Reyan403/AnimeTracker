@@ -88,6 +88,29 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String episodeProgress(int watched, int total) {
+    return '$watched/$total épisodes vus';
+  }
+
+  @override
+  String episodeProgressOpen(int watched) {
+    String _temp0 = intl.Intl.pluralLogic(
+      watched,
+      locale: localeName,
+      other: '$watched épisodes vus',
+      one: '1 épisode vu',
+      zero: 'Pas encore commencé',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get watchNextTooltip => 'Marquer l\'épisode suivant comme vu';
+
+  @override
+  String get watchPreviousTooltip => 'Annuler le dernier épisode vu';
+
+  @override
   String get retry => 'Réessayer';
 
   @override

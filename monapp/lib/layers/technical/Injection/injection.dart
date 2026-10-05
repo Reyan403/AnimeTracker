@@ -12,6 +12,8 @@ import '../../functional/Anime/domain/use_cases/add_to_watchlist_use_case.dart';
 import '../../functional/Anime/domain/use_cases/change_watch_status_use_case.dart';
 import '../../functional/Anime/domain/use_cases/listed_anime_ids_use_case.dart';
 import '../../functional/Anime/domain/use_cases/load_watchlist_use_case.dart';
+import '../../functional/Anime/domain/use_cases/watch_next_episode_use_case.dart';
+import '../../functional/Anime/domain/use_cases/watch_previous_episode_use_case.dart';
 import '../../functional/Anime/presentation/cubit/watchlist_cubit.dart';
 import '../../functional/Catalogue/data/gateways/anime_catalogue_gateway_impl.dart';
 import '../../functional/Catalogue/data/gateways/anime_sheet_gateway_impl.dart';
@@ -78,6 +80,12 @@ Future<void> initializeDependencies() async {
     ..registerLazySingleton<ChangeWatchStatusUseCase>(
       () => ChangeWatchStatusUseCase(getIt<WatchlistGateway>()),
     )
+    ..registerLazySingleton<WatchNextEpisodeUseCase>(
+      () => WatchNextEpisodeUseCase(getIt<WatchlistGateway>()),
+    )
+    ..registerLazySingleton<WatchPreviousEpisodeUseCase>(
+      () => WatchPreviousEpisodeUseCase(getIt<WatchlistGateway>()),
+    )
     ..registerLazySingleton<LoadAnimeSheetUseCase>(
       () => LoadAnimeSheetUseCase(
         getIt<AnimeSheetGateway>(),
@@ -91,6 +99,8 @@ Future<void> initializeDependencies() async {
       () => WatchlistCubit(
         getIt<LoadWatchlistUseCase>(),
         getIt<ChangeWatchStatusUseCase>(),
+        getIt<WatchNextEpisodeUseCase>(),
+        getIt<WatchPreviousEpisodeUseCase>(),
       ),
     )
     ..registerFactory<AnimeSheetCubit>(

@@ -36,6 +36,16 @@
   "@ratingPercent": {
     "placeholders": {"rating": {"type": "int"}}
   },
+  "episodeProgress": "{watched}/{total} épisodes vus",
+  "@episodeProgress": {
+    "placeholders": {"watched": {"type": "int"}, "total": {"type": "int"}}
+  },
+  "episodeProgressOpen": "{watched, plural, =0{Pas encore commencé} =1{1 épisode vu} other{{watched} épisodes vus}}",
+  "@episodeProgressOpen": {
+    "placeholders": {"watched": {"type": "int"}}
+  },
+  "watchNextTooltip": "Marquer l'épisode suivant comme vu",
+  "watchPreviousTooltip": "Annuler le dernier épisode vu",
   "retry": "Réessayer",
   "serviceUnavailable": "Le service Kitsu ne répond pas pour le moment.",
   "watchlistEmpty": "Aucun animé dans cet onglet.",

@@ -35,13 +35,18 @@ class LoadWatchlistUseCase {
     yield [for (final entry in entries) _anime(entry)];
   }
 
-  Anime _anime(WatchlistEntry entry, {bool isAwaited = false}) => Anime(
-        id: entry.id,
-        title: entry.title,
-        status: entry.status,
-        details: _known[entry.id],
-        isLoadingDetails: isAwaited && !_known.containsKey(entry.id),
-      );
+  Anime _anime(WatchlistEntry entry, {bool isAwaited = false}) {
+    final details = _known[entry.id];
+
+    return Anime(
+      id: entry.id,
+      title: entry.title,
+      status: entry.status,
+      episodesWatched: entry.watchedOf(details?.episodeCount ?? 0),
+      details: details,
+      isLoadingDetails: isAwaited && !_known.containsKey(entry.id),
+    );
+  }
 
   Future<Map<int, AnimeDetails>> _detailsOf(List<int> ids) async {
     try {

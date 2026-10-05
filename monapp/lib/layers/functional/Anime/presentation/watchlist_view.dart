@@ -62,6 +62,8 @@ class WatchlistScaffold extends StatelessWidget {
                 onRetry: cubit.load,
                 onAnimeSelected: onAnimeSelected,
                 onStatusChanged: cubit.changeStatus,
+                onNextEpisode: cubit.watchNextEpisode,
+                onPreviousEpisode: cubit.watchPreviousEpisode,
               ),
             ],
           ),

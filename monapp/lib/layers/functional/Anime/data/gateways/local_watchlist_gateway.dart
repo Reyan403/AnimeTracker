@@ -47,6 +47,18 @@ class LocalWatchlistGateway implements WatchlistGateway {
     _publish();
   }
 
+  @override
+  void update(WatchlistEntry entry) {
+    final listed = _entries.indexWhere((candidate) => candidate.id == entry.id);
+
+    if (listed < 0) {
+      return;
+    }
+
+    _entries[listed] = entry;
+    _publish();
+  }
+
   void _publish() {
     unawaited(_store.write(entries));
     _changes.add(entries);

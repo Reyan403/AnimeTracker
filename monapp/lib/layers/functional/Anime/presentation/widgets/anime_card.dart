@@ -7,6 +7,7 @@ import '../../../../technical/Theme/widgets/anime_poster.dart';
 import '../../../../technical/Theme/widgets/skeleton_bar.dart';
 import '../../domain/entities/anime.dart';
 import '../../domain/entities/watch_status.dart';
+import 'episode_progress.dart';
 import 'watch_status_chip.dart';
 import 'watch_status_menu.dart';
 
@@ -15,12 +16,16 @@ class AnimeCard extends StatelessWidget {
     required this.anime,
     required this.onTap,
     required this.onStatusSelected,
+    required this.onNextEpisode,
+    required this.onPreviousEpisode,
     super.key,
   });
 
   final Anime anime;
   final VoidCallback onTap;
   final ValueChanged<WatchStatus> onStatusSelected;
+  final VoidCallback onNextEpisode;
+  final VoidCallback onPreviousEpisode;
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +79,12 @@ class AnimeCard extends StatelessWidget {
                       ),
                     const SizedBox(height: AppSpacing.sm),
                     WatchStatusChip(status: anime.status),
+                    const SizedBox(height: AppSpacing.sm),
+                    EpisodeProgress(
+                      anime: anime,
+                      onNext: onNextEpisode,
+                      onPrevious: onPreviousEpisode,
+                    ),
                   ],
                 ),
               ),

@@ -10,6 +10,7 @@ abstract final class WatchlistEntryDto {
             'id': entry.id,
             'title': entry.title,
             'status': entry.status.name,
+            'episodesWatched': entry.episodesWatched,
           },
       ]);
 
@@ -41,6 +42,7 @@ abstract final class WatchlistEntryDto {
       id: json['id'] as int,
       title: json['title'] as String,
       status: status,
+      episodesWatched: json['episodesWatched'] as int? ?? 0,
     );
   }
 }

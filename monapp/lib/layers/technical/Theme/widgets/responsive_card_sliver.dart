@@ -11,7 +11,7 @@ class ResponsiveCardSliver extends StatelessWidget {
 
   static const double gridThreshold = 760;
   static const double _maxCardWidth = 560;
-  static const double _cardHeight = 152;
+  static const double _cardHeight = 200;
 
   final int itemCount;
   final IndexedWidgetBuilder itemBuilder;

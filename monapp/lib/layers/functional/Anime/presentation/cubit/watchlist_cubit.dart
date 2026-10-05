@@ -6,14 +6,22 @@ import '../../domain/entities/anime.dart';
 import '../../domain/entities/watch_status.dart';
 import '../../domain/use_cases/change_watch_status_use_case.dart';
 import '../../domain/use_cases/load_watchlist_use_case.dart';
+import '../../domain/use_cases/watch_next_episode_use_case.dart';
+import '../../domain/use_cases/watch_previous_episode_use_case.dart';
 import 'watchlist_state.dart';
 
 class WatchlistCubit extends Cubit<WatchlistState> {
-  WatchlistCubit(this._loadWatchlist, this._changeWatchStatus)
-      : super(const WatchlistState());
+  WatchlistCubit(
+    this._loadWatchlist,
+    this._changeWatchStatus,
+    this._watchNextEpisode,
+    this._watchPreviousEpisode,
+  ) : super(const WatchlistState());
 
   final LoadWatchlistUseCase _loadWatchlist;
   final ChangeWatchStatusUseCase _changeWatchStatus;
+  final WatchNextEpisodeUseCase _watchNextEpisode;
+  final WatchPreviousEpisodeUseCase _watchPreviousEpisode;
 
   StreamSubscription<List<Anime>>? _loading;
 
@@ -29,6 +37,12 @@ class WatchlistCubit extends Cubit<WatchlistState> {
 
   void changeStatus(int animeId, WatchStatus status) =>
       _changeWatchStatus(animeId, status);
+
+  void watchNextEpisode(Anime anime) =>
+      _watchNextEpisode(anime.id, totalEpisodes: anime.totalEpisodes);
+
+  void watchPreviousEpisode(Anime anime) =>
+      _watchPreviousEpisode(anime.id, totalEpisodes: anime.totalEpisodes);
 
   void selectStatus(WatchStatus status) => emit(
         state.copyWith(

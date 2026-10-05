@@ -29,6 +29,8 @@ WatchlistResultsSliver watchlistSliver(
       onRetry: onRetry ?? () {},
       onAnimeSelected: onSelected ?? (_, _) {},
       onStatusChanged: (_, _) {},
+      onNextEpisode: (_) {},
+      onPreviousEpisode: (_) {},
     );
 
 CatalogueResultsSliver catalogueSliver(

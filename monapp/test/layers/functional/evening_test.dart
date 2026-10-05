@@ -320,7 +320,8 @@ void main() {
 
       expect(await gateway.countMatching('action'), 321);
       expect(seen.single.query, contains('filter%5Bcategories%5D=action'));
-      expect(seen.single.query, contains('filter%5BuserCount%5D=2000..'));
+      expect(seen.single.query, contains('filter%5BuserCount%5D=5000..'));
+      expect(seen.single.query, contains('filter%5Bsubtype%5D=TV,movie'));
     });
 
     test('compte tout le catalogue sans genre', () async {

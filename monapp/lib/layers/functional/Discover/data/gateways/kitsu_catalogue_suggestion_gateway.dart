@@ -5,7 +5,7 @@ import '../models/catalogue_suggestion_dto.dart';
 class KitsuCatalogueSuggestionGateway implements CatalogueSuggestionGateway {
   const KitsuCatalogueSuggestionGateway(this._client);
 
-  static const int minimumFollowers = 2000;
+  static const int minimumFollowers = 5000;
 
   final KitsuClient _client;
 
@@ -38,7 +38,12 @@ class KitsuCatalogueSuggestionGateway implements CatalogueSuggestionGateway {
     }
   }
 
-  static String _base(String? genreSlug) =>
-      'anime?filter%5BuserCount%5D=$minimumFollowers..'
-      '${genreSlug == null ? '' : '&filter%5Bcategories%5D=${Uri.encodeQueryComponent(genreSlug)}'}';
+  static String _base(String? genreSlug) {
+    final genre = genreSlug == null
+        ? ''
+        : '&filter%5Bcategories%5D=${Uri.encodeQueryComponent(genreSlug)}';
+
+    return 'anime?filter%5BuserCount%5D=$minimumFollowers..'
+        '&filter%5Bsubtype%5D=TV,movie$genre';
+  }
 }

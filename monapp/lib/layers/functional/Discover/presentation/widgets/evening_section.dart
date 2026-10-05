@@ -49,8 +49,11 @@ class EveningSection extends StatelessWidget {
                   duration: const Duration(milliseconds: 250),
                   alignment: Alignment.topCenter,
                   child: switch (state.status) {
-                    EveningStatus.idle || EveningStatus.loading =>
-                      const SizedBox.shrink(),
+                    EveningStatus.idle => const SizedBox.shrink(),
+                    EveningStatus.loading => const Padding(
+                        padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+                        child: LinearProgressIndicator(),
+                      ),
                     EveningStatus.none => StateMessage(
                         icon: Icons.search_off,
                         title: l10n.eveningNone,

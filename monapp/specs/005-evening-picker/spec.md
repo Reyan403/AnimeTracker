@@ -10,7 +10,7 @@
 
 ### User Story 1 - Obtenir une suggestion adaptée (Priority: P1)
 
-Dans l'onglet Découvrir, l'utilisateur choisit une humeur (détente, action, émotion, mystère ou peu importe), puis touche « Surprends-moi ». L'application tire au hasard un anime dans tout le catalogue, parmi les titres suivis par au moins 2 000 personnes.
+Dans l'onglet Découvrir, l'utilisateur choisit une humeur (détente, action, émotion, mystère ou peu importe), puis touche « Surprends-moi ». L'application tire au hasard un anime dans tout le catalogue, parmi les titres suivis par au moins 5 000 personnes.
 
 **Why this priority**: elle résout le « je ne sais pas quoi regarder » en faisant découvrir un anime au hasard.
 
@@ -26,7 +26,7 @@ Dans l'onglet Découvrir, l'utilisateur choisit une humeur (détente, action, é
 
 ### Edge Cases
 
-- Détails indisponibles pour toute la liste : message d'erreur avec « Réessayer ».
+- Catalogue indisponible : message d'erreur avec « Réessayer ».
 - Changer d'humeur efface la suggestion affichée.
 
 ## Requirements *(mandatory)*
@@ -50,5 +50,5 @@ Dans l'onglet Découvrir, l'utilisateur choisit une humeur (détente, action, é
 
 ## Assumptions
 
-- Le catalogue est celui de la source de données existante, limité aux titres suivis par au moins 2 000 personnes pour éviter les inconnus.
+- Le catalogue est celui de la source de données existante, limité aux titres suivis par au moins 5 000 personnes pour éviter les inconnus.
 - Le tirage au sort par secousse du téléphone est hors périmètre.

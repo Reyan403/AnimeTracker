@@ -27,7 +27,8 @@ class AnimeDetailsGatewayImpl implements AnimeDetailsGateway {
     try {
       return AnimeDetailsDto.fromJson(
         await _client.getJson(
-          'anime?filter%5Bid%5D=${ids.join(',')}&page%5Blimit%5D=$batchSize',
+          'anime?filter%5Bid%5D=${ids.join(',')}&page%5Blimit%5D=$batchSize'
+          '&include=categories&fields%5Bcategories%5D=title,slug',
         ),
       );
     } catch (_) {

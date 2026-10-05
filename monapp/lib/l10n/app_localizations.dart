@@ -292,6 +292,228 @@ abstract class AppLocalizations {
   /// **'Prochain à voir : épisode {number}'**
   String nextEpisodeToWatch(int number);
 
+  /// No description provided for @navDiscover.
+  ///
+  /// In fr, this message translates to:
+  /// **'Découvrir'**
+  String get navDiscover;
+
+  /// No description provided for @discoverTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Découvrir'**
+  String get discoverTitle;
+
+  /// No description provided for @eveningTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quoi regarder ce soir ?'**
+  String get eveningTitle;
+
+  /// No description provided for @eveningMoodLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mon humeur'**
+  String get eveningMoodLabel;
+
+  /// No description provided for @eveningTimeLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mon temps'**
+  String get eveningTimeLabel;
+
+  /// No description provided for @moodAny.
+  ///
+  /// In fr, this message translates to:
+  /// **'Peu importe'**
+  String get moodAny;
+
+  /// No description provided for @moodRelaxed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Détente'**
+  String get moodRelaxed;
+
+  /// No description provided for @moodAction.
+  ///
+  /// In fr, this message translates to:
+  /// **'Action'**
+  String get moodAction;
+
+  /// No description provided for @moodEmotional.
+  ///
+  /// In fr, this message translates to:
+  /// **'Émotion'**
+  String get moodEmotional;
+
+  /// No description provided for @moodMystery.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mystère'**
+  String get moodMystery;
+
+  /// No description provided for @durationShort.
+  ///
+  /// In fr, this message translates to:
+  /// **'30 min'**
+  String get durationShort;
+
+  /// No description provided for @durationMedium.
+  ///
+  /// In fr, this message translates to:
+  /// **'1 h'**
+  String get durationMedium;
+
+  /// No description provided for @durationLong.
+  ///
+  /// In fr, this message translates to:
+  /// **'2 h'**
+  String get durationLong;
+
+  /// No description provided for @durationUnlimited.
+  ///
+  /// In fr, this message translates to:
+  /// **'Toute la soirée'**
+  String get durationUnlimited;
+
+  /// No description provided for @eveningSuggestAction.
+  ///
+  /// In fr, this message translates to:
+  /// **'Surprends-moi'**
+  String get eveningSuggestAction;
+
+  /// No description provided for @eveningAnother.
+  ///
+  /// In fr, this message translates to:
+  /// **'Une autre idée'**
+  String get eveningAnother;
+
+  /// No description provided for @eveningOpenSheet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voir la fiche'**
+  String get eveningOpenSheet;
+
+  /// No description provided for @eveningContinuing.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vous l\'avez commencé : reprenez-le.'**
+  String get eveningContinuing;
+
+  /// No description provided for @eveningFromList.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dans votre liste « À voir ».'**
+  String get eveningFromList;
+
+  /// No description provided for @eveningNone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rien ne correspond dans votre liste.'**
+  String get eveningNone;
+
+  /// No description provided for @eveningNoneHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Essayez une autre humeur ou plus de temps.'**
+  String get eveningNoneHint;
+
+  /// No description provided for @eveningErrorTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de composer une suggestion'**
+  String get eveningErrorTitle;
+
+  /// No description provided for @genreAction.
+  ///
+  /// In fr, this message translates to:
+  /// **'Action'**
+  String get genreAction;
+
+  /// No description provided for @genreAdventure.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aventure'**
+  String get genreAdventure;
+
+  /// No description provided for @genreComedy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Comédie'**
+  String get genreComedy;
+
+  /// No description provided for @genreDrama.
+  ///
+  /// In fr, this message translates to:
+  /// **'Drame'**
+  String get genreDrama;
+
+  /// No description provided for @genreFantasy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fantastique'**
+  String get genreFantasy;
+
+  /// No description provided for @genreHorror.
+  ///
+  /// In fr, this message translates to:
+  /// **'Horreur'**
+  String get genreHorror;
+
+  /// No description provided for @genreMystery.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mystère'**
+  String get genreMystery;
+
+  /// No description provided for @genreRomance.
+  ///
+  /// In fr, this message translates to:
+  /// **'Romance'**
+  String get genreRomance;
+
+  /// No description provided for @genreScienceFiction.
+  ///
+  /// In fr, this message translates to:
+  /// **'Science-fiction'**
+  String get genreScienceFiction;
+
+  /// No description provided for @genreSliceOfLife.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tranche de vie'**
+  String get genreSliceOfLife;
+
+  /// No description provided for @genreSports.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sport'**
+  String get genreSports;
+
+  /// No description provided for @genreSupernatural.
+  ///
+  /// In fr, this message translates to:
+  /// **'Surnaturel'**
+  String get genreSupernatural;
+
+  /// No description provided for @genreThriller.
+  ///
+  /// In fr, this message translates to:
+  /// **'Thriller'**
+  String get genreThriller;
+
+  /// No description provided for @genrePsychological.
+  ///
+  /// In fr, this message translates to:
+  /// **'Psychologique'**
+  String get genrePsychological;
+
+  /// No description provided for @genreMecha.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mecha'**
+  String get genreMecha;
+
   /// No description provided for @retry.
   ///
   /// In fr, this message translates to:

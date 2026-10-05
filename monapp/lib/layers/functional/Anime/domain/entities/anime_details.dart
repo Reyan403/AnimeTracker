@@ -1,3 +1,5 @@
+import 'anime_genre.dart';
+
 class AnimeDetails {
   const AnimeDetails({
     required this.format,
@@ -5,6 +7,8 @@ class AnimeDetails {
     required this.episodeCount,
     this.posterUrl,
     this.nextRelease,
+    this.episodeMinutes = 0,
+    this.genres = const [],
   });
 
   final String format;
@@ -12,4 +16,8 @@ class AnimeDetails {
   final int episodeCount;
   final String? posterUrl;
   final DateTime? nextRelease;
+  final int episodeMinutes;
+  final List<AnimeGenre> genres;
+
+  bool hasGenre(String slug) => genres.any((genre) => genre.slug == slug);
 }

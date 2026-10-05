@@ -151,6 +151,117 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get navDiscover => 'Découvrir';
+
+  @override
+  String get discoverTitle => 'Découvrir';
+
+  @override
+  String get eveningTitle => 'Quoi regarder ce soir ?';
+
+  @override
+  String get eveningMoodLabel => 'Mon humeur';
+
+  @override
+  String get eveningTimeLabel => 'Mon temps';
+
+  @override
+  String get moodAny => 'Peu importe';
+
+  @override
+  String get moodRelaxed => 'Détente';
+
+  @override
+  String get moodAction => 'Action';
+
+  @override
+  String get moodEmotional => 'Émotion';
+
+  @override
+  String get moodMystery => 'Mystère';
+
+  @override
+  String get durationShort => '30 min';
+
+  @override
+  String get durationMedium => '1 h';
+
+  @override
+  String get durationLong => '2 h';
+
+  @override
+  String get durationUnlimited => 'Toute la soirée';
+
+  @override
+  String get eveningSuggestAction => 'Surprends-moi';
+
+  @override
+  String get eveningAnother => 'Une autre idée';
+
+  @override
+  String get eveningOpenSheet => 'Voir la fiche';
+
+  @override
+  String get eveningContinuing => 'Vous l\'avez commencé : reprenez-le.';
+
+  @override
+  String get eveningFromList => 'Dans votre liste « À voir ».';
+
+  @override
+  String get eveningNone => 'Rien ne correspond dans votre liste.';
+
+  @override
+  String get eveningNoneHint => 'Essayez une autre humeur ou plus de temps.';
+
+  @override
+  String get eveningErrorTitle => 'Impossible de composer une suggestion';
+
+  @override
+  String get genreAction => 'Action';
+
+  @override
+  String get genreAdventure => 'Aventure';
+
+  @override
+  String get genreComedy => 'Comédie';
+
+  @override
+  String get genreDrama => 'Drame';
+
+  @override
+  String get genreFantasy => 'Fantastique';
+
+  @override
+  String get genreHorror => 'Horreur';
+
+  @override
+  String get genreMystery => 'Mystère';
+
+  @override
+  String get genreRomance => 'Romance';
+
+  @override
+  String get genreScienceFiction => 'Science-fiction';
+
+  @override
+  String get genreSliceOfLife => 'Tranche de vie';
+
+  @override
+  String get genreSports => 'Sport';
+
+  @override
+  String get genreSupernatural => 'Surnaturel';
+
+  @override
+  String get genreThriller => 'Thriller';
+
+  @override
+  String get genrePsychological => 'Psychologique';
+
+  @override
+  String get genreMecha => 'Mecha';
+
+  @override
   String get retry => 'Réessayer';
 
   @override

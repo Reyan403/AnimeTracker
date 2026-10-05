@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../functional/Agenda/presentation/agenda_view.dart';
+import '../../functional/Animedex/presentation/animedex_view.dart';
 import '../../functional/Anime/presentation/watchlist_view.dart';
 import '../../functional/Catalogue/presentation/anime_sheet_route.dart';
 import '../../functional/Catalogue/presentation/catalogue_view.dart';
@@ -56,6 +57,7 @@ class _AppShellState extends State<AppShell> {
             onAnimeSelected: (animeId, title) =>
                 _openSheet('agenda', animeId, title),
           ),
+          const AnimedexView(),
           const StatsView(),
         ],
       ),

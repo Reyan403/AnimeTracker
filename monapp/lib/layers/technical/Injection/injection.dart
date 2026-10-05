@@ -2,9 +2,22 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
 import '../../functional/Agenda/domain/use_cases/load_release_agenda_use_case.dart';
+import '../../functional/Constellation/domain/use_cases/build_constellation_use_case.dart';
+import '../../functional/Constellation/presentation/cubit/constellation_cubit.dart';
 import '../../functional/Agenda/presentation/cubit/agenda_cubit.dart';
 import '../../functional/Agenda/data/gateways/anilist_release_schedule_gateway.dart';
 import '../../functional/Agenda/domain/gateways/release_schedule_gateway.dart';
+import '../../functional/Animedex/data/gateways/kitsu_booster_candidate_gateway.dart';
+import '../../functional/Animedex/data/gateways/preferences_booster_schedule_gateway.dart';
+import '../../functional/Animedex/data/gateways/preferences_dex_collection_gateway.dart';
+import '../../functional/Animedex/domain/gateways/booster_candidate_gateway.dart';
+import '../../functional/Animedex/domain/gateways/booster_schedule_gateway.dart';
+import '../../functional/Animedex/domain/gateways/dex_collection_gateway.dart';
+import '../../functional/Animedex/domain/use_cases/check_booster_availability_use_case.dart';
+import '../../functional/Animedex/domain/use_cases/load_dex_use_case.dart';
+import '../../functional/Animedex/domain/use_cases/open_booster_use_case.dart';
+import '../../functional/Animedex/presentation/cubit/booster_cubit.dart';
+import '../../functional/Animedex/presentation/cubit/dex_cubit.dart';
 import '../../functional/Anime/data/gateways/anime_details_gateway_impl.dart';
 import '../../functional/Discover/data/gateways/kitsu_catalogue_suggestion_gateway.dart';
 import '../../functional/Discover/data/gateways/kitsu_recommendation_gateway.dart';
@@ -155,6 +168,31 @@ Future<void> initializeDependencies() async {
         getIt<ReleaseScheduleGateway>(),
       ),
     )
+    ..registerLazySingleton<DexCollectionGateway>(
+      () => PreferencesDexCollectionGateway(getIt()),
+    )
+    ..registerLazySingleton<BoosterScheduleGateway>(
+      () => PreferencesBoosterScheduleGateway(getIt()),
+    )
+    ..registerLazySingleton<BoosterCandidateGateway>(
+      () => KitsuBoosterCandidateGateway(getIt()),
+    )
+    ..registerLazySingleton<LoadDexUseCase>(
+      () => LoadDexUseCase(getIt<DexCollectionGateway>()),
+    )
+    ..registerLazySingleton<CheckBoosterAvailabilityUseCase>(
+      () => CheckBoosterAvailabilityUseCase(getIt<BoosterScheduleGateway>()),
+    )
+    ..registerLazySingleton<OpenBoosterUseCase>(
+      () => OpenBoosterUseCase(
+        getIt<BoosterCandidateGateway>(),
+        getIt<DexCollectionGateway>(),
+        getIt<BoosterScheduleGateway>(),
+      ),
+    )
+    ..registerLazySingleton<BuildConstellationUseCase>(
+      () => BuildConstellationUseCase(getIt<LoadWatchlistUseCase>()),
+    )
     ..registerLazySingleton<ComputeWatchStatsUseCase>(
       () => ComputeWatchStatsUseCase(getIt<LoadWatchlistUseCase>()),
     )
@@ -203,6 +241,18 @@ Future<void> initializeDependencies() async {
         getIt<WatchNextEpisodeUseCase>(),
         getIt<WatchPreviousEpisodeUseCase>(),
       ),
+    )
+    ..registerFactory<DexCubit>(
+      () => DexCubit(
+        getIt<LoadDexUseCase>(),
+        getIt<CheckBoosterAvailabilityUseCase>(),
+      ),
+    )
+    ..registerFactory<BoosterCubit>(
+      () => BoosterCubit(getIt<OpenBoosterUseCase>()),
+    )
+    ..registerFactory<ConstellationCubit>(
+      () => ConstellationCubit(getIt<BuildConstellationUseCase>()),
     )
     ..registerFactory<StatsCubit>(
       () => StatsCubit(getIt<ComputeWatchStatsUseCase>()),

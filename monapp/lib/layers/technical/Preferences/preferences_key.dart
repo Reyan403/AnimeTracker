@@ -3,4 +3,6 @@ enum PreferencesKey {
   detailsCache,
   sheetCache,
   spoilerGuard,
+  dex,
+  lastBoosterDay,
 }

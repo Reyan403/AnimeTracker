@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:monapp/layers/functional/Agenda/presentation/cubit/agenda_cubit.dart';
 import 'package:monapp/layers/functional/Agenda/presentation/cubit/agenda_state.dart';
+import 'package:monapp/layers/functional/Animedex/presentation/cubit/dex_cubit.dart';
+import 'package:monapp/layers/functional/Animedex/presentation/cubit/dex_state.dart';
 import 'package:monapp/layers/functional/Anime/domain/entities/anime.dart';
 import 'package:monapp/layers/functional/Anime/domain/entities/watch_status.dart';
 import 'package:monapp/layers/functional/Anime/presentation/cubit/watchlist_cubit.dart';
@@ -60,7 +62,7 @@ class FakeWatchlistCubit extends Cubit<WatchlistState>
 class FakeAnimeExtrasCubit extends Cubit<AnimeExtrasState>
     implements AnimeExtrasCubit {
   FakeAnimeExtrasCubit()
-      : super(const AnimeExtrasState(status: AnimeExtrasStatus.ready));
+    : super(const AnimeExtrasState(status: AnimeExtrasStatus.ready));
 
   @override
   Future<void> load(int animeId) async {}
@@ -177,6 +179,13 @@ class FakeAnimeSheetCubit extends Cubit<AnimeSheetState>
   void revealSynopsis() {}
 }
 
+class FakeDexCubit extends Cubit<DexState> implements DexCubit {
+  FakeDexCubit() : super(const DexState(status: DexStatus.empty));
+
+  @override
+  void load() {}
+}
+
 Future<void> advance(WidgetTester tester) async {
   await tester.pump();
   await tester.pump(const Duration(seconds: 1));
@@ -193,6 +202,7 @@ void main() {
       ..registerFactory<RecommendationsCubit>(FakeRecommendationsCubit.new)
       ..registerFactory<EveningCubit>(FakeEveningCubit.new)
       ..registerFactory<AgendaCubit>(FakeAgendaCubit.new)
+      ..registerFactory<DexCubit>(FakeDexCubit.new)
       ..registerFactory<CatalogueCubit>(FakeCatalogueCubit.new)
       ..registerFactory<AnimeSheetCubit>(FakeAnimeSheetCubit.new);
   });
@@ -204,6 +214,21 @@ void main() {
 
     expect(find.byType(NavigationBar), findsOneWidget);
     expect(find.byType(NavigationRail), findsNothing);
+  });
+
+  testWidgets('la barre propose les six destinations dont l Animédex', (
+    tester,
+  ) async {
+    await pumpApp(tester, const AppShell(), settle: false);
+
+    expect(
+      find.descendant(
+        of: find.byType(NavigationBar),
+        matching: find.text('Animédex'),
+      ),
+      findsOneWidget,
+    );
+    expect(find.byType(NavigationDestination), findsNWidgets(6));
   });
 
   testWidgets('rail de navigation sur un écran large', (tester) async {

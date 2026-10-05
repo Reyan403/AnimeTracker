@@ -1,6 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
+import '../../functional/Agenda/domain/use_cases/load_release_agenda_use_case.dart';
+import '../../functional/Agenda/presentation/cubit/agenda_cubit.dart';
 import '../../functional/Anime/data/gateways/anime_details_gateway_impl.dart';
 import '../../functional/Anime/data/gateways/local_watchlist_gateway.dart';
 import '../../functional/Anime/data/my_watchlist.dart';
@@ -86,6 +88,9 @@ Future<void> initializeDependencies() async {
     ..registerLazySingleton<WatchPreviousEpisodeUseCase>(
       () => WatchPreviousEpisodeUseCase(getIt<WatchlistGateway>()),
     )
+    ..registerLazySingleton<LoadReleaseAgendaUseCase>(
+      () => LoadReleaseAgendaUseCase(getIt<LoadWatchlistUseCase>()),
+    )
     ..registerLazySingleton<LoadAnimeSheetUseCase>(
       () => LoadAnimeSheetUseCase(
         getIt<AnimeSheetGateway>(),
@@ -102,6 +107,9 @@ Future<void> initializeDependencies() async {
         getIt<WatchNextEpisodeUseCase>(),
         getIt<WatchPreviousEpisodeUseCase>(),
       ),
+    )
+    ..registerFactory<AgendaCubit>(
+      () => AgendaCubit(getIt<LoadReleaseAgendaUseCase>()),
     )
     ..registerFactory<AnimeSheetCubit>(
       () => AnimeSheetCubit(getIt<LoadAnimeSheetUseCase>()),

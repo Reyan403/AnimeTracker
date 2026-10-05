@@ -46,6 +46,26 @@
   },
   "watchNextTooltip": "Marquer l'épisode suivant comme vu",
   "watchPreviousTooltip": "Annuler le dernier épisode vu",
+  "navAgenda": "Agenda",
+  "agendaTitle": "Agenda",
+  "agendaEmpty": "Aucune sortie à venir.",
+  "agendaEmptyHint": "Ajoutez des animes en cours de diffusion depuis le catalogue.",
+  "agendaErrorTitle": "Impossible de charger l'agenda",
+  "releaseToday": "Aujourd'hui",
+  "releaseTomorrow": "Demain",
+  "releaseInDays": "Dans {days} jours",
+  "@releaseInDays": {
+    "placeholders": {"days": {"type": "int"}}
+  },
+  "releaseYesterday": "Hier",
+  "releaseDaysAgo": "Il y a {days} jours",
+  "@releaseDaysAgo": {
+    "placeholders": {"days": {"type": "int"}}
+  },
+  "nextEpisodeToWatch": "Prochain à voir : épisode {number}",
+  "@nextEpisodeToWatch": {
+    "placeholders": {"number": {"type": "int"}}
+  },
   "retry": "Réessayer",
   "serviceUnavailable": "Le service Kitsu ne répond pas pour le moment.",
   "watchlistEmpty": "Aucun animé dans cet onglet.",

@@ -111,6 +111,46 @@ class AppLocalizationsFr extends AppLocalizations {
   String get watchPreviousTooltip => 'Annuler le dernier épisode vu';
 
   @override
+  String get navAgenda => 'Agenda';
+
+  @override
+  String get agendaTitle => 'Agenda';
+
+  @override
+  String get agendaEmpty => 'Aucune sortie à venir.';
+
+  @override
+  String get agendaEmptyHint =>
+      'Ajoutez des animes en cours de diffusion depuis le catalogue.';
+
+  @override
+  String get agendaErrorTitle => 'Impossible de charger l\'agenda';
+
+  @override
+  String get releaseToday => 'Aujourd\'hui';
+
+  @override
+  String get releaseTomorrow => 'Demain';
+
+  @override
+  String releaseInDays(int days) {
+    return 'Dans $days jours';
+  }
+
+  @override
+  String get releaseYesterday => 'Hier';
+
+  @override
+  String releaseDaysAgo(int days) {
+    return 'Il y a $days jours';
+  }
+
+  @override
+  String nextEpisodeToWatch(int number) {
+    return 'Prochain à voir : épisode $number';
+  }
+
+  @override
   String get retry => 'Réessayer';
 
   @override

@@ -28,6 +28,9 @@ abstract final class AnimeDetailsDto {
         year: _yearOf(attributes['startDate'] as String?),
         episodeCount: attributes['episodeCount'] as int? ?? 0,
         posterUrl: _posterOf(attributes),
+        nextRelease: DateTime.tryParse(
+          attributes['nextRelease'] as String? ?? '',
+        ),
       );
 
   static int _yearOf(String? startDate) {

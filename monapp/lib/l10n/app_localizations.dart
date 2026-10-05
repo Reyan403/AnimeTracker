@@ -226,6 +226,72 @@ abstract class AppLocalizations {
   /// **'Annuler le dernier épisode vu'**
   String get watchPreviousTooltip;
 
+  /// No description provided for @navAgenda.
+  ///
+  /// In fr, this message translates to:
+  /// **'Agenda'**
+  String get navAgenda;
+
+  /// No description provided for @agendaTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Agenda'**
+  String get agendaTitle;
+
+  /// No description provided for @agendaEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune sortie à venir.'**
+  String get agendaEmpty;
+
+  /// No description provided for @agendaEmptyHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajoutez des animes en cours de diffusion depuis le catalogue.'**
+  String get agendaEmptyHint;
+
+  /// No description provided for @agendaErrorTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de charger l\'agenda'**
+  String get agendaErrorTitle;
+
+  /// No description provided for @releaseToday.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aujourd\'hui'**
+  String get releaseToday;
+
+  /// No description provided for @releaseTomorrow.
+  ///
+  /// In fr, this message translates to:
+  /// **'Demain'**
+  String get releaseTomorrow;
+
+  /// No description provided for @releaseInDays.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dans {days} jours'**
+  String releaseInDays(int days);
+
+  /// No description provided for @releaseYesterday.
+  ///
+  /// In fr, this message translates to:
+  /// **'Hier'**
+  String get releaseYesterday;
+
+  /// No description provided for @releaseDaysAgo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Il y a {days} jours'**
+  String releaseDaysAgo(int days);
+
+  /// No description provided for @nextEpisodeToWatch.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prochain à voir : épisode {number}'**
+  String nextEpisodeToWatch(int number);
+
   /// No description provided for @retry.
   ///
   /// In fr, this message translates to:

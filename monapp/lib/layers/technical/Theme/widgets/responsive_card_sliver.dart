@@ -6,14 +6,15 @@ class ResponsiveCardSliver extends StatelessWidget {
   const ResponsiveCardSliver({
     required this.itemCount,
     required this.itemBuilder,
+    this.cardHeight = 200,
     super.key,
   });
 
   static const double gridThreshold = 760;
   static const double _maxCardWidth = 560;
-  static const double _cardHeight = 200;
 
   final int itemCount;
+  final double cardHeight;
   final IndexedWidgetBuilder itemBuilder;
 
   @override
@@ -31,9 +32,9 @@ class ResponsiveCardSliver extends StatelessWidget {
         return SliverGrid.builder(
           itemCount: itemCount,
           itemBuilder: itemBuilder,
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: _maxCardWidth,
-            mainAxisExtent: _cardHeight,
+            mainAxisExtent: cardHeight,
             mainAxisSpacing: AppSpacing.md,
             crossAxisSpacing: AppSpacing.md,
           ),

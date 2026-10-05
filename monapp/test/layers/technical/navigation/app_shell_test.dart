@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:monapp/layers/functional/Agenda/presentation/cubit/agenda_cubit.dart';
+import 'package:monapp/layers/functional/Agenda/presentation/cubit/agenda_state.dart';
 import 'package:monapp/layers/functional/Anime/domain/entities/anime.dart';
 import 'package:monapp/layers/functional/Anime/domain/entities/watch_status.dart';
 import 'package:monapp/layers/functional/Anime/presentation/cubit/watchlist_cubit.dart';
@@ -43,6 +45,13 @@ class FakeWatchlistCubit extends Cubit<WatchlistState>
   @override
   void selectStatus(WatchStatus status) =>
       emit(state.copyWith(selected: status));
+}
+
+class FakeAgendaCubit extends Cubit<AgendaState> implements AgendaCubit {
+  FakeAgendaCubit() : super(const AgendaState(status: AgendaStatus.empty));
+
+  @override
+  Future<void> load() async {}
 }
 
 class FakeCatalogueCubit extends Cubit<CatalogueState>
@@ -102,6 +111,7 @@ void main() {
   setUp(() {
     getIt
       ..registerFactory<WatchlistCubit>(FakeWatchlistCubit.new)
+      ..registerFactory<AgendaCubit>(FakeAgendaCubit.new)
       ..registerFactory<CatalogueCubit>(FakeCatalogueCubit.new)
       ..registerFactory<AnimeSheetCubit>(FakeAnimeSheetCubit.new);
   });

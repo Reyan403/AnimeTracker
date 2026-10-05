@@ -26,7 +26,7 @@ class WatchlistCubit extends Cubit<WatchlistState> {
   StreamSubscription<List<Anime>>? _loading;
 
   Future<void> load() async {
-    await _loading?.cancel();
+    unawaited(_loading?.cancel());
     emit(state.copyWith(status: ViewStatus.loading));
 
     _loading = _loadWatchlist().listen(
@@ -53,7 +53,7 @@ class WatchlistCubit extends Cubit<WatchlistState> {
 
   @override
   Future<void> close() async {
-    await _loading?.cancel();
+    unawaited(_loading?.cancel());
 
     return super.close();
   }

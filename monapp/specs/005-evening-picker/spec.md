@@ -10,7 +10,7 @@
 
 ### User Story 1 - Obtenir une suggestion adaptée (Priority: P1)
 
-Dans l'onglet Découvrir, l'utilisateur choisit une humeur (détente, action, émotion, mystère ou peu importe), puis touche « Surprends-moi ». L'application tire au hasard un anime dans tout le catalogue, parmi les titres suivis par au moins 5 000 personnes.
+Dans l'onglet Découvrir, l'utilisateur choisit une humeur ou un genre (peu importe, détente, action, émotion, romance, mystère, fantastique, science-fiction, surnaturel, horreur ou sport), puis touche « Surprends-moi ». L'application tire au hasard un anime dans tout le catalogue, parmi les titres suivis par au moins 5 000 personnes.
 
 **Why this priority**: elle résout le « je ne sais pas quoi regarder » en faisant découvrir un anime au hasard.
 

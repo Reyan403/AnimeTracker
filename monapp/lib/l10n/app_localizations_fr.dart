@@ -155,7 +155,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get eveningTitle => 'Quoi regarder ce soir ?';
 
   @override
-  String get eveningMoodLabel => 'Mon humeur';
+  String get eveningMoodLabel => 'Mon humeur ou mon genre';
 
   @override
   String get moodAny => 'Peu importe';
@@ -171,6 +171,24 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get moodMystery => 'Mystère';
+
+  @override
+  String get moodRomance => 'Romance';
+
+  @override
+  String get moodFantasy => 'Fantastique';
+
+  @override
+  String get moodScienceFiction => 'Science-fiction';
+
+  @override
+  String get moodSupernatural => 'Surnaturel';
+
+  @override
+  String get moodHorror => 'Horreur';
+
+  @override
+  String get moodSports => 'Sport';
 
   @override
   String get eveningSuggestAction => 'Surprends-moi';

@@ -112,6 +112,29 @@ void main() {
       );
     });
 
+    test('chaque humeur filtre sur ses propres genres', () async {
+      for (final mood in EveningMood.values) {
+        final gateway = FakeSuggestionGateway([suggestionOf(10)]);
+
+        await useCaseFor(gateway)(mood: mood);
+
+        if (mood.genreSlugs.isEmpty) {
+          expect(gateway.countedGenres, [null]);
+        } else {
+          expect(mood.genreSlugs, contains(gateway.countedGenres.single));
+        }
+      }
+    });
+
+    test('la romance est un choix à part entière', () async {
+      final gateway = FakeSuggestionGateway([suggestionOf(10)]);
+
+      await useCaseFor(gateway)(mood: EveningMood.romance);
+
+      expect(gateway.countedGenres, ['romance']);
+      expect(EveningMood.emotional.genreSlugs, isNot(contains('romance')));
+    });
+
     test('signale les animes déjà dans la liste', () async {
       final gateway = FakeSuggestionGateway([suggestionOf(1)]);
 
@@ -403,12 +426,12 @@ void main() {
       return watchlist;
     }
 
-    testWidgets('propose seulement l humeur, sans choix de temps',
+    testWidgets('propose humeur et genres, sans choix de temps',
         (tester) async {
       await pumpSection(tester, FakeSuggestionGateway(const []));
 
       expect(find.text('Quoi regarder ce soir ?'), findsOneWidget);
-      expect(find.text('Mon humeur'), findsOneWidget);
+      expect(find.text('Mon humeur ou mon genre'), findsOneWidget);
       expect(find.text('Mon temps'), findsNothing);
     });
 

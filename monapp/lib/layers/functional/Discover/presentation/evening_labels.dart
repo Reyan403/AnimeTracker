@@ -7,6 +7,12 @@ extension EveningMoodLabel on EveningMood {
         EveningMood.relaxed => l10n.moodRelaxed,
         EveningMood.action => l10n.moodAction,
         EveningMood.emotional => l10n.moodEmotional,
+        EveningMood.romance => l10n.moodRomance,
         EveningMood.mystery => l10n.moodMystery,
+        EveningMood.fantasy => l10n.moodFantasy,
+        EveningMood.scienceFiction => l10n.moodScienceFiction,
+        EveningMood.supernatural => l10n.moodSupernatural,
+        EveningMood.horror => l10n.moodHorror,
+        EveningMood.sports => l10n.moodSports,
       };
 }

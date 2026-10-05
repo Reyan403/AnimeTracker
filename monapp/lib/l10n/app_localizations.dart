@@ -307,7 +307,7 @@ abstract class AppLocalizations {
   /// No description provided for @eveningMoodLabel.
   ///
   /// In fr, this message translates to:
-  /// **'Mon humeur'**
+  /// **'Mon humeur ou mon genre'**
   String get eveningMoodLabel;
 
   /// No description provided for @moodAny.
@@ -339,6 +339,42 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Mystère'**
   String get moodMystery;
+
+  /// No description provided for @moodRomance.
+  ///
+  /// In fr, this message translates to:
+  /// **'Romance'**
+  String get moodRomance;
+
+  /// No description provided for @moodFantasy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fantastique'**
+  String get moodFantasy;
+
+  /// No description provided for @moodScienceFiction.
+  ///
+  /// In fr, this message translates to:
+  /// **'Science-fiction'**
+  String get moodScienceFiction;
+
+  /// No description provided for @moodSupernatural.
+  ///
+  /// In fr, this message translates to:
+  /// **'Surnaturel'**
+  String get moodSupernatural;
+
+  /// No description provided for @moodHorror.
+  ///
+  /// In fr, this message translates to:
+  /// **'Horreur'**
+  String get moodHorror;
+
+  /// No description provided for @moodSports.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sport'**
+  String get moodSports;
 
   /// No description provided for @eveningSuggestAction.
   ///

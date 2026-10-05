@@ -146,6 +146,7 @@
   "clearTooltip": "Effacer",
   "synopsis": "Synopsis",
   "inBrief": "En bref",
+  "synopsisTranslatedNotice": "Traduit automatiquement de l'anglais.",
   "factFormat": "Format",
   "factStatus": "Statut",
   "factBroadcast": "Diffusion",

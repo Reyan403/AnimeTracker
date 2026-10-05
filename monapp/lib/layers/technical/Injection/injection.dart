@@ -42,15 +42,18 @@ import '../../functional/Catalogue/data/gateways/anime_sheet_gateway_impl.dart';
 import '../../functional/Catalogue/data/stores/preferences_anime_sheet_cache.dart';
 import '../../functional/Catalogue/domain/gateways/anime_sheet_cache.dart';
 import '../../functional/Catalogue/data/gateways/french_synopsis_gateway_impl.dart';
+import '../../functional/Catalogue/data/gateways/mymemory_synopsis_translation_gateway.dart';
 import '../../functional/Catalogue/domain/gateways/anime_catalogue_gateway.dart';
 import '../../functional/Catalogue/domain/gateways/anime_sheet_gateway.dart';
 import '../../functional/Catalogue/domain/gateways/french_synopsis_gateway.dart';
+import '../../functional/Catalogue/domain/gateways/synopsis_translation_gateway.dart';
 import '../../functional/Catalogue/domain/use_cases/browse_catalogue_use_case.dart';
 import '../../functional/Catalogue/domain/use_cases/load_anime_sheet_use_case.dart';
 import '../../functional/Catalogue/presentation/cubit/anime_sheet_cubit.dart';
 import '../../functional/Catalogue/presentation/cubit/catalogue_cubit.dart';
 import '../AniListApi/anilist_client.dart';
 import '../KitsuApi/kitsu_client.dart';
+import '../MyMemoryApi/mymemory_client.dart';
 import '../Preferences/app_preferences.dart';
 import '../TmdbApi/tmdb_client.dart';
 
@@ -99,6 +102,10 @@ Future<void> initializeDependencies() async {
     )
     ..registerLazySingleton<FrenchSynopsisGateway>(
       () => FrenchSynopsisGatewayImpl(getIt()),
+    )
+    ..registerLazySingleton<MyMemoryClient>(() => MyMemoryClient(getIt()))
+    ..registerLazySingleton<SynopsisTranslationGateway>(
+      () => MyMemorySynopsisTranslationGateway(getIt()),
     )
     ..registerLazySingleton<AnimeCatalogueGateway>(
       () => AnimeCatalogueGatewayImpl(getIt()),
@@ -156,6 +163,7 @@ Future<void> initializeDependencies() async {
       () => LoadAnimeSheetUseCase(
         getIt<AnimeSheetGateway>(),
         getIt<FrenchSynopsisGateway>(),
+        getIt<SynopsisTranslationGateway>(),
         getIt<AnimeSheetCache>(),
       ),
     )

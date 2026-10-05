@@ -383,6 +383,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get inBrief => 'En bref';
 
   @override
+  String get synopsisTranslatedNotice =>
+      'Traduit automatiquement de l\'anglais.';
+
+  @override
   String get factFormat => 'Format';
 
   @override

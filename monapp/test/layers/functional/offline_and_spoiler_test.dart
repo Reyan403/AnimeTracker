@@ -14,6 +14,7 @@ import 'package:monapp/layers/functional/Catalogue/domain/entities/anime_sheet.d
 import 'package:monapp/layers/functional/Catalogue/domain/gateways/anime_catalogue_gateway.dart';
 import 'package:monapp/layers/functional/Catalogue/domain/gateways/anime_sheet_gateway.dart';
 import 'package:monapp/layers/functional/Catalogue/domain/gateways/french_synopsis_gateway.dart';
+import 'package:monapp/layers/functional/Catalogue/domain/gateways/synopsis_translation_gateway.dart';
 import 'package:monapp/layers/functional/Catalogue/domain/use_cases/load_anime_sheet_use_case.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_sheet_cubit.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_sheet_state.dart';
@@ -68,6 +69,15 @@ class FakeFrenchGateway implements FrenchSynopsisGateway {
   Future<String?> findFor(String title) async => synopsis;
 }
 
+class FakeTranslationGateway implements SynopsisTranslationGateway {
+  FakeTranslationGateway([this.translation]);
+
+  final String? translation;
+
+  @override
+  Future<String?> translateToFrench(String text) async => translation;
+}
+
 class FakeSettingsGateway implements SettingsGateway {
   FakeSettingsGateway({this.isSpoilerGuardEnabled = true});
 
@@ -95,6 +105,7 @@ AnimeSheetCubit sheetCubit({
     LoadAnimeSheetUseCase(
       gateway ?? FakeSheetGateway(),
       FakeFrenchGateway(),
+      FakeTranslationGateway(),
       FakeSheetCache(),
     ),
     FindWatchStatusUseCase(watchlist),
@@ -159,7 +170,12 @@ void main() {
       FakeSheetCache cache, {
       String? french,
     }) =>
-        LoadAnimeSheetUseCase(gateway, FakeFrenchGateway(french), cache);
+        LoadAnimeSheetUseCase(
+          gateway,
+          FakeFrenchGateway(french),
+          FakeTranslationGateway(),
+          cache,
+        );
 
     test('une fiche chargée est enregistrée avec son synopsis français',
         () async {

@@ -736,6 +736,12 @@ abstract class AppLocalizations {
   /// **'En bref'**
   String get inBrief;
 
+  /// No description provided for @synopsisTranslatedNotice.
+  ///
+  /// In fr, this message translates to:
+  /// **'Traduit automatiquement de l\'anglais.'**
+  String get synopsisTranslatedNotice;
+
   /// No description provided for @factFormat.
   ///
   /// In fr, this message translates to:

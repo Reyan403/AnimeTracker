@@ -4,6 +4,7 @@ import '../../../../../l10n/app_localizations.dart';
 import '../../../../technical/Theme/app_spacing.dart';
 import '../../../../technical/Theme/widgets/anime_poster.dart';
 import '../../../../technical/Theme/widgets/content_width.dart';
+import '../../../../technical/Theme/widgets/genre_tag.dart';
 import '../../../../technical/Theme/widgets/offline_notice.dart';
 import '../../domain/entities/anime_sheet.dart';
 import 'anime_sheet_cover.dart';
@@ -77,6 +78,13 @@ class AnimeSheetBody extends StatelessWidget {
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
+                  if (sheet.isSynopsisTranslated && !isSynopsisHidden) ...[
+                    const SizedBox(height: AppSpacing.sm),
+                    GenreTag(
+                      label: l10n.synopsisTranslatedNotice,
+                      icon: Icons.translate,
+                    ),
+                  ],
                   const SizedBox(height: AppSpacing.xl),
                 ],
                 Text(l10n.inBrief, style: theme.textTheme.titleMedium),

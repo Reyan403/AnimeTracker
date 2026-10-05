@@ -31,10 +31,12 @@ class GenreTag extends StatelessWidget {
               Icon(symbol, size: 14, color: scheme.onSurfaceVariant),
               const SizedBox(width: AppSpacing.xs),
             ],
-            Text(
-              label,
-              style: theme.textTheme.labelMedium?.copyWith(
-                color: scheme.onSurfaceVariant,
+            Flexible(
+              child: Text(
+                label,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                ),
               ),
             ),
           ],

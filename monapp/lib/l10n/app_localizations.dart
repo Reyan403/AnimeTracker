@@ -1090,11 +1090,17 @@ abstract class AppLocalizations {
   /// **'Prochain booster dans'**
   String get dexBoosterWaitTitle;
 
-  /// No description provided for @dexBoosterWaitHint.
+  /// No description provided for @dexComeBackInHours.
   ///
   /// In fr, this message translates to:
-  /// **'Reviens demain pour 5 nouvelles cartes.'**
-  String get dexBoosterWaitHint;
+  /// **'Reviens dans {hours} h pour 5 nouvelles cartes.'**
+  String dexComeBackInHours(int hours);
+
+  /// No description provided for @dexComeBackInMinutes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Reviens dans {minutes} min pour 5 nouvelles cartes.'**
+  String dexComeBackInMinutes(int minutes);
 
   /// No description provided for @dexEmptyTitle.
   ///

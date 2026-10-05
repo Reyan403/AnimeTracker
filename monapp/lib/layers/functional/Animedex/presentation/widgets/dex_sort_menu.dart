@@ -39,20 +39,25 @@ class DexSortMenu extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
           border: Border.all(color: AppPalette.of(context).ink, width: 2.5),
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.md,
-            vertical: AppSpacing.sm + 2,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            minHeight: AppSpacing.minTouchTarget,
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.sort_rounded, size: 20),
-              const SizedBox(width: AppSpacing.sm),
-              Text(sort.label(l10n), style: theme.textTheme.labelLarge),
-              const SizedBox(width: AppSpacing.xs),
-              const Icon(Icons.arrow_drop_down_rounded),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.md,
+              vertical: AppSpacing.sm,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.sort_rounded, size: 20),
+                const SizedBox(width: AppSpacing.sm),
+                Text(sort.label(l10n), style: theme.textTheme.labelLarge),
+                const SizedBox(width: AppSpacing.xs),
+                const Icon(Icons.arrow_drop_down_rounded),
+              ],
+            ),
           ),
         ),
       ),

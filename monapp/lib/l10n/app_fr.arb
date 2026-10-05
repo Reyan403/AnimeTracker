@@ -223,7 +223,14 @@
   "dexBoosterReadyHint": "5 cartes de personnages à découvrir.",
   "dexBoosterOpen": "Ouvrir",
   "dexBoosterWaitTitle": "Prochain booster dans",
-  "dexBoosterWaitHint": "Reviens demain pour 5 nouvelles cartes.",
+  "dexComeBackInHours": "Reviens dans {hours} h pour 5 nouvelles cartes.",
+  "@dexComeBackInHours": {
+    "placeholders": {"hours": {"type": "int"}}
+  },
+  "dexComeBackInMinutes": "Reviens dans {minutes} min pour 5 nouvelles cartes.",
+  "@dexComeBackInMinutes": {
+    "placeholders": {"minutes": {"type": "int"}}
+  },
   "dexEmptyTitle": "Ta collection est vide",
   "dexEmptyHint": "Ouvre ton premier booster pour recevoir 5 cartes de personnages.",
   "dexEmptyWaitHint": "Ton prochain booster arrive bientôt.",

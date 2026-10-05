@@ -5,6 +5,7 @@ import '../../../../technical/Theme/app_palette.dart';
 import '../../../../technical/Theme/app_spacing.dart';
 import '../../../../technical/Theme/widgets/pop_card.dart';
 import '../../domain/entities/booster_availability.dart';
+import 'comeback_hint.dart';
 import 'countdown_text.dart';
 
 class BoosterBanner extends StatelessWidget {
@@ -93,8 +94,9 @@ class BoosterBanner extends StatelessWidget {
               ),
             ] else ...[
               const SizedBox(height: AppSpacing.xs),
-              Text(
-                l10n.dexBoosterWaitHint,
+              ComebackHint(
+                target: availability.nextAt,
+                now: now,
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),

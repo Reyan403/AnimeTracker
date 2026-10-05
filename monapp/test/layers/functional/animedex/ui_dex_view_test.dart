@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:monapp/layers/functional/Animedex/domain/entities/card_rarity.dart';
 import 'package:monapp/layers/functional/Animedex/presentation/cubit/dex_state.dart';
+import 'package:monapp/layers/functional/Animedex/presentation/widgets/comeback_hint.dart';
 import 'package:monapp/layers/functional/Animedex/presentation/widgets/countdown_text.dart';
 import 'package:monapp/layers/functional/Animedex/presentation/widgets/dex_card_tile.dart';
 
@@ -109,6 +110,49 @@ void main() {
     });
   });
 
+  group('ComebackHint', () {
+    testWidgets('heures arrondies au supérieur puis minutes sous 1 h', (
+      tester,
+    ) async {
+      var current = fixedNow;
+
+      await pumpApp(
+        tester,
+        ComebackHint(
+          target: fixedNow.add(const Duration(hours: 7, minutes: 10)),
+          now: () => current,
+        ),
+        settle: false,
+      );
+      expect(
+        find.text('Reviens dans 8 h pour 5 nouvelles cartes.'),
+        findsOneWidget,
+      );
+
+      current = fixedNow.add(const Duration(hours: 4, minutes: 10));
+      await tester.pump(const Duration(seconds: 1));
+      expect(
+        find.text('Reviens dans 3 h pour 5 nouvelles cartes.'),
+        findsOneWidget,
+      );
+
+      current = fixedNow.add(const Duration(hours: 6, minutes: 45));
+      await tester.pump(const Duration(seconds: 1));
+      expect(
+        find.text('Reviens dans 25 min pour 5 nouvelles cartes.'),
+        findsOneWidget,
+      );
+
+      current = fixedNow.add(const Duration(hours: 7, minutes: 10, seconds: 5));
+      await tester.pump(const Duration(seconds: 1));
+      expect(
+        find.text('Reviens dans 1 min pour 5 nouvelles cartes.'),
+        findsOneWidget,
+      );
+      await teardown(tester);
+    });
+  });
+
   group('AnimedexScaffold, onglet Booster', () {
     testWidgets('titre, onglets et dernières cartes obtenues', (tester) async {
       await pumpDex(
@@ -141,6 +185,10 @@ void main() {
 
       expect(find.text('Prochain booster dans'), findsOneWidget);
       expect(find.text('03:29:45'), findsOneWidget);
+      expect(
+        find.text('Reviens dans 4 h pour 5 nouvelles cartes.'),
+        findsOneWidget,
+      );
       expect(find.widgetWithText(FilledButton, 'Ouvrir'), findsNothing);
       await teardown(tester);
     });

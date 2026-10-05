@@ -598,7 +598,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dexBoosterWaitTitle => 'Prochain booster dans';
 
   @override
-  String get dexBoosterWaitHint => 'Reviens demain pour 5 nouvelles cartes.';
+  String dexComeBackInHours(int hours) {
+    return 'Reviens dans $hours h pour 5 nouvelles cartes.';
+  }
+
+  @override
+  String dexComeBackInMinutes(int minutes) {
+    return 'Reviens dans $minutes min pour 5 nouvelles cartes.';
+  }
 
   @override
   String get dexEmptyTitle => 'Ta collection est vide';

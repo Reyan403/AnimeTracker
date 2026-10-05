@@ -10,25 +10,30 @@ import 'dex_filter_chip.dart';
 class RarityFilterBar extends StatelessWidget {
   const RarityFilterBar({
     required this.selected,
+    required this.counts,
     required this.onSelected,
     super.key,
   });
 
   final CardRarity? selected;
+  final Map<CardRarity, int> counts;
   final ValueChanged<CardRarity?> onSelected;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final palette = AppPalette.of(context);
+    final total = counts.values.fold<int>(0, (sum, count) => sum + count);
 
     return Wrap(
-      spacing: AppSpacing.sm,
-      runSpacing: AppSpacing.sm,
+      spacing: AppSpacing.md,
+      runSpacing: AppSpacing.md,
       children: [
         DexFilterChip(
           label: l10n.dexFilterAll,
           tone: Theme.of(context).colorScheme.primary,
+          icon: Icons.auto_awesome_rounded,
+          count: total,
           isSelected: selected == null,
           onTap: () => onSelected(null),
         ),
@@ -36,6 +41,7 @@ class RarityFilterBar extends StatelessWidget {
           DexFilterChip(
             label: rarity.label(l10n),
             tone: rarity.color(palette),
+            count: counts[rarity] ?? 0,
             isSelected: selected == rarity,
             onTap: () => onSelected(rarity),
           ),

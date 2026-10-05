@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../l10n/app_localizations.dart';
 import '../../../../technical/Theme/app_spacing.dart';
+import '../../domain/entities/card_rarity.dart';
 import '../cubit/dex_cubit.dart';
 import '../cubit/dex_state.dart';
 import 'collection_summary.dart';
@@ -35,6 +36,10 @@ class CollectionControls extends StatelessWidget {
         const SizedBox(height: AppSpacing.lg),
         RarityFilterBar(
           selected: filter.rarity,
+          counts: {
+            for (final rarity in CardRarity.values)
+              rarity: state.countOf(rarity),
+          },
           onSelected: cubit.selectRarity,
         ),
         const SizedBox(height: AppSpacing.lg),

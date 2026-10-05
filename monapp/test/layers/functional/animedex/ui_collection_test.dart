@@ -86,6 +86,32 @@ void main() {
       await teardown(tester);
     });
 
+    for (final width in [375.0, 1200.0]) {
+      testWidgets('pastilles compactes sur une rangée à ${width.toInt()} px', (
+        tester,
+      ) async {
+        final dex = dexCubitOf(collection: MemoryCollection(sampleCollection));
+        await pumpDex(tester, dex, size: Size(width, 1800));
+        await tester.tap(find.text('Collection'));
+        await tester.pump(const Duration(seconds: 1));
+
+        final chips = tester.widgetList<DexFilterChip>(
+          find.byType(DexFilterChip),
+        );
+        expect(chips, hasLength(5));
+        expect(chips.first.label, 'Toutes');
+        expect(chips.first.count, 5);
+
+        for (final chip in find.byType(DexFilterChip).evaluate()) {
+          final size = tester.getSize(find.byWidget(chip.widget));
+          expect(size.width, lessThan(width * 0.7));
+          expect(size.height, lessThan(80));
+        }
+        expect(find.widgetWithText(DexFilterChip, 'Rare'), findsOneWidget);
+        await teardown(tester);
+      });
+    }
+
     testWidgets('le menu de tri réordonne la grille', (tester) async {
       final cubit = await pumpCollection(tester);
 

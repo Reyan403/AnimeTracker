@@ -383,6 +383,24 @@ class AppLocalizationsFr extends AppLocalizations {
   String get inBrief => 'En bref';
 
   @override
+  String get extrasTrailer => 'Bande-annonce';
+
+  @override
+  String get extrasWatchOn => 'Où regarder';
+
+  @override
+  String get extrasRelated => 'Suites et préquelles';
+
+  @override
+  String get relationSequel => 'Suite';
+
+  @override
+  String get relationPrequel => 'Préquelle';
+
+  @override
+  String get extrasLinkFailed => 'Impossible d\'ouvrir ce lien.';
+
+  @override
   String get synopsisTranslatedNotice =>
       'Traduit automatiquement de l\'anglais.';
 

@@ -17,6 +17,7 @@ class AnimeSheetBody extends StatelessWidget {
     required this.heroTag,
     this.isSynopsisHidden = false,
     this.onRevealSynopsis,
+    this.extras,
     super.key,
   });
 
@@ -24,6 +25,7 @@ class AnimeSheetBody extends StatelessWidget {
   final String heroTag;
   final bool isSynopsisHidden;
   final VoidCallback? onRevealSynopsis;
+  final Widget? extras;
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +92,10 @@ class AnimeSheetBody extends StatelessWidget {
                 Text(l10n.inBrief, style: theme.textTheme.titleMedium),
                 const SizedBox(height: AppSpacing.sm),
                 AnimeSheetFacts(sheet: sheet),
+                if (extras != null) ...[
+                  const SizedBox(height: AppSpacing.xl),
+                  extras!,
+                ],
               ],
             ),
           ),

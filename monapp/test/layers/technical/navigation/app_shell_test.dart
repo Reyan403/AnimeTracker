@@ -9,6 +9,8 @@ import 'package:monapp/layers/functional/Anime/presentation/cubit/watchlist_cubi
 import 'package:monapp/layers/functional/Anime/presentation/cubit/watchlist_state.dart';
 import 'package:monapp/layers/functional/Catalogue/domain/entities/anime_sheet.dart';
 import 'package:monapp/layers/functional/Catalogue/domain/entities/catalogue_anime.dart';
+import 'package:monapp/layers/functional/Catalogue/domain/entities/anime_extras.dart';
+import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_extras_cubit.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_sheet_cubit.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_sheet_state.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/catalogue_cubit.dart';
@@ -53,6 +55,21 @@ class FakeWatchlistCubit extends Cubit<WatchlistState>
   @override
   void selectStatus(WatchStatus status) =>
       emit(state.copyWith(selected: status));
+}
+
+class FakeAnimeExtrasCubit extends Cubit<AnimeExtrasState>
+    implements AnimeExtrasCubit {
+  FakeAnimeExtrasCubit()
+      : super(const AnimeExtrasState(status: AnimeExtrasStatus.ready));
+
+  @override
+  Future<void> load(int animeId) async {}
+
+  @override
+  Future<void> openTrailer(String youtubeVideoId) async {}
+
+  @override
+  Future<void> openStreaming(StreamingLink link) async {}
 }
 
 class FakeSettingsCubit extends Cubit<SettingsState> implements SettingsCubit {
@@ -170,6 +187,7 @@ void main() {
   setUp(() {
     getIt
       ..registerFactory<WatchlistCubit>(FakeWatchlistCubit.new)
+      ..registerFactory<AnimeExtrasCubit>(FakeAnimeExtrasCubit.new)
       ..registerFactory<SettingsCubit>(FakeSettingsCubit.new)
       ..registerFactory<StatsCubit>(FakeStatsCubit.new)
       ..registerFactory<RecommendationsCubit>(FakeRecommendationsCubit.new)

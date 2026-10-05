@@ -22,6 +22,7 @@ class AnimeSheet extends Equatable {
     this.coverUrl,
     this.isCached = false,
     this.isSynopsisTranslated = false,
+    this.trailerId,
   });
 
   final int id;
@@ -44,6 +45,7 @@ class AnimeSheet extends Equatable {
   final String? coverUrl;
   final bool isCached;
   final bool isSynopsisTranslated;
+  final String? trailerId;
 
   AnimeSheet withSynopsis(String synopsis) => _copy(synopsis: synopsis);
 
@@ -78,6 +80,7 @@ class AnimeSheet extends Equatable {
         coverUrl: coverUrl,
         isCached: isCached ?? this.isCached,
         isSynopsisTranslated: isSynopsisTranslated ?? this.isSynopsisTranslated,
+        trailerId: trailerId,
       );
 
   @override
@@ -102,5 +105,6 @@ class AnimeSheet extends Equatable {
         coverUrl,
         isCached,
         isSynopsisTranslated,
+        trailerId,
       ];
 }

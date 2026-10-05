@@ -41,6 +41,7 @@ abstract final class AnimeSheetDto {
       ageRating: _ageRatings[attributes['ageRating']],
       posterUrl: CatalogueAnimeDto.posterOf(attributes),
       coverUrl: _coverOf(attributes),
+      trailerId: _textOf(attributes['youtubeVideoId']),
     );
   }
 

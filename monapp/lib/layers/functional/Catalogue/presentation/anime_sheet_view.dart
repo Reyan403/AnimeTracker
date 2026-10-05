@@ -8,6 +8,8 @@ import '../../../technical/Theme/widgets/app_backdrop.dart';
 import '../../../technical/Theme/widgets/plaque_row_skeleton.dart';
 import 'cubit/anime_sheet_cubit.dart';
 import 'cubit/anime_sheet_state.dart';
+import 'anime_sheet_route.dart';
+import 'widgets/anime_extras_section.dart';
 import 'widgets/anime_sheet_body.dart';
 import 'widgets/catalogue_error.dart';
 
@@ -75,6 +77,16 @@ class AnimeSheetScaffold extends StatelessWidget {
               heroTag: heroTag,
               isSynopsisHidden: state.isSynopsisHidden,
               onRevealSynopsis: cubit.revealSynopsis,
+              extras: AnimeExtrasSection(
+                animeId: state.sheet!.id,
+                trailerId: state.sheet!.trailerId,
+                onRelatedSelected: (id, title) => openAnimeSheet(
+                  context,
+                  animeId: id,
+                  title: title,
+                  heroTag: 'related-$id',
+                ),
+              ),
             ),
           },
         ),

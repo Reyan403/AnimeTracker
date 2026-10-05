@@ -736,6 +736,42 @@ abstract class AppLocalizations {
   /// **'En bref'**
   String get inBrief;
 
+  /// No description provided for @extrasTrailer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bande-annonce'**
+  String get extrasTrailer;
+
+  /// No description provided for @extrasWatchOn.
+  ///
+  /// In fr, this message translates to:
+  /// **'Où regarder'**
+  String get extrasWatchOn;
+
+  /// No description provided for @extrasRelated.
+  ///
+  /// In fr, this message translates to:
+  /// **'Suites et préquelles'**
+  String get extrasRelated;
+
+  /// No description provided for @relationSequel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Suite'**
+  String get relationSequel;
+
+  /// No description provided for @relationPrequel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Préquelle'**
+  String get relationPrequel;
+
+  /// No description provided for @extrasLinkFailed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible d\'ouvrir ce lien.'**
+  String get extrasLinkFailed;
+
   /// No description provided for @synopsisTranslatedNotice.
   ///
   /// In fr, this message translates to:

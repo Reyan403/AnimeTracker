@@ -21,6 +21,7 @@ abstract final class AnimeSheetCacheDto {
         'posterUrl': sheet.posterUrl,
         'coverUrl': sheet.coverUrl,
         'isSynopsisTranslated': sheet.isSynopsisTranslated,
+        'trailerId': sheet.trailerId,
       };
 
   static AnimeSheet fromJson(Map<String, dynamic> json) => AnimeSheet(
@@ -43,6 +44,7 @@ abstract final class AnimeSheetCacheDto {
         posterUrl: json['posterUrl'] as String?,
         coverUrl: json['coverUrl'] as String?,
         isSynopsisTranslated: json['isSynopsisTranslated'] as bool? ?? false,
+        trailerId: json['trailerId'] as String?,
         isCached: true,
       );
 }

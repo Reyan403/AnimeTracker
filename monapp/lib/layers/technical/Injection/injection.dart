@@ -42,6 +42,13 @@ import '../../functional/Catalogue/data/gateways/anime_sheet_gateway_impl.dart';
 import '../../functional/Catalogue/data/stores/preferences_anime_sheet_cache.dart';
 import '../../functional/Catalogue/domain/gateways/anime_sheet_cache.dart';
 import '../../functional/Catalogue/data/gateways/french_synopsis_gateway_impl.dart';
+import '../../functional/Catalogue/data/gateways/kitsu_anime_extras_gateway.dart';
+import '../../functional/Catalogue/data/gateways/url_launcher_link_opener.dart';
+import '../../functional/Catalogue/domain/gateways/anime_extras_gateway.dart';
+import '../../functional/Catalogue/domain/gateways/link_opener_gateway.dart';
+import '../../functional/Catalogue/domain/use_cases/load_anime_extras_use_case.dart';
+import '../../functional/Catalogue/domain/use_cases/open_external_link_use_case.dart';
+import '../../functional/Catalogue/presentation/cubit/anime_extras_cubit.dart';
 import '../../functional/Catalogue/data/gateways/mymemory_synopsis_translation_gateway.dart';
 import '../../functional/Catalogue/domain/gateways/anime_catalogue_gateway.dart';
 import '../../functional/Catalogue/domain/gateways/anime_sheet_gateway.dart';
@@ -102,6 +109,16 @@ Future<void> initializeDependencies() async {
     )
     ..registerLazySingleton<FrenchSynopsisGateway>(
       () => FrenchSynopsisGatewayImpl(getIt()),
+    )
+    ..registerLazySingleton<AnimeExtrasGateway>(
+      () => KitsuAnimeExtrasGateway(getIt()),
+    )
+    ..registerLazySingleton<LinkOpenerGateway>(UrlLauncherLinkOpener.new)
+    ..registerLazySingleton<LoadAnimeExtrasUseCase>(
+      () => LoadAnimeExtrasUseCase(getIt<AnimeExtrasGateway>()),
+    )
+    ..registerLazySingleton<OpenExternalLinkUseCase>(
+      () => OpenExternalLinkUseCase(getIt<LinkOpenerGateway>()),
     )
     ..registerLazySingleton<MyMemoryClient>(() => MyMemoryClient(getIt()))
     ..registerLazySingleton<SynopsisTranslationGateway>(
@@ -200,6 +217,12 @@ Future<void> initializeDependencies() async {
       () => EveningCubit(
         getIt<SuggestEveningWatchUseCase>(),
         getIt<AddToWatchlistUseCase>(),
+      ),
+    )
+    ..registerFactory<AnimeExtrasCubit>(
+      () => AnimeExtrasCubit(
+        getIt<LoadAnimeExtrasUseCase>(),
+        getIt<OpenExternalLinkUseCase>(),
       ),
     )
     ..registerFactory<AgendaCubit>(

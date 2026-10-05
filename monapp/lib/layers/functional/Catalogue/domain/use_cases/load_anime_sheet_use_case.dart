@@ -18,13 +18,11 @@ class LoadAnimeSheetUseCase {
   final SynopsisTranslationGateway _translation;
   final AnimeSheetCache _cache;
 
-  Future<AnimeSheet> call(int id) async {
+  Stream<AnimeSheet> call(int id) async* {
+    final AnimeSheet sheet;
+
     try {
-      final complete = await _inFrench(await _sheets.findById(id));
-
-      _cache.save(complete);
-
-      return complete;
+      sheet = await _sheets.findById(id);
     } on CatalogueUnavailableException {
       final cached = _cache.find(id);
 
@@ -32,7 +30,30 @@ class LoadAnimeSheetUseCase {
         rethrow;
       }
 
-      return cached;
+      yield cached;
+
+      return;
+    }
+
+    final translated = _cache.find(id)?.synopsis;
+
+    if (translated != null && _cache.find(id)!.isSynopsisTranslated) {
+      final restored = sheet.withTranslatedSynopsis(translated);
+
+      _cache.save(restored);
+      yield restored;
+
+      return;
+    }
+
+    yield sheet;
+
+    final complete = await _inFrench(sheet);
+
+    _cache.save(complete);
+
+    if (complete != sheet) {
+      yield complete;
     }
   }
 
@@ -49,11 +70,11 @@ class LoadAnimeSheetUseCase {
       return sheet;
     }
 
-    final translated = await _translationOf(english);
+    final translation = await _translationOf(english);
 
-    return translated == null
+    return translation == null
         ? sheet
-        : sheet.withTranslatedSynopsis(translated);
+        : sheet.withTranslatedSynopsis(translation);
   }
 
   Future<String?> _frenchSynopsisOf(String title) async {

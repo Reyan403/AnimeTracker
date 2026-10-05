@@ -17,38 +17,37 @@ class AnimeSheetCubit extends Cubit<AnimeSheetState> {
   final FindWatchStatusUseCase _findWatchStatus;
   final ReadSpoilerGuardUseCase _readSpoilerGuard;
 
+  bool _isRevealed = false;
+
   Future<void> load(int id) async {
+    _isRevealed = false;
     emit(const AnimeSheetState());
 
     try {
-      final sheet = await _loadSheet(id);
+      await for (final sheet in _loadSheet(id)) {
+        if (isClosed) {
+          return;
+        }
 
-      if (isClosed) {
-        return;
+        emit(
+          AnimeSheetState(
+            status: AnimeSheetStatus.success,
+            sheet: sheet,
+            isSynopsisHidden: !_isRevealed && _shouldHideSynopsis(id),
+          ),
+        );
       }
-
-      emit(
-        AnimeSheetState(
-          status: AnimeSheetStatus.success,
-          sheet: sheet,
-          isSynopsisHidden: _shouldHideSynopsis(id),
-        ),
-      );
     } catch (_) {
-      if (isClosed) {
-        return;
+      if (!isClosed && state.sheet == null) {
+        emit(const AnimeSheetState(status: AnimeSheetStatus.failure));
       }
-
-      emit(const AnimeSheetState(status: AnimeSheetStatus.failure));
     }
   }
 
-  void revealSynopsis() => emit(
-        AnimeSheetState(
-          status: state.status,
-          sheet: state.sheet,
-        ),
-      );
+  void revealSynopsis() {
+    _isRevealed = true;
+    emit(AnimeSheetState(status: state.status, sheet: state.sheet));
+  }
 
   bool _shouldHideSynopsis(int id) =>
       _readSpoilerGuard() && _findWatchStatus(id) != WatchStatus.completed;

@@ -22,7 +22,8 @@ Sur la fiche d'un anime, le synopsis s'affiche en français. S'il n'existe pas d
 2. **Given** aucun synopsis français officiel, **When** la fiche s'ouvre, **Then** le synopsis anglais est traduit et la mention s'affiche.
 3. **Given** une traduction impossible (quota ou réseau), **When** la fiche s'ouvre, **Then** le synopsis anglais reste affiché sans erreur.
 4. **Given** une fiche déjà traduite, **When** elle est rouverte, même hors ligne, **Then** la traduction enregistrée est réutilisée sans nouvel appel.
-5. **Given** un synopsis flouté par l'anti-spoil, **When** la fiche s'ouvre, **Then** la mention n'apparaît qu'une fois le synopsis révélé.
+5. **Given** une fiche en cours de traduction, **When** elle s'ouvre, **Then** elle s'affiche d'abord avec le synopsis anglais, puis le synopsis traduit le remplace sans que l'écran ne se recharge.
+6. **Given** un synopsis flouté par l'anti-spoil, **When** la fiche s'ouvre, **Then** la mention n'apparaît qu'une fois le synopsis révélé.
 
 ### Edge Cases
 
@@ -39,6 +40,8 @@ Sur la fiche d'un anime, le synopsis s'affiche en français. S'il n'existe pas d
 - **FR-003**: Une traduction automatique MUST être signalée à l'utilisateur.
 - **FR-004**: Un échec de traduction MUST NOT empêcher l'affichage de la fiche.
 - **FR-005**: La traduction MUST être enregistrée avec la fiche.
+- **FR-006**: La fiche MUST s'afficher aussitôt ses données principales reçues ; le synopsis français ou traduit la met à jour ensuite, sans la bloquer.
+- **FR-007**: Les morceaux d'une traduction MUST être demandés en parallèle.
 
 ### Key Entities
 

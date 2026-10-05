@@ -116,6 +116,9 @@ AnimeSheetCubit sheetCubit({
   return cubit;
 }
 
+Future<AnimeSheet> lastOf(Stream<AnimeSheet> sheets) async =>
+    (await sheets.toList()).last;
+
 void main() {
   group('hors ligne : détails de la liste', () {
     const entries = [
@@ -181,21 +184,21 @@ void main() {
         () async {
       final cache = FakeSheetCache();
 
-      final loaded = await useCase(
-        FakeSheetGateway(),
-        cache,
-        french: 'Résumé français',
-      )(1);
+      final loaded = await lastOf(
+        useCase(FakeSheetGateway(), cache, french: 'Résumé français')(1),
+      );
 
       expect(loaded.isCached, isFalse);
       expect(cache.stored[1]?.synopsis, 'Résumé français');
     });
 
     test('un échec réseau renvoie la fiche enregistrée', () async {
-      final loaded = await useCase(
-        FakeSheetGateway(fails: true),
-        FakeSheetCache({1: sheet}),
-      )(1);
+      final loaded = await lastOf(
+        useCase(
+          FakeSheetGateway(fails: true),
+          FakeSheetCache({1: sheet}),
+        )(1),
+      );
 
       expect(loaded.isCached, isTrue);
       expect(loaded.title, 'Monster');
@@ -203,7 +206,7 @@ void main() {
 
     test('un échec sans fiche enregistrée relance l erreur', () {
       expect(
-        useCase(FakeSheetGateway(fails: true), FakeSheetCache())(1),
+        useCase(FakeSheetGateway(fails: true), FakeSheetCache())(1).toList(),
         throwsA(isA<CatalogueUnavailableException>()),
       );
     });

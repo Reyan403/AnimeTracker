@@ -4,8 +4,12 @@ import 'package:http/http.dart' as http;
 import '../../functional/Agenda/domain/use_cases/load_release_agenda_use_case.dart';
 import '../../functional/Agenda/presentation/cubit/agenda_cubit.dart';
 import '../../functional/Anime/data/gateways/anime_details_gateway_impl.dart';
+import '../../functional/Discover/data/gateways/kitsu_recommendation_gateway.dart';
+import '../../functional/Discover/domain/gateways/recommendation_gateway.dart';
+import '../../functional/Discover/domain/use_cases/recommend_anime_use_case.dart';
 import '../../functional/Discover/domain/use_cases/suggest_evening_watch_use_case.dart';
 import '../../functional/Discover/presentation/cubit/evening_cubit.dart';
+import '../../functional/Discover/presentation/cubit/recommendations_cubit.dart';
 import '../../functional/Anime/data/gateways/local_watchlist_gateway.dart';
 import '../../functional/Anime/data/my_watchlist.dart';
 import '../../functional/Anime/data/stores/preferences_watchlist_store.dart';
@@ -93,6 +97,15 @@ Future<void> initializeDependencies() async {
     ..registerLazySingleton<LoadReleaseAgendaUseCase>(
       () => LoadReleaseAgendaUseCase(getIt<LoadWatchlistUseCase>()),
     )
+    ..registerLazySingleton<RecommendationGateway>(
+      () => KitsuRecommendationGateway(getIt()),
+    )
+    ..registerLazySingleton<RecommendAnimeUseCase>(
+      () => RecommendAnimeUseCase(
+        getIt<LoadWatchlistUseCase>(),
+        getIt<RecommendationGateway>(),
+      ),
+    )
     ..registerLazySingleton<SuggestEveningWatchUseCase>(
       () => SuggestEveningWatchUseCase(getIt<LoadWatchlistUseCase>()),
     )
@@ -111,6 +124,12 @@ Future<void> initializeDependencies() async {
         getIt<ChangeWatchStatusUseCase>(),
         getIt<WatchNextEpisodeUseCase>(),
         getIt<WatchPreviousEpisodeUseCase>(),
+      ),
+    )
+    ..registerFactory<RecommendationsCubit>(
+      () => RecommendationsCubit(
+        getIt<RecommendAnimeUseCase>(),
+        getIt<AddToWatchlistUseCase>(),
       ),
     )
     ..registerFactory<EveningCubit>(

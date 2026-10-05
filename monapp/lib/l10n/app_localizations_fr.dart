@@ -262,6 +262,29 @@ class AppLocalizationsFr extends AppLocalizations {
   String get genreMecha => 'Mecha';
 
   @override
+  String get recoTitle => 'Pour toi';
+
+  @override
+  String recoBecauseOne(String first) {
+    return 'Parce que vous aimez $first';
+  }
+
+  @override
+  String recoBecauseTwo(String first, String second) {
+    return 'Parce que vous aimez $first et $second';
+  }
+
+  @override
+  String get recoEmpty => 'Pas encore de recommandation.';
+
+  @override
+  String get recoEmptyHint =>
+      'Commencez ou terminez quelques animes pour que l\'application apprenne vos goûts.';
+
+  @override
+  String get recoErrorTitle => 'Impossible de charger les recommandations';
+
+  @override
   String get retry => 'Réessayer';
 
   @override

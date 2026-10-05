@@ -514,6 +514,42 @@ abstract class AppLocalizations {
   /// **'Mecha'**
   String get genreMecha;
 
+  /// No description provided for @recoTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pour toi'**
+  String get recoTitle;
+
+  /// No description provided for @recoBecauseOne.
+  ///
+  /// In fr, this message translates to:
+  /// **'Parce que vous aimez {first}'**
+  String recoBecauseOne(String first);
+
+  /// No description provided for @recoBecauseTwo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Parce que vous aimez {first} et {second}'**
+  String recoBecauseTwo(String first, String second);
+
+  /// No description provided for @recoEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas encore de recommandation.'**
+  String get recoEmpty;
+
+  /// No description provided for @recoEmptyHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commencez ou terminez quelques animes pour que l\'application apprenne vos goûts.'**
+  String get recoEmptyHint;
+
+  /// No description provided for @recoErrorTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de charger les recommandations'**
+  String get recoErrorTitle;
+
   /// No description provided for @retry.
   ///
   /// In fr, this message translates to:

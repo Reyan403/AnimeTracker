@@ -103,6 +103,18 @@
   "genreThriller": "Thriller",
   "genrePsychological": "Psychologique",
   "genreMecha": "Mecha",
+  "recoTitle": "Pour toi",
+  "recoBecauseOne": "Parce que vous aimez {first}",
+  "@recoBecauseOne": {
+    "placeholders": {"first": {"type": "String"}}
+  },
+  "recoBecauseTwo": "Parce que vous aimez {first} et {second}",
+  "@recoBecauseTwo": {
+    "placeholders": {"first": {"type": "String"}, "second": {"type": "String"}}
+  },
+  "recoEmpty": "Pas encore de recommandation.",
+  "recoEmptyHint": "Commencez ou terminez quelques animes pour que l'application apprenne vos goûts.",
+  "recoErrorTitle": "Impossible de charger les recommandations",
   "retry": "Réessayer",
   "serviceUnavailable": "Le service Kitsu ne répond pas pour le moment.",
   "watchlistEmpty": "Aucun animé dans cet onglet.",

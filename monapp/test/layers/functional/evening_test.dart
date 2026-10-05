@@ -3,130 +3,218 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
 import 'package:monapp/l10n/app_localizations.dart';
+import 'package:monapp/layers/functional/Anime/data/gateways/local_watchlist_gateway.dart';
 import 'package:monapp/layers/functional/Anime/data/models/anime_details_dto.dart';
+import 'package:monapp/layers/functional/Anime/domain/entities/anime_genre.dart';
 import 'package:monapp/layers/functional/Anime/domain/entities/watch_status.dart';
 import 'package:monapp/layers/functional/Anime/domain/entities/watchlist_entry.dart';
+import 'package:monapp/layers/functional/Anime/domain/use_cases/add_to_watchlist_use_case.dart';
+import 'package:monapp/layers/functional/Anime/domain/use_cases/find_watch_status_use_case.dart';
 import 'package:monapp/layers/functional/Anime/presentation/anime_genre_label.dart';
+import 'package:monapp/layers/functional/Catalogue/domain/entities/catalogue_anime.dart';
+import 'package:monapp/layers/functional/Discover/data/gateways/kitsu_catalogue_suggestion_gateway.dart';
 import 'package:monapp/layers/functional/Discover/domain/entities/evening_mood.dart';
+import 'package:monapp/layers/functional/Discover/domain/gateways/catalogue_suggestion_gateway.dart';
 import 'package:monapp/layers/functional/Discover/domain/use_cases/suggest_evening_watch_use_case.dart';
 import 'package:monapp/layers/functional/Discover/presentation/cubit/evening_cubit.dart';
 import 'package:monapp/layers/functional/Discover/presentation/cubit/evening_state.dart';
 import 'package:monapp/layers/functional/Discover/presentation/widgets/evening_section.dart';
+import 'package:monapp/layers/technical/KitsuApi/kitsu_client.dart';
 
+import '../../support/fake_watchlist_store.dart';
 import '../../support/pump_app.dart';
 import '../../support/watchlist_fixtures.dart';
 
-const entries = [
-  WatchlistEntry(id: 1, title: 'Comédie courte', status: WatchStatus.toWatch),
-  WatchlistEntry(id: 2, title: 'Action longue', status: WatchStatus.watching),
-  WatchlistEntry(id: 3, title: 'Drame fini', status: WatchStatus.completed),
-  WatchlistEntry(id: 4, title: 'Sans durée', status: WatchStatus.toWatch),
+CatalogueAnime catalogued(int id, {String? title}) => CatalogueAnime(
+      id: id,
+      title: title ?? 'Anime $id',
+      format: 'Série TV',
+      year: 2015,
+      episodeCount: 12,
+    );
+
+CatalogueSuggestion suggestionOf(int id, [List<String> genres = const []]) =>
+    CatalogueSuggestion(
+      anime: catalogued(id),
+      genres: [for (final slug in genres) genre(slug)],
+    );
+
+class FakeSuggestionGateway implements CatalogueSuggestionGateway {
+  FakeSuggestionGateway(this.catalogue, {this.fails = false});
+
+  final List<CatalogueSuggestion?> catalogue;
+  final bool fails;
+  final List<String?> countedGenres = [];
+  final List<String?> searchedGenres = [];
+
+  @override
+  Future<int> countMatching(String? genreSlug) async {
+    countedGenres.add(genreSlug);
+
+    if (fails) {
+      throw const CatalogueSuggestionUnavailableException();
+    }
+
+    return catalogue.length;
+  }
+
+  @override
+  Future<CatalogueSuggestion?> findAt(String? genreSlug, int offset) async {
+    searchedGenres.add(genreSlug);
+
+    return catalogue[offset];
+  }
+}
+
+const watched = [
+  WatchlistEntry(id: 1, title: 'En cours', status: WatchStatus.watching),
+  WatchlistEntry(id: 2, title: 'Fini', status: WatchStatus.completed),
 ];
 
-SuggestEveningWatchUseCase useCase({int seed = 1}) =>
-    SuggestEveningWatchUseCase(
-      watchlistOf(entries, {
-        1: detailsOf(minutes: 12, genres: ['comedy']),
-        2: detailsOf(minutes: 45, genres: ['action']),
-        3: detailsOf(genres: ['drama']),
-        4: detailsOf(minutes: 0, genres: ['mystery']),
-      }),
-      random: Random(seed),
+FindWatchStatusUseCase statusLookup([List<WatchlistEntry> entries = watched]) =>
+    FindWatchStatusUseCase(
+      LocalWatchlistGateway(FakeWatchlistStore(entries), const []),
     );
+
+SuggestEveningWatchUseCase useCaseFor(
+  FakeSuggestionGateway gateway, {
+  int seed = 1,
+}) =>
+    SuggestEveningWatchUseCase(gateway, statusLookup(), random: Random(seed));
+
+List<CatalogueSuggestion> many() => [
+      for (var id = 10; id < 40; id++) suggestionOf(id),
+    ];
 
 void main() {
   group('SuggestEveningWatchUseCase', () {
-    test('filtre par humeur', () async {
-      final suggestion = await useCase()(mood: EveningMood.action);
+    test('tire un anime du catalogue sans filtre de genre', () async {
+      final gateway = FakeSuggestionGateway([suggestionOf(10)]);
 
-      expect(suggestion?.anime.id, 2);
-      expect(suggestion?.matchedGenres.single.slug, 'action');
-      expect(suggestion?.isContinuing, isTrue);
+      final suggestion = await useCaseFor(gateway)(mood: EveningMood.any);
+
+      expect(suggestion?.anime.id, 10);
+      expect(suggestion?.isListed, isFalse);
+      expect(gateway.countedGenres, [null]);
     });
 
-    test(
-      'ne propose rien quand aucun anime ne correspond à l humeur',
-      () async {
-        final suggestion = await useCase()(mood: EveningMood.emotional);
+    test('filtre par un genre de l humeur', () async {
+      final gateway = FakeSuggestionGateway([suggestionOf(10)]);
 
-        expect(suggestion, isNull);
-      },
-    );
+      await useCaseFor(gateway)(mood: EveningMood.action);
 
-    test('propose un anime à voir quand son genre correspond', () async {
-      final suggestion = await useCase()(mood: EveningMood.mystery);
+      expect(
+        EveningMood.action.genreSlugs,
+        contains(gateway.countedGenres.single),
+      );
+    });
 
-      expect(suggestion?.anime.id, 4);
-      expect(suggestion?.isContinuing, isFalse);
+    test('signale les animes déjà dans la liste', () async {
+      final gateway = FakeSuggestionGateway([suggestionOf(1)]);
+
+      final suggestion = await useCaseFor(gateway)(mood: EveningMood.any);
+
+      expect(suggestion?.isListed, isTrue);
     });
 
     test('ne propose jamais un anime terminé', () async {
-      for (var seed = 0; seed < 20; seed++) {
-        final suggestion = await useCase(seed: seed)(mood: EveningMood.any);
+      final gateway =
+          FakeSuggestionGateway([suggestionOf(2), suggestionOf(10)]);
 
-        expect(suggestion?.anime.id, isNot(3));
+      for (var seed = 0; seed < 20; seed++) {
+        final suggestion = await useCaseFor(gateway, seed: seed)(
+          mood: EveningMood.any,
+        );
+
+        expect(suggestion?.anime.id, anyOf(10, isNull));
       }
     });
 
-    test('exclut les suggestions déjà montrées', () async {
-      final suggestion = await useCase()(
-        mood: EveningMood.relaxed,
-        excludedIds: {1},
+    test('exclut les animes déjà montrés', () async {
+      final gateway = FakeSuggestionGateway([suggestionOf(10)]);
+
+      final suggestion = await useCaseFor(gateway)(
+        mood: EveningMood.any,
+        excludedIds: {10},
       );
 
       expect(suggestion, isNull);
     });
 
-    test('préfère statistiquement les animes en cours', () async {
-      var continuing = 0;
+    test('ignore une entrée introuvable', () async {
+      final gateway = FakeSuggestionGateway([null]);
 
-      for (var seed = 0; seed < 300; seed++) {
-        final suggestion = await useCase(seed: seed)(mood: EveningMood.any);
+      expect(await useCaseFor(gateway)(mood: EveningMood.any), isNull);
+    });
 
-        if (suggestion!.isContinuing) {
-          continuing++;
-        }
+    test('un catalogue vide ne donne rien', () async {
+      final gateway = FakeSuggestionGateway(const []);
+
+      expect(await useCaseFor(gateway)(mood: EveningMood.any), isNull);
+    });
+
+    test('mémorise le nombre d animes par genre', () async {
+      final gateway = FakeSuggestionGateway([suggestionOf(10)]);
+      final useCase = useCaseFor(gateway);
+
+      await useCase(mood: EveningMood.any);
+      await useCase(mood: EveningMood.any);
+
+      expect(gateway.countedGenres.length, 1);
+    });
+
+    test('couvre le catalogue de façon aléatoire', () async {
+      final gateway = FakeSuggestionGateway(many());
+      final seen = <int>{};
+
+      for (var seed = 0; seed < 40; seed++) {
+        final suggestion = await useCaseFor(gateway, seed: seed)(
+          mood: EveningMood.any,
+        );
+
+        seen.add(suggestion!.anime.id);
       }
 
-      expect(continuing, greaterThan(300 ~/ 4));
+      expect(seen.length, greaterThan(10));
     });
 
-    test('échoue sans aucun détail', () {
-      final failing = SuggestEveningWatchUseCase(
-        watchlistOf(entries, const {}, fails: true),
-      );
+    test('propage une indisponibilité', () {
+      final gateway = FakeSuggestionGateway(const [], fails: true);
 
       expect(
-        failing(mood: EveningMood.any),
-        throwsA(isA<EveningSuggestionUnavailableException>()),
+        useCaseFor(gateway)(mood: EveningMood.any),
+        throwsA(isA<CatalogueSuggestionUnavailableException>()),
       );
-    });
-
-    test('une liste vide ne donne rien', () async {
-      final empty = SuggestEveningWatchUseCase(watchlistOf(const [], const {}));
-
-      expect(await empty(mood: EveningMood.any), isNull);
-    });
-
-    test('exception lisible', () {
       expect(
-        const EveningSuggestionUnavailableException().toString(),
+        const CatalogueSuggestionUnavailableException().toString(),
         contains('unavailable'),
       );
     });
   });
 
   group('EveningCubit', () {
-    EveningCubit cubit({int seed = 1}) {
-      final created = EveningCubit(useCase(seed: seed));
+    late LocalWatchlistGateway watchlist;
+
+    EveningCubit cubitFor(FakeSuggestionGateway gateway) {
+      watchlist = LocalWatchlistGateway(FakeWatchlistStore(watched), const []);
+      final created = EveningCubit(
+        SuggestEveningWatchUseCase(
+          gateway,
+          FindWatchStatusUseCase(watchlist),
+          random: Random(3),
+        ),
+        AddToWatchlistUseCase(watchlist),
+      );
       addTearDown(created.close);
 
       return created;
     }
 
     test('suggère puis propose une autre idée', () async {
-      final evening = cubit();
+      final evening = cubitFor(FakeSuggestionGateway(many()));
 
       await evening.suggest();
       final first = evening.state.suggestion!.anime.id;
@@ -138,26 +226,24 @@ void main() {
       expect(evening.state.suggestion!.anime.id, isNot(first));
     });
 
-    test('recommence le tirage quand tout a été montré', () async {
-      final evening = cubit()..selectMood(EveningMood.action);
-
-      await evening.suggest();
-      await evening.suggestAnother();
-
-      expect(evening.state.status, EveningStatus.suggested);
-      expect(evening.state.suggestion!.anime.id, 2);
-    });
-
     test('signale l absence de résultat', () async {
-      final evening = cubit()..selectMood(EveningMood.emotional);
+      final evening = cubitFor(FakeSuggestionGateway(const []));
 
       await evening.suggest();
 
       expect(evening.state.status, EveningStatus.none);
     });
 
-    test('changer de filtre efface la suggestion', () async {
-      final evening = cubit();
+    test('signale une erreur', () async {
+      final evening = cubitFor(FakeSuggestionGateway(const [], fails: true));
+
+      await evening.suggest();
+
+      expect(evening.state.status, EveningStatus.failure);
+    });
+
+    test('changer d humeur efface la suggestion', () async {
+      final evening = cubitFor(FakeSuggestionGateway([suggestionOf(10)]));
 
       await evening.suggest();
       evening.selectMood(EveningMood.relaxed);
@@ -167,24 +253,139 @@ void main() {
       expect(evening.state.mood, EveningMood.relaxed);
     });
 
-    test('signale une erreur', () async {
-      final evening = EveningCubit(
-        SuggestEveningWatchUseCase(watchlistOf(entries, const {}, fails: true)),
-      );
-      addTearDown(evening.close);
+    test('ajouter la suggestion l inscrit dans la liste', () async {
+      final evening = cubitFor(FakeSuggestionGateway([suggestionOf(10)]));
 
       await evening.suggest();
+      evening.addSuggestionToWatchlist();
 
-      expect(evening.state.status, EveningStatus.failure);
+      expect(watchlist.entries.map((entry) => entry.id), contains(10));
+      expect(evening.state.suggestion?.isListed, isTrue);
+
+      evening.addSuggestionToWatchlist();
+
+      expect(watchlist.entries.where((entry) => entry.id == 10).length, 1);
+    });
+
+    test('ajouter sans suggestion ne fait rien', () {
+      final evening = cubitFor(FakeSuggestionGateway(const []));
+
+      evening.addSuggestionToWatchlist();
+
+      expect(watchlist.entries.length, watched.length);
+    });
+  });
+
+  group('KitsuCatalogueSuggestionGateway', () {
+    const page = '''
+{
+  "data": [{
+    "id": "77",
+    "attributes": {
+      "canonicalTitle": "Trigun",
+      "subtype": "TV",
+      "startDate": "1998-04-01",
+      "episodeCount": 26
+    },
+    "relationships": {
+      "categories": {"data": [{"type": "categories", "id": "5"}]}
+    }
+  }],
+  "included": [
+    {"type": "categories", "id": "5",
+     "attributes": {"title": "Action", "slug": "action"}}
+  ],
+  "meta": {"count": 321}
+}
+''';
+
+    KitsuCatalogueSuggestionGateway gatewayReplying(
+      http.Response Function(http.Request request) reply, {
+      List<Uri>? seen,
+    }) =>
+        KitsuCatalogueSuggestionGateway(
+          KitsuClient(
+            MockClient((request) async {
+              seen?.add(request.url);
+
+              return reply(request);
+            }),
+          ),
+        );
+
+    test('compte les animes d un genre', () async {
+      final seen = <Uri>[];
+      final gateway =
+          gatewayReplying((_) => http.Response(page, 200), seen: seen);
+
+      expect(await gateway.countMatching('action'), 321);
+      expect(seen.single.query, contains('filter%5Bcategories%5D=action'));
+      expect(seen.single.query, contains('filter%5BuserCount%5D=2000..'));
+    });
+
+    test('compte tout le catalogue sans genre', () async {
+      final seen = <Uri>[];
+      final gateway =
+          gatewayReplying((_) => http.Response(page, 200), seen: seen);
+
+      await gateway.countMatching(null);
+
+      expect(seen.single.query, isNot(contains('categories')));
+    });
+
+    test('lit l anime à une position avec ses genres', () async {
+      final seen = <Uri>[];
+      final gateway =
+          gatewayReplying((_) => http.Response(page, 200), seen: seen);
+
+      final found = await gateway.findAt('action', 42);
+
+      expect(found?.anime.id, 77);
+      expect(found?.anime.title, 'Trigun');
+      expect(found?.genres.single.slug, 'action');
+      expect(seen.single.query, contains('page%5Boffset%5D=42'));
+      expect(seen.single.query, contains('sort=-userCount'));
+    });
+
+    test('renvoie null quand la position est vide', () async {
+      final gateway = gatewayReplying(
+        (_) => http.Response('{"data": [], "meta": {"count": 0}}', 200),
+      );
+
+      expect(await gateway.findAt(null, 5), isNull);
+      expect(await gateway.countMatching(null), 0);
+    });
+
+    test('traduit un échec en indisponibilité', () {
+      final gateway = gatewayReplying((_) => http.Response('', 500));
+
+      expect(
+        gateway.countMatching(null),
+        throwsA(isA<CatalogueSuggestionUnavailableException>()),
+      );
+      expect(
+        gateway.findAt(null, 0),
+        throwsA(isA<CatalogueSuggestionUnavailableException>()),
+      );
     });
   });
 
   group('EveningSection', () {
-    Future<void> pumpSection(
-      WidgetTester tester, {
+    Future<LocalWatchlistGateway> pumpSection(
+      WidgetTester tester,
+      FakeSuggestionGateway gateway, {
       void Function(int, String)? onSelected,
     }) async {
-      final evening = EveningCubit(useCase());
+      final watchlist =
+          LocalWatchlistGateway(FakeWatchlistStore(watched), const []);
+      final evening = EveningCubit(
+        SuggestEveningWatchUseCase(
+          gateway,
+          FindWatchStatusUseCase(watchlist),
+          random: Random(3),
+        ),
+        AddToWatchlistUseCase(watchlist),
+      );
       addTearDown(evening.close);
 
       await pumpApp(
@@ -197,50 +398,96 @@ void main() {
         ),
         size: const Size(500, 1400),
       );
+
+      return watchlist;
     }
 
-    testWidgets('affiche filtres puis suggestion et ouvre la fiche', (
-      tester,
-    ) async {
-      int? opened;
-
-      await pumpSection(tester, onSelected: (id, _) => opened = id);
+    testWidgets('propose seulement l humeur, sans choix de temps',
+        (tester) async {
+      await pumpSection(tester, FakeSuggestionGateway(const []));
 
       expect(find.text('Quoi regarder ce soir ?'), findsOneWidget);
+      expect(find.text('Mon humeur'), findsOneWidget);
+      expect(find.text('Mon temps'), findsNothing);
+    });
 
-      await tester.tap(find.text('Action'));
-      await tester.pump();
+    testWidgets('affiche une suggestion et ouvre la fiche', (tester) async {
+      int? opened;
+
+      await pumpSection(
+        tester,
+        FakeSuggestionGateway([
+          suggestionOf(10, ['action']),
+        ]),
+        onSelected: (id, _) => opened = id,
+      );
+
       await tester.tap(find.text('Surprends-moi'));
       await tester.pumpAndSettle();
 
-      expect(find.text('Action longue'), findsOneWidget);
-      expect(find.text('Vous l\'avez commencé : reprenez-le.'), findsOneWidget);
+      expect(find.text('Anime 10'), findsOneWidget);
+      expect(
+        find.text('Tiré au hasard dans tout le catalogue.'),
+        findsOneWidget,
+      );
 
       await tester.tap(find.text('Voir la fiche'));
 
-      expect(opened, 2);
+      expect(opened, 10);
+    });
+
+    testWidgets('ajoute la suggestion à la liste', (tester) async {
+      final watchlist = await pumpSection(
+        tester,
+        FakeSuggestionGateway([suggestionOf(10)]),
+      );
+
+      await tester.tap(find.text('Surprends-moi'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Ajouter à ma liste'));
+      await tester.pumpAndSettle();
+
+      expect(watchlist.entries.map((entry) => entry.id), contains(10));
+      expect(find.text('Déjà dans votre liste.'), findsOneWidget);
+      expect(find.text('Ajouter à ma liste'), findsNothing);
     });
 
     testWidgets('propose une autre idée', (tester) async {
-      await pumpSection(tester);
+      await pumpSection(tester, FakeSuggestionGateway(many()));
 
       await tester.tap(find.text('Surprends-moi'));
       await tester.pumpAndSettle();
+      final first = tester
+          .widgetList<Text>(find.textContaining('Anime '))
+          .map((text) => text.data)
+          .first;
+
       await tester.tap(find.text('Une autre idée'));
       await tester.pumpAndSettle();
 
-      expect(find.text('Une autre idée'), findsOneWidget);
+      expect(find.text(first!), findsNothing);
     });
 
-    testWidgets('explique quand rien ne correspond', (tester) async {
-      await pumpSection(tester);
+    testWidgets('explique quand rien n est trouvé', (tester) async {
+      await pumpSection(tester, FakeSuggestionGateway(const []));
 
-      await tester.tap(find.text('Émotion'));
-      await tester.pump();
       await tester.tap(find.text('Surprends-moi'));
       await tester.pumpAndSettle();
 
-      expect(find.text('Rien ne correspond dans votre liste.'), findsOneWidget);
+      expect(find.text('Aucun anime trouvé.'), findsOneWidget);
+    });
+
+    testWidgets('affiche l erreur et permet de réessayer', (tester) async {
+      await pumpSection(tester, FakeSuggestionGateway(const [], fails: true));
+
+      await tester.tap(find.text('Surprends-moi'));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text('Impossible de composer une suggestion'),
+        findsOneWidget,
+      );
+      expect(find.text('Réessayer'), findsOneWidget);
     });
   });
 
@@ -301,6 +548,13 @@ void main() {
       ]) {
         expect(genreLabel(l10n, genre(slug)), isNot(slug));
       }
+    });
+
+    test('un genre se compare par ses valeurs', () {
+      expect(
+        const AnimeGenre(slug: 'a', title: 'A'),
+        const AnimeGenre(slug: 'a', title: 'A'),
+      );
     });
   });
 }

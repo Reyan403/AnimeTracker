@@ -92,6 +92,9 @@ class FakeEveningCubit extends Cubit<EveningState> implements EveningCubit {
 
   @override
   Future<void> suggestAnother() async {}
+
+  @override
+  void addSuggestionToWatchlist() {}
 }
 
 class FakeAgendaCubit extends Cubit<AgendaState> implements AgendaCubit {

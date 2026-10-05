@@ -358,28 +358,34 @@ abstract class AppLocalizations {
   /// **'Voir la fiche'**
   String get eveningOpenSheet;
 
-  /// No description provided for @eveningContinuing.
+  /// No description provided for @eveningFromCatalogue.
   ///
   /// In fr, this message translates to:
-  /// **'Vous l\'avez commencé : reprenez-le.'**
-  String get eveningContinuing;
+  /// **'Tiré au hasard dans tout le catalogue.'**
+  String get eveningFromCatalogue;
 
-  /// No description provided for @eveningFromList.
+  /// No description provided for @eveningAlreadyListed.
   ///
   /// In fr, this message translates to:
-  /// **'Dans votre liste « À voir ».'**
-  String get eveningFromList;
+  /// **'Déjà dans votre liste.'**
+  String get eveningAlreadyListed;
+
+  /// No description provided for @eveningAddToList.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter à ma liste'**
+  String get eveningAddToList;
 
   /// No description provided for @eveningNone.
   ///
   /// In fr, this message translates to:
-  /// **'Rien ne correspond dans votre liste.'**
+  /// **'Aucun anime trouvé.'**
   String get eveningNone;
 
   /// No description provided for @eveningNoneHint.
   ///
   /// In fr, this message translates to:
-  /// **'Essayez une autre humeur ou plus de temps.'**
+  /// **'Essayez une autre humeur.'**
   String get eveningNoneHint;
 
   /// No description provided for @eveningErrorTitle.

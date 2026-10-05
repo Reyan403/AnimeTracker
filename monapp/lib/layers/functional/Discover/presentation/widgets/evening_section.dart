@@ -70,6 +70,7 @@ class EveningSection extends StatelessWidget {
                           suggestion.anime.title,
                         ),
                         onAnother: cubit.suggestAnother,
+                        onAdd: cubit.addSuggestionToWatchlist,
                       ),
                   },
                 ),

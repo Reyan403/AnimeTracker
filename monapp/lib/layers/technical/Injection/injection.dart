@@ -6,7 +6,9 @@ import '../../functional/Agenda/presentation/cubit/agenda_cubit.dart';
 import '../../functional/Agenda/data/gateways/anilist_release_schedule_gateway.dart';
 import '../../functional/Agenda/domain/gateways/release_schedule_gateway.dart';
 import '../../functional/Anime/data/gateways/anime_details_gateway_impl.dart';
+import '../../functional/Discover/data/gateways/kitsu_catalogue_suggestion_gateway.dart';
 import '../../functional/Discover/data/gateways/kitsu_recommendation_gateway.dart';
+import '../../functional/Discover/domain/gateways/catalogue_suggestion_gateway.dart';
 import '../../functional/Discover/domain/gateways/recommendation_gateway.dart';
 import '../../functional/Discover/domain/use_cases/recommend_anime_use_case.dart';
 import '../../functional/Discover/domain/use_cases/suggest_evening_watch_use_case.dart';
@@ -141,8 +143,14 @@ Future<void> initializeDependencies() async {
         getIt<RecommendationGateway>(),
       ),
     )
+    ..registerLazySingleton<CatalogueSuggestionGateway>(
+      () => KitsuCatalogueSuggestionGateway(getIt()),
+    )
     ..registerLazySingleton<SuggestEveningWatchUseCase>(
-      () => SuggestEveningWatchUseCase(getIt<LoadWatchlistUseCase>()),
+      () => SuggestEveningWatchUseCase(
+        getIt<CatalogueSuggestionGateway>(),
+        getIt<FindWatchStatusUseCase>(),
+      ),
     )
     ..registerLazySingleton<LoadAnimeSheetUseCase>(
       () => LoadAnimeSheetUseCase(
@@ -181,7 +189,10 @@ Future<void> initializeDependencies() async {
       ),
     )
     ..registerFactory<EveningCubit>(
-      () => EveningCubit(getIt<SuggestEveningWatchUseCase>()),
+      () => EveningCubit(
+        getIt<SuggestEveningWatchUseCase>(),
+        getIt<AddToWatchlistUseCase>(),
+      ),
     )
     ..registerFactory<AgendaCubit>(
       () => AgendaCubit(getIt<LoadReleaseAgendaUseCase>()),

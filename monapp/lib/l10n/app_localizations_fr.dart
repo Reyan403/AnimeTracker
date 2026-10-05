@@ -182,16 +182,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get eveningOpenSheet => 'Voir la fiche';
 
   @override
-  String get eveningContinuing => 'Vous l\'avez commencé : reprenez-le.';
+  String get eveningFromCatalogue => 'Tiré au hasard dans tout le catalogue.';
 
   @override
-  String get eveningFromList => 'Dans votre liste « À voir ».';
+  String get eveningAlreadyListed => 'Déjà dans votre liste.';
 
   @override
-  String get eveningNone => 'Rien ne correspond dans votre liste.';
+  String get eveningAddToList => 'Ajouter à ma liste';
 
   @override
-  String get eveningNoneHint => 'Essayez une autre humeur ou plus de temps.';
+  String get eveningNone => 'Aucun anime trouvé.';
+
+  @override
+  String get eveningNoneHint => 'Essayez une autre humeur.';
 
   @override
   String get eveningErrorTitle => 'Impossible de composer une suggestion';

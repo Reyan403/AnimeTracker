@@ -289,6 +289,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get navStats => 'Stats';
 
   @override
+  String get navAnimedex => 'Animédex';
+
+  @override
   String get statsTitle => 'Stats';
 
   @override
@@ -436,4 +439,196 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get factAudience => 'Public';
+
+  @override
+  String get constellationTitle => 'Ma constellation';
+
+  @override
+  String get constellationEntrySubtitle =>
+      'Ta liste d\'animes, étoile par étoile';
+
+  @override
+  String get constellationBack => 'Retour';
+
+  @override
+  String get constellationLoading => 'Les étoiles s\'allument…';
+
+  @override
+  String get constellationEmptyTitle => 'Ton ciel est encore vide';
+
+  @override
+  String get constellationEmptyHint =>
+      'Ajoute des animes à ta liste pour allumer ta constellation';
+
+  @override
+  String get constellationErrorTitle => 'Le ciel est voilé';
+
+  @override
+  String get constellationOpenSheet => 'Ouvrir la fiche';
+
+  @override
+  String get constellationClosePreview => 'Fermer l\'aperçu';
+
+  @override
+  String constellationLinkedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Reliée à $count animes',
+      one: 'Reliée à 1 anime',
+      zero: 'Étoile solitaire',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String constellationSkyLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Constellation de $count animes',
+      one: 'Constellation de 1 anime',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get constellationFilterHint => 'Filtrer par genre';
+
+  @override
+  String get dexTitle => 'Animédex';
+
+  @override
+  String dexCardCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count cartes',
+      one: '1 carte',
+      zero: 'Aucune carte',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get dexRarityCommon => 'Commune';
+
+  @override
+  String get dexRarityRare => 'Rare';
+
+  @override
+  String get dexRarityEpic => 'Épique';
+
+  @override
+  String get dexRarityLegendary => 'Légendaire';
+
+  @override
+  String get dexBoosterReadyTitle => 'Ton booster du jour est prêt !';
+
+  @override
+  String get dexBoosterReadyHint => '5 cartes d\'animes à découvrir.';
+
+  @override
+  String get dexBoosterOpen => 'Ouvrir';
+
+  @override
+  String get dexBoosterWaitTitle => 'Prochain booster dans';
+
+  @override
+  String get dexBoosterWaitHint => 'Reviens demain pour 5 nouvelles cartes.';
+
+  @override
+  String get dexEmptyTitle => 'Ton Animédex est vide';
+
+  @override
+  String get dexEmptyHint =>
+      'Ouvre ton premier booster pour recevoir 5 cartes d\'animes.';
+
+  @override
+  String get dexEmptyWaitHint => 'Ton prochain booster arrive bientôt.';
+
+  @override
+  String get dexOpenFirstBooster => 'Ouvrir mon premier booster';
+
+  @override
+  String get dexErrorTitle => 'Impossible d\'afficher ton Animédex';
+
+  @override
+  String get dexErrorHint =>
+      'Une erreur est survenue. Réessaie dans un instant.';
+
+  @override
+  String dexCardLabel(String title, String rarity) {
+    return '$title, carte $rarity';
+  }
+
+  @override
+  String get dexPackLabel => 'Booster';
+
+  @override
+  String get dexPackTapHint => 'Touche le paquet pour l\'ouvrir';
+
+  @override
+  String get dexPackOpening => 'Ouverture en cours…';
+
+  @override
+  String get dexRevealHint => 'Touche la carte pour la révéler';
+
+  @override
+  String dexRevealProgress(int shown, int total) {
+    return '$shown / $total';
+  }
+
+  @override
+  String get dexBadgeNew => 'NOUVEAU';
+
+  @override
+  String get dexBadgeDuplicate => 'Doublon';
+
+  @override
+  String get dexRecapTitle => 'Récap du booster';
+
+  @override
+  String dexRecapNew(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nouvelles cartes',
+      one: '1 nouvelle carte',
+      zero: 'Aucune nouvelle carte',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String dexRecapDuplicates(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count doublons',
+      one: '1 doublon',
+      zero: 'aucun doublon',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get dexSeeDex => 'Voir mon Animédex';
+
+  @override
+  String get dexAlreadyOpenedTitle => 'Booster déjà ouvert aujourd\'hui';
+
+  @override
+  String get dexAlreadyOpenedHint =>
+      'Reviens demain pour tirer 5 nouvelles cartes.';
+
+  @override
+  String get dexBoosterErrorTitle => 'Le booster n\'a pas pu être tiré';
+
+  @override
+  String get dexBoosterErrorHint =>
+      'Ton booster n\'est pas consommé. Vérifie ta connexion et réessaie.';
+
+  @override
+  String get dexClose => 'Fermer';
 }

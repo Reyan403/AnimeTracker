@@ -114,6 +114,7 @@
   "recoEmptyHint": "Commencez ou terminez quelques animes pour que l'application apprenne vos goûts.",
   "recoErrorTitle": "Impossible de charger les recommandations",
   "navStats": "Stats",
+  "navAnimedex": "Animédex",
   "statsTitle": "Stats",
   "statsEpisodes": "Épisodes vus",
   "statsCompleted": "Animes terminés",
@@ -163,5 +164,72 @@
   "factPopularity": "Popularité",
   "factMembers": "Membres",
   "factFavorites": "Favoris",
-  "factAudience": "Public"
+  "factAudience": "Public",
+  "constellationTitle": "Ma constellation",
+  "constellationEntrySubtitle": "Ta liste d'animes, étoile par étoile",
+  "constellationBack": "Retour",
+  "constellationLoading": "Les étoiles s'allument…",
+  "constellationEmptyTitle": "Ton ciel est encore vide",
+  "constellationEmptyHint": "Ajoute des animes à ta liste pour allumer ta constellation",
+  "constellationErrorTitle": "Le ciel est voilé",
+  "constellationOpenSheet": "Ouvrir la fiche",
+  "constellationClosePreview": "Fermer l'aperçu",
+  "constellationLinkedCount": "{count, plural, =0{Étoile solitaire} =1{Reliée à 1 anime} other{Reliée à {count} animes}}",
+  "@constellationLinkedCount": {
+    "placeholders": {"count": {"type": "int"}}
+  },
+  "constellationSkyLabel": "{count, plural, =1{Constellation de 1 anime} other{Constellation de {count} animes}}",
+  "@constellationSkyLabel": {
+    "placeholders": {"count": {"type": "int"}}
+  },
+  "constellationFilterHint": "Filtrer par genre",
+  "dexTitle": "Animédex",
+  "dexCardCount": "{count, plural, =0{Aucune carte} =1{1 carte} other{{count} cartes}}",
+  "@dexCardCount": {
+    "placeholders": {"count": {"type": "int"}}
+  },
+  "dexRarityCommon": "Commune",
+  "dexRarityRare": "Rare",
+  "dexRarityEpic": "Épique",
+  "dexRarityLegendary": "Légendaire",
+  "dexBoosterReadyTitle": "Ton booster du jour est prêt !",
+  "dexBoosterReadyHint": "5 cartes d'animes à découvrir.",
+  "dexBoosterOpen": "Ouvrir",
+  "dexBoosterWaitTitle": "Prochain booster dans",
+  "dexBoosterWaitHint": "Reviens demain pour 5 nouvelles cartes.",
+  "dexEmptyTitle": "Ton Animédex est vide",
+  "dexEmptyHint": "Ouvre ton premier booster pour recevoir 5 cartes d'animes.",
+  "dexEmptyWaitHint": "Ton prochain booster arrive bientôt.",
+  "dexOpenFirstBooster": "Ouvrir mon premier booster",
+  "dexErrorTitle": "Impossible d'afficher ton Animédex",
+  "dexErrorHint": "Une erreur est survenue. Réessaie dans un instant.",
+  "dexCardLabel": "{title}, carte {rarity}",
+  "@dexCardLabel": {
+    "placeholders": {"title": {"type": "String"}, "rarity": {"type": "String"}}
+  },
+  "dexPackLabel": "Booster",
+  "dexPackTapHint": "Touche le paquet pour l'ouvrir",
+  "dexPackOpening": "Ouverture en cours…",
+  "dexRevealHint": "Touche la carte pour la révéler",
+  "dexRevealProgress": "{shown} / {total}",
+  "@dexRevealProgress": {
+    "placeholders": {"shown": {"type": "int"}, "total": {"type": "int"}}
+  },
+  "dexBadgeNew": "NOUVEAU",
+  "dexBadgeDuplicate": "Doublon",
+  "dexRecapTitle": "Récap du booster",
+  "dexRecapNew": "{count, plural, =0{Aucune nouvelle carte} =1{1 nouvelle carte} other{{count} nouvelles cartes}}",
+  "@dexRecapNew": {
+    "placeholders": {"count": {"type": "int"}}
+  },
+  "dexRecapDuplicates": "{count, plural, =0{aucun doublon} =1{1 doublon} other{{count} doublons}}",
+  "@dexRecapDuplicates": {
+    "placeholders": {"count": {"type": "int"}}
+  },
+  "dexSeeDex": "Voir mon Animédex",
+  "dexAlreadyOpenedTitle": "Booster déjà ouvert aujourd'hui",
+  "dexAlreadyOpenedHint": "Reviens demain pour tirer 5 nouvelles cartes.",
+  "dexBoosterErrorTitle": "Le booster n'a pas pu être tiré",
+  "dexBoosterErrorHint": "Ton booster n'est pas consommé. Vérifie ta connexion et réessaie.",
+  "dexClose": "Fermer"
 }

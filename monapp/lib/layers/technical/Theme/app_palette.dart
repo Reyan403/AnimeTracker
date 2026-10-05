@@ -18,6 +18,12 @@ class AppPalette extends ThemeExtension<AppPalette> {
     required this.sky,
     required this.accentText,
     required this.halftone,
+    required this.rarityCommon,
+    required this.rarityRare,
+    required this.rarityEpic,
+    required this.rarityLegendary,
+    required this.nebula,
+    required this.starGlow,
   });
 
   static const AppPalette light = AppPalette(
@@ -36,6 +42,12 @@ class AppPalette extends ThemeExtension<AppPalette> {
     sky: Color(0xFF28C7F5),
     accentText: Color(0xFFC2185B),
     halftone: Color(0xFFFFC7DD),
+    rarityCommon: Color(0xFF6B6F85),
+    rarityRare: Color(0xFF0A8FD0),
+    rarityEpic: Color(0xFF8E3DFF),
+    rarityLegendary: Color(0xFFFFB400),
+    nebula: Color(0xFF14103A),
+    starGlow: Color(0xFFFFF3B0),
   );
 
   static const AppPalette dark = AppPalette(
@@ -54,6 +66,12 @@ class AppPalette extends ThemeExtension<AppPalette> {
     sky: Color(0xFF5CD6FF),
     accentText: Color(0xFFFF8FB8),
     halftone: Color(0xFF2A2358),
+    rarityCommon: Color(0xFFB7BCD6),
+    rarityRare: Color(0xFF5CD6FF),
+    rarityEpic: Color(0xFFC08BFF),
+    rarityLegendary: Color(0xFFFFD23F),
+    nebula: Color(0xFF0D0A2B),
+    starGlow: Color(0xFFFFF3B0),
   );
 
   final Color cardSurface;
@@ -71,6 +89,12 @@ class AppPalette extends ThemeExtension<AppPalette> {
   final Color sky;
   final Color accentText;
   final Color halftone;
+  final Color rarityCommon;
+  final Color rarityRare;
+  final Color rarityEpic;
+  final Color rarityLegendary;
+  final Color nebula;
+  final Color starGlow;
 
   static AppPalette of(BuildContext context) =>
       Theme.of(context).extension<AppPalette>()!;
@@ -92,6 +116,12 @@ class AppPalette extends ThemeExtension<AppPalette> {
     Color? sky,
     Color? accentText,
     Color? halftone,
+    Color? rarityCommon,
+    Color? rarityRare,
+    Color? rarityEpic,
+    Color? rarityLegendary,
+    Color? nebula,
+    Color? starGlow,
   }) => AppPalette(
     cardSurface: cardSurface ?? this.cardSurface,
     posterFallback: posterFallback ?? this.posterFallback,
@@ -108,6 +138,12 @@ class AppPalette extends ThemeExtension<AppPalette> {
     sky: sky ?? this.sky,
     accentText: accentText ?? this.accentText,
     halftone: halftone ?? this.halftone,
+    rarityCommon: rarityCommon ?? this.rarityCommon,
+    rarityRare: rarityRare ?? this.rarityRare,
+    rarityEpic: rarityEpic ?? this.rarityEpic,
+    rarityLegendary: rarityLegendary ?? this.rarityLegendary,
+    nebula: nebula ?? this.nebula,
+    starGlow: starGlow ?? this.starGlow,
   );
 
   @override
@@ -134,6 +170,12 @@ class AppPalette extends ThemeExtension<AppPalette> {
       sky: mix(sky, other.sky),
       accentText: mix(accentText, other.accentText),
       halftone: mix(halftone, other.halftone),
+      rarityCommon: mix(rarityCommon, other.rarityCommon),
+      rarityRare: mix(rarityRare, other.rarityRare),
+      rarityEpic: mix(rarityEpic, other.rarityEpic),
+      rarityLegendary: mix(rarityLegendary, other.rarityLegendary),
+      nebula: mix(nebula, other.nebula),
+      starGlow: mix(starGlow, other.starGlow),
     );
   }
 }

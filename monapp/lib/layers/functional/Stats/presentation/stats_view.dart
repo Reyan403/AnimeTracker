@@ -6,6 +6,7 @@ import '../../../technical/Injection/injection.dart';
 import '../../../technical/Theme/app_spacing.dart';
 import '../../../technical/Theme/widgets/pop_title.dart';
 import '../../../technical/Theme/widgets/sliver_content_padding.dart';
+import '../../Constellation/presentation/constellation_entry_card.dart';
 import '../../Settings/presentation/cubit/settings_cubit.dart';
 import '../../Settings/presentation/widgets/spoiler_guard_switch.dart';
 import 'cubit/stats_cubit.dart';
@@ -53,6 +54,8 @@ class StatsScaffold extends StatelessWidget {
                   child: Column(
                     children: [
                       StatsContent(state: state, onRetry: cubit.load),
+                      const SizedBox(height: AppSpacing.xl),
+                      const ConstellationEntryCard(),
                       const SizedBox(height: AppSpacing.xl),
                       const SpoilerGuardSwitch(),
                     ],

@@ -562,6 +562,12 @@ abstract class AppLocalizations {
   /// **'Stats'**
   String get navStats;
 
+  /// No description provided for @navAnimedex.
+  ///
+  /// In fr, this message translates to:
+  /// **'Animédex'**
+  String get navAnimedex;
+
   /// No description provided for @statsTitle.
   ///
   /// In fr, this message translates to:
@@ -843,6 +849,282 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Public'**
   String get factAudience;
+
+  /// No description provided for @constellationTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ma constellation'**
+  String get constellationTitle;
+
+  /// No description provided for @constellationEntrySubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ta liste d\'animes, étoile par étoile'**
+  String get constellationEntrySubtitle;
+
+  /// No description provided for @constellationBack.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retour'**
+  String get constellationBack;
+
+  /// No description provided for @constellationLoading.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les étoiles s\'allument…'**
+  String get constellationLoading;
+
+  /// No description provided for @constellationEmptyTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton ciel est encore vide'**
+  String get constellationEmptyTitle;
+
+  /// No description provided for @constellationEmptyHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajoute des animes à ta liste pour allumer ta constellation'**
+  String get constellationEmptyHint;
+
+  /// No description provided for @constellationErrorTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le ciel est voilé'**
+  String get constellationErrorTitle;
+
+  /// No description provided for @constellationOpenSheet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouvrir la fiche'**
+  String get constellationOpenSheet;
+
+  /// No description provided for @constellationClosePreview.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fermer l\'aperçu'**
+  String get constellationClosePreview;
+
+  /// No description provided for @constellationLinkedCount.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Étoile solitaire} =1{Reliée à 1 anime} other{Reliée à {count} animes}}'**
+  String constellationLinkedCount(int count);
+
+  /// No description provided for @constellationSkyLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{Constellation de 1 anime} other{Constellation de {count} animes}}'**
+  String constellationSkyLabel(int count);
+
+  /// No description provided for @constellationFilterHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Filtrer par genre'**
+  String get constellationFilterHint;
+
+  /// No description provided for @dexTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Animédex'**
+  String get dexTitle;
+
+  /// No description provided for @dexCardCount.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucune carte} =1{1 carte} other{{count} cartes}}'**
+  String dexCardCount(int count);
+
+  /// No description provided for @dexRarityCommon.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commune'**
+  String get dexRarityCommon;
+
+  /// No description provided for @dexRarityRare.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rare'**
+  String get dexRarityRare;
+
+  /// No description provided for @dexRarityEpic.
+  ///
+  /// In fr, this message translates to:
+  /// **'Épique'**
+  String get dexRarityEpic;
+
+  /// No description provided for @dexRarityLegendary.
+  ///
+  /// In fr, this message translates to:
+  /// **'Légendaire'**
+  String get dexRarityLegendary;
+
+  /// No description provided for @dexBoosterReadyTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton booster du jour est prêt !'**
+  String get dexBoosterReadyTitle;
+
+  /// No description provided for @dexBoosterReadyHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'5 cartes d\'animes à découvrir.'**
+  String get dexBoosterReadyHint;
+
+  /// No description provided for @dexBoosterOpen.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouvrir'**
+  String get dexBoosterOpen;
+
+  /// No description provided for @dexBoosterWaitTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prochain booster dans'**
+  String get dexBoosterWaitTitle;
+
+  /// No description provided for @dexBoosterWaitHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Reviens demain pour 5 nouvelles cartes.'**
+  String get dexBoosterWaitHint;
+
+  /// No description provided for @dexEmptyTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton Animédex est vide'**
+  String get dexEmptyTitle;
+
+  /// No description provided for @dexEmptyHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouvre ton premier booster pour recevoir 5 cartes d\'animes.'**
+  String get dexEmptyHint;
+
+  /// No description provided for @dexEmptyWaitHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton prochain booster arrive bientôt.'**
+  String get dexEmptyWaitHint;
+
+  /// No description provided for @dexOpenFirstBooster.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouvrir mon premier booster'**
+  String get dexOpenFirstBooster;
+
+  /// No description provided for @dexErrorTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible d\'afficher ton Animédex'**
+  String get dexErrorTitle;
+
+  /// No description provided for @dexErrorHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Une erreur est survenue. Réessaie dans un instant.'**
+  String get dexErrorHint;
+
+  /// No description provided for @dexCardLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'{title}, carte {rarity}'**
+  String dexCardLabel(String title, String rarity);
+
+  /// No description provided for @dexPackLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Booster'**
+  String get dexPackLabel;
+
+  /// No description provided for @dexPackTapHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Touche le paquet pour l\'ouvrir'**
+  String get dexPackTapHint;
+
+  /// No description provided for @dexPackOpening.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouverture en cours…'**
+  String get dexPackOpening;
+
+  /// No description provided for @dexRevealHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Touche la carte pour la révéler'**
+  String get dexRevealHint;
+
+  /// No description provided for @dexRevealProgress.
+  ///
+  /// In fr, this message translates to:
+  /// **'{shown} / {total}'**
+  String dexRevealProgress(int shown, int total);
+
+  /// No description provided for @dexBadgeNew.
+  ///
+  /// In fr, this message translates to:
+  /// **'NOUVEAU'**
+  String get dexBadgeNew;
+
+  /// No description provided for @dexBadgeDuplicate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Doublon'**
+  String get dexBadgeDuplicate;
+
+  /// No description provided for @dexRecapTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récap du booster'**
+  String get dexRecapTitle;
+
+  /// No description provided for @dexRecapNew.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucune nouvelle carte} =1{1 nouvelle carte} other{{count} nouvelles cartes}}'**
+  String dexRecapNew(int count);
+
+  /// No description provided for @dexRecapDuplicates.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{aucun doublon} =1{1 doublon} other{{count} doublons}}'**
+  String dexRecapDuplicates(int count);
+
+  /// No description provided for @dexSeeDex.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voir mon Animédex'**
+  String get dexSeeDex;
+
+  /// No description provided for @dexAlreadyOpenedTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Booster déjà ouvert aujourd\'hui'**
+  String get dexAlreadyOpenedTitle;
+
+  /// No description provided for @dexAlreadyOpenedHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Reviens demain pour tirer 5 nouvelles cartes.'**
+  String get dexAlreadyOpenedHint;
+
+  /// No description provided for @dexBoosterErrorTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le booster n\'a pas pu être tiré'**
+  String get dexBoosterErrorTitle;
+
+  /// No description provided for @dexBoosterErrorHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton booster n\'est pas consommé. Vérifie ta connexion et réessaie.'**
+  String get dexBoosterErrorHint;
+
+  /// No description provided for @dexClose.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fermer'**
+  String get dexClose;
 }
 
 class _AppLocalizationsDelegate

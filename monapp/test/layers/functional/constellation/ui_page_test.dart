@@ -82,7 +82,7 @@ void main() {
 
     expect(find.byType(ConstellationSky), findsOneWidget);
     expect(find.widgetWithText(GenreLegendChip, 'Action'), findsOneWidget);
-    expect(find.text('Drame'), findsOneWidget);
+    expect(find.text('Émotion'), findsOneWidget);
     expect(find.text('Ouvrir la fiche'), findsNothing);
   });
 

@@ -6,8 +6,8 @@ import '../../../../technical/Theme/app_spacing.dart';
 import '../../../../technical/Theme/widgets/anime_poster.dart';
 import '../../../../technical/Theme/widgets/genre_tag.dart';
 import '../../../../technical/Theme/widgets/pop_card.dart';
-import '../../../Anime/domain/entities/anime_genre.dart';
-import '../../../Anime/presentation/anime_genre_label.dart';
+import '../../../Discover/domain/entities/evening_mood.dart';
+import '../../../Discover/presentation/evening_labels.dart';
 import '../../../Anime/presentation/watch_status_display.dart';
 import '../../domain/entities/constellation_star.dart';
 
@@ -25,7 +25,7 @@ class StarPreviewCard extends StatelessWidget {
   static const double posterHeight = 104;
 
   final ConstellationStar star;
-  final AnimeGenre? genre;
+  final EveningMood? genre;
   final int linkCount;
   final VoidCallback onOpen;
   final VoidCallback onClose;
@@ -87,7 +87,7 @@ class StarPreviewCard extends StatelessWidget {
                     runSpacing: AppSpacing.xs,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      if (tag != null) GenreTag(label: genreLabel(l10n, tag)),
+                      if (tag != null) GenreTag(label: tag.labelOf(l10n)),
                       Text(
                         l10n.constellationLinkedCount(linkCount),
                         style: theme.textTheme.bodySmall,

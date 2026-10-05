@@ -21,7 +21,7 @@ void main() {
   final crowded = Constellation(
     stars: sampleConstellation.stars,
     links: sampleConstellation.links,
-    genres: twelveGenres,
+    genres: tenGenres,
   );
 
   setUp(() async {
@@ -46,13 +46,13 @@ void main() {
   }
 
   for (final size in const [Size(375, 812), Size(1200, 800)]) {
-    testWidgets('12 genres et ciel utilisable à ${size.width.toInt()} px', (
+    testWidgets('10 genres et ciel utilisable à ${size.width.toInt()} px', (
       tester,
     ) async {
       await pumpPage(tester, size);
 
       expect(tester.takeException(), isNull);
-      expect(find.byType(GenreLegendChip), findsNWidgets(12));
+      expect(find.byType(GenreLegendChip), findsNWidgets(tenGenres.length));
       final legend = tester.getRect(find.byType(GenreLegend));
       final sky = tester.getRect(find.byType(ConstellationSky));
 
@@ -87,14 +87,37 @@ void main() {
   testWidgets('une pastille de la légende filtre le ciel', (tester) async {
     await pumpPage(tester, const Size(375, 812));
 
-    await tester.tap(find.widgetWithText(GenreLegendChip, 'Psychologique'));
+    await tester.tap(find.widgetWithText(GenreLegendChip, 'Mystère'));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
 
     final chip = tester.widget<GenreLegendChip>(
-      find.widgetWithText(GenreLegendChip, 'Psychologique'),
+      find.widgetWithText(GenreLegendChip, 'Mystère'),
     );
 
     expect(chip.isSelected, isTrue);
+  });
+
+  testWidgets('une étoile sans genre Découvrir reste touchable', (
+    tester,
+  ) async {
+    await pumpPage(tester, const Size(375, 812));
+    final star = crowded.stars[2];
+    final sky = find.byType(ConstellationSky);
+
+    expect(star.genreSlug, isNull);
+    await tester.tapAt(
+      tester.getTopLeft(sky) +
+          StarLayout.positionOf(
+            star,
+            tester.getSize(sky),
+            ConstellationBody.skyInset,
+          ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+
+    expect(find.text('Étoile solitaire'), findsOneWidget);
+    expect(find.text('Ouvrir la fiche'), findsOneWidget);
   });
 }

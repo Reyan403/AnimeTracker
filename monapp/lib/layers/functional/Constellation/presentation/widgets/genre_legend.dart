@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../../l10n/app_localizations.dart';
 import '../../../../technical/Theme/app_palette.dart';
 import '../../../../technical/Theme/app_spacing.dart';
-import '../../../Anime/domain/entities/anime_genre.dart';
-import '../../../Anime/presentation/anime_genre_label.dart';
+import '../../../Discover/domain/entities/evening_mood.dart';
+import '../../../Discover/presentation/evening_labels.dart';
 import 'genre_legend_chip.dart';
 import 'star_palette.dart';
 
@@ -18,7 +18,7 @@ class GenreLegend extends StatelessWidget {
 
   static const double maxHeightFraction = 1 / 3;
 
-  final List<AnimeGenre> genres;
+  final List<EveningMood> genres;
   final ValueChanged<String?> onSelected;
   final String? selectedSlug;
 
@@ -46,13 +46,13 @@ class GenreLegend extends StatelessWidget {
             children: [
               for (var index = 0; index < genres.length; index++)
                 GenreLegendChip(
-                  label: genreLabel(l10n, genres[index]),
+                  label: genres[index].labelOf(l10n),
                   color: StarPalette.colorAt(palette, index),
-                  isSelected: genres[index].slug == selectedSlug,
+                  isSelected: genres[index].name == selectedSlug,
                   onTap: () => onSelected(
-                    genres[index].slug == selectedSlug
+                    genres[index].name == selectedSlug
                         ? null
-                        : genres[index].slug,
+                        : genres[index].name,
                   ),
                 ),
             ],

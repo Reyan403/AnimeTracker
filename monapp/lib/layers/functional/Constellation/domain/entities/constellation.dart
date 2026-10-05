@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../Anime/domain/entities/anime_genre.dart';
+import '../../../Discover/domain/entities/evening_mood.dart';
 import 'constellation_link.dart';
 import 'constellation_star.dart';
 
@@ -13,7 +13,7 @@ class Constellation extends Equatable {
 
   final List<ConstellationStar> stars;
   final List<ConstellationLink> links;
-  final List<AnimeGenre> genres;
+  final List<EveningMood> genres;
 
   @override
   List<Object?> get props => [stars, links, genres];

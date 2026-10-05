@@ -1,7 +1,7 @@
 import 'package:flutter/painting.dart';
 
 import '../../../../technical/Theme/app_palette.dart';
-import '../../../Anime/domain/entities/anime_genre.dart';
+import '../../../Discover/domain/entities/evening_mood.dart';
 
 abstract final class StarPalette {
   static List<Color> cycleOf(AppPalette palette) => [
@@ -23,9 +23,9 @@ abstract final class StarPalette {
 
   static Map<String, Color> colorsOf(
     AppPalette palette,
-    List<AnimeGenre> genres,
+    List<EveningMood> genres,
   ) => {
     for (var index = 0; index < genres.length; index++)
-      genres[index].slug: colorAt(palette, index),
+      genres[index].name: colorAt(palette, index),
   };
 }

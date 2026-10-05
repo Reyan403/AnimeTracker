@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:monapp/layers/functional/Anime/domain/entities/anime_genre.dart';
+import 'package:monapp/layers/functional/Discover/domain/entities/evening_mood.dart';
 import 'package:monapp/layers/functional/Anime/domain/entities/watch_status.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_sheet_cubit.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_sheet_state.dart';
@@ -26,7 +26,7 @@ const sampleConstellation = Constellation(
       x: 0.7,
       y: 0.4,
       weight: 0.7,
-      genreSlug: 'drama',
+      genreSlug: 'emotional',
     ),
     ConstellationStar(
       animeId: 3,
@@ -42,8 +42,8 @@ const sampleConstellation = Constellation(
     ConstellationLink(fromId: 2, toId: 3, sharedGenres: 1),
   ],
   genres: [
-    AnimeGenre(slug: 'action', title: 'Action'),
-    AnimeGenre(slug: 'drama', title: 'Drame'),
+    EveningMood.action,
+    EveningMood.emotional,
   ],
 );
 

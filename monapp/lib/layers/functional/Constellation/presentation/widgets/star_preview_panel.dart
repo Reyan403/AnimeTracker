@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../technical/Theme/app_motion.dart';
 import '../../../../technical/Theme/app_spacing.dart';
-import '../../../Anime/domain/entities/anime_genre.dart';
+import '../../../Discover/domain/entities/evening_mood.dart';
 import '../../domain/entities/constellation_star.dart';
 import 'star_preview_card.dart';
 
@@ -17,7 +17,7 @@ class StarPreviewPanel extends StatelessWidget {
   });
 
   final ConstellationStar? star;
-  final List<AnimeGenre> genres;
+  final List<EveningMood> genres;
   final int linkCount;
   final VoidCallback onOpen;
   final VoidCallback onClose;
@@ -54,7 +54,7 @@ class StarPreviewPanel extends StatelessWidget {
                       key: ValueKey(current.animeId),
                       star: current,
                       genre: genres
-                          .where((genre) => genre.slug == current.genreSlug)
+                          .where((genre) => genre.name == current.genreSlug)
                           .firstOrNull,
                       linkCount: linkCount,
                       onOpen: onOpen,

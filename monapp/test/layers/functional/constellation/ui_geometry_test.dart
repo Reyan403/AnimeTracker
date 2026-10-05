@@ -96,7 +96,7 @@ void main() {
       );
 
       expect(colors['action'], StarPalette.colorAt(AppPalette.dark, 0));
-      expect(colors['drama'], StarPalette.colorAt(AppPalette.dark, 1));
+      expect(colors['emotional'], StarPalette.colorAt(AppPalette.dark, 1));
     });
   });
 

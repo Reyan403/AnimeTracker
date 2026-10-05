@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:monapp/layers/functional/Anime/domain/entities/anime_genre.dart';
+import 'package:monapp/layers/functional/Discover/domain/entities/evening_mood.dart';
 import 'package:monapp/layers/functional/Constellation/presentation/widgets/genre_legend.dart';
 import 'package:monapp/layers/functional/Constellation/presentation/widgets/genre_legend_chip.dart';
 
 import '../../../support/pump_app.dart';
 
-const twelveGenres = [
-  AnimeGenre(slug: 'action', title: 'Action'),
-  AnimeGenre(slug: 'adventure', title: 'Aventure'),
-  AnimeGenre(slug: 'comedy', title: 'Comédie'),
-  AnimeGenre(slug: 'drama', title: 'Drame'),
-  AnimeGenre(slug: 'fantasy', title: 'Fantastique'),
-  AnimeGenre(slug: 'horror', title: 'Horreur'),
-  AnimeGenre(slug: 'mystery', title: 'Mystère'),
-  AnimeGenre(slug: 'romance', title: 'Romance'),
-  AnimeGenre(slug: 'science-fiction', title: 'Science-fiction'),
-  AnimeGenre(slug: 'slice-of-life', title: 'Tranche de vie'),
-  AnimeGenre(slug: 'supernatural', title: 'Surnaturel'),
-  AnimeGenre(slug: 'psychological', title: 'Psychologique'),
+const tenGenres = [
+  EveningMood.relaxed,
+  EveningMood.action,
+  EveningMood.emotional,
+  EveningMood.romance,
+  EveningMood.mystery,
+  EveningMood.fantasy,
+  EveningMood.scienceFiction,
+  EveningMood.supernatural,
+  EveningMood.horror,
+  EveningMood.sports,
 ];
 
 const realisticTextScale = 0.6;
@@ -27,7 +25,7 @@ void main() {
   Future<void> pumpLegend(
     WidgetTester tester,
     Size size, {
-    List<AnimeGenre> genres = twelveGenres,
+    List<EveningMood> genres = tenGenres,
     String? selectedSlug,
     ValueChanged<String?>? onSelected,
     double textScale = realisticTextScale,
@@ -51,7 +49,7 @@ void main() {
   void expectEveryChipFullyVisible(WidgetTester tester, Size size) {
     final chips = find.byType(GenreLegendChip);
 
-    expect(chips, findsNWidgets(twelveGenres.length));
+    expect(chips, findsNWidgets(tenGenres.length));
     for (final chip in chips.evaluate()) {
       final rect =
           tester.getTopLeft(find.byWidget(chip.widget)) &
@@ -63,7 +61,7 @@ void main() {
   }
 
   for (final size in const [Size(375, 812), Size(1200, 800)]) {
-    testWidgets('affiche les 12 genres d un coup à ${size.width.toInt()} px', (
+    testWidgets('affiche les 10 genres d un coup à ${size.width.toInt()} px', (
       tester,
     ) async {
       await pumpLegend(tester, size);
@@ -71,7 +69,7 @@ void main() {
       expectEveryChipFullyVisible(tester, size);
       expect(tester.takeException(), isNull);
       expect(find.byType(ListView), findsNothing);
-      expect(find.text('Psychologique'), findsOneWidget);
+      expect(find.text('Sport'), findsOneWidget);
     });
 
     testWidgets('la légende reste sous un tiers de l écran à '
@@ -116,7 +114,7 @@ void main() {
   ) async {
     final many = [
       for (var index = 0; index < 60; index++)
-        AnimeGenre(slug: 'genre-$index', title: 'Genre numéro $index'),
+        EveningMood.values[1 + index % 10],
     ];
 
     await pumpLegend(tester, const Size(375, 812), genres: many);
@@ -138,9 +136,9 @@ void main() {
       onSelected: (slug) => picked = slug,
     );
 
-    await tester.tap(find.widgetWithText(GenreLegendChip, 'Drame'));
+    await tester.tap(find.widgetWithText(GenreLegendChip, 'Émotion'));
 
-    expect(picked, 'drama');
+    expect(picked, 'emotional');
   });
 
   testWidgets('toucher la pastille active retire le filtre', (tester) async {
@@ -148,11 +146,11 @@ void main() {
     await pumpLegend(
       tester,
       const Size(375, 812),
-      selectedSlug: 'drama',
+      selectedSlug: 'emotional',
       onSelected: (slug) => picked = slug,
     );
 
-    await tester.tap(find.widgetWithText(GenreLegendChip, 'Drame'));
+    await tester.tap(find.widgetWithText(GenreLegendChip, 'Émotion'));
 
     expect(picked, isNull);
   });

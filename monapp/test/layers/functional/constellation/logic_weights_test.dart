@@ -80,10 +80,10 @@ void main() {
     test('ordonne par fréquence puis alphabétique', () async {
       final constellation = await built(list, details);
 
-      expect(constellation.genres.map((genre) => genre.slug), [
+      expect(constellation.genres.map((genre) => genre.name), [
         'action',
-        'comedy',
-        'drama',
+        'emotional',
+        'relaxed',
       ]);
     });
 
@@ -95,7 +95,7 @@ void main() {
 
       expect(main(1), 'action');
       expect(main(2), 'action');
-      expect(main(4), 'drama');
+      expect(main(4), 'emotional');
     });
 
     test('à égalité, le genre principal est alphabétique', () async {
@@ -108,7 +108,59 @@ void main() {
         },
       );
 
-      expect(constellation.stars.single.genreSlug, 'comedy');
+      expect(constellation.stars.single.genreSlug, 'relaxed');
+    });
+
+    test('ignore les genres hors Découvrir', () async {
+      final constellation = await built(
+        const [
+          WatchlistEntry(id: 1, title: 'A', status: WatchStatus.completed),
+          WatchlistEntry(id: 2, title: 'B', status: WatchStatus.completed),
+        ],
+        {
+          1: detailsOf(genres: ['plot-continuity', 'action']),
+          2: detailsOf(genres: ['plot-continuity', 'cooking']),
+        },
+      );
+
+      expect(constellation.genres.map((genre) => genre.name), ['action']);
+      expect(constellation.stars.first.genreSlug, 'action');
+      expect(constellation.stars.last.genreSlug, isNull);
+    });
+
+    test('regroupe les genres Kitsu d une même humeur', () async {
+      final constellation = await built(
+        const [
+          WatchlistEntry(id: 1, title: 'A', status: WatchStatus.completed),
+          WatchlistEntry(id: 2, title: 'B', status: WatchStatus.completed),
+        ],
+        {
+          1: detailsOf(genres: ['comedy', 'slice-of-life']),
+          2: detailsOf(genres: ['slice-of-life']),
+        },
+      );
+
+      expect(constellation.genres.map((genre) => genre.name), ['relaxed']);
+      expect(
+        constellation.stars.every((star) => star.genreSlug == 'relaxed'),
+        isTrue,
+      );
+    });
+
+    test('les liens restent calculés sur tous les genres communs', () async {
+      final constellation = await built(
+        const [
+          WatchlistEntry(id: 1, title: 'A', status: WatchStatus.completed),
+          WatchlistEntry(id: 2, title: 'B', status: WatchStatus.completed),
+        ],
+        {
+          1: detailsOf(genres: ['cooking']),
+          2: detailsOf(genres: ['cooking']),
+        },
+      );
+
+      expect(constellation.genres, isEmpty);
+      expect(constellation.links, hasLength(1));
     });
   });
 }

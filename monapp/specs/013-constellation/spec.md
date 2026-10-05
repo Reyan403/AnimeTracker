@@ -56,7 +56,8 @@ Le ciel se déplace et se zoome au doigt. Une légende liste les genres les plus
 - **FR-001**: Chaque anime de la liste, tous statuts confondus, MUST apparaître comme une étoile.
 - **FR-002**: Deux étoiles MUST être reliées si leurs animes partagent au moins un genre ; une étoile MUST avoir au plus trois liens, les plus forts (nombre de genres communs) étant préférés, et une paire MUST NOT être reliée deux fois.
 - **FR-003**: Le poids d'une étoile MUST croître avec l'avancement : 0,35 pour « à voir », de 0,55 à 1 pour « en cours » selon les épisodes vus, 1 pour « terminé ».
-- **FR-004**: Le genre principal d'une étoile MUST être le plus fréquent de la liste parmi ses genres, l'ordre alphabétique départageant ; la liste des genres de la constellation MUST être ordonnée par fréquence puis alphabétique.
+- **FR-004**: Les genres de la constellation MUST être uniquement ceux de l'onglet « Découvrir » : les humeurs de `EveningMood` (Détente, Action, Émotion, Romance, Mystère, Fantastique, Science-fiction, Surnaturel, Horreur, Sport), avec les mêmes libellés français (`labelOf`). Un anime appartient à une humeur si l'un de ses genres Kitsu figure dans les `genreSlugs` de l'humeur (ex. « comedy » et « slice-of-life » comptent pour Détente, une seule fois). Le genre principal d'une étoile (`genreSlug`, qui vaut le nom de l'humeur, ex. `action`) MUST être l'humeur la plus fréquente de la liste parmi celles de l'anime, l'ordre alphabétique du nom départageant ; sans aucune humeur, `genreSlug` MUST être nul. `Constellation.genres` MUST contenir uniquement les humeurs présentes dans la liste, ordonnées par fréquence puis alphabétique.
+- **FR-004b**: Les liens MUST rester calculés sur tous les genres Kitsu communs. La légende MUST n'afficher que les humeurs de `Constellation.genres` ; les étoiles sans humeur sont dessinées avec la couleur neutre `starGlow`, restent touchables et ne s'allument pas quand un filtre est actif.
 - **FR-005**: La disposition MUST être déterministe : une même liste produit les mêmes positions, indépendamment de l'ordre des animes ; elle repose sur une relaxation de type force-dirigée amorcée par les identifiants, bornée en nombre d'itérations.
 - **FR-006**: Le calcul de la disposition MUST rester inférieur à 50 ms pour 100 animes.
 - **FR-007**: La construction MUST attendre que les fiches soient chargées, comme les statistiques, et MUST signaler une indisponibilité (`ConstellationUnavailableException`) si aucune fiche n'est disponible pour une liste non vide.
@@ -67,7 +68,7 @@ Le ciel se déplace et se zoome au doigt. Une légende liste les genres les plus
 
 ### Key Entities
 
-- **Constellation**: étoiles, liens et genres ordonnés par fréquence.
+- **Constellation**: étoiles, liens et humeurs de Découvrir ordonnées par fréquence.
 - **Étoile**: un anime, avec statut, position dans [0, 1] × [0, 1], poids dans [0, 1], genre principal et affiche.
 - **Lien**: deux étoiles et le nombre de genres qu'elles partagent.
 

@@ -7,7 +7,6 @@ import '../../../../technical/Theme/widgets/state_message.dart';
 import '../cubit/stats_state.dart';
 import 'genre_bars.dart';
 import 'stat_tile.dart';
-import 'status_breakdown.dart';
 
 class StatsContent extends StatelessWidget {
   const StatsContent({required this.state, required this.onRetry, super.key});
@@ -40,16 +39,7 @@ class StatsContent extends StatelessWidget {
               children: [
                 Expanded(
                   child: StatTile(
-                    value: stats!.hoursWatched,
-                    label: l10n.statsWatchTime,
-                    icon: Icons.schedule,
-                    format: l10n.hoursTotal,
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.md),
-                Expanded(
-                  child: StatTile(
-                    value: stats.episodesWatched,
+                    value: stats!.episodesWatched,
                     label: l10n.statsEpisodes,
                     icon: Icons.play_circle_outline,
                   ),
@@ -64,8 +54,6 @@ class StatsContent extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.md),
-            StatusBreakdown(stats: stats),
             if (stats.topGenres.isNotEmpty) ...[
               const SizedBox(height: AppSpacing.md),
               GenreBars(genres: stats.topGenres),

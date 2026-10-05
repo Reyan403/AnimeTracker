@@ -562,12 +562,6 @@ abstract class AppLocalizations {
   /// **'Stats'**
   String get statsTitle;
 
-  /// No description provided for @statsWatchTime.
-  ///
-  /// In fr, this message translates to:
-  /// **'De visionnage'**
-  String get statsWatchTime;
-
   /// No description provided for @statsEpisodes.
   ///
   /// In fr, this message translates to:
@@ -579,12 +573,6 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Animes terminés'**
   String get statsCompleted;
-
-  /// No description provided for @statsBreakdownTitle.
-  ///
-  /// In fr, this message translates to:
-  /// **'Ma liste'**
-  String get statsBreakdownTitle;
 
   /// No description provided for @statsGenresTitle.
   ///

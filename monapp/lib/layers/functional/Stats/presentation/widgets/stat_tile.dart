@@ -8,14 +8,12 @@ class StatTile extends StatelessWidget {
     required this.value,
     required this.label,
     required this.icon,
-    this.format,
     super.key,
   });
 
   final int value;
   final String label;
   final IconData icon;
-  final String Function(int value)? format;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +31,7 @@ class StatTile extends StatelessWidget {
             AnimatedCount(
               value: value,
               builder: (context, current) => Text(
-                format?.call(current) ?? '$current',
+                '$current',
                 style: theme.textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.w800,
                 ),

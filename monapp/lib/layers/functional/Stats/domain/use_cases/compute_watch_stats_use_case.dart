@@ -27,14 +27,12 @@ class ComputeWatchStatsUseCase {
       throw const WatchStatsUnavailableException();
     }
 
-    var minutes = 0;
     var episodes = 0;
     final counts = <String, int>{};
     final genres = <String, AnimeGenre>{};
 
     for (final anime in animes) {
       episodes += anime.episodesWatched;
-      minutes += anime.episodesWatched * (anime.details?.episodeMinutes ?? 0);
 
       if (anime.status == WatchStatus.toWatch) {
         continue;
@@ -47,7 +45,6 @@ class ComputeWatchStatsUseCase {
     }
 
     return WatchStats(
-      minutesWatched: minutes,
       episodesWatched: episodes,
       toWatchCount: _countOf(animes, WatchStatus.toWatch),
       watchingCount: _countOf(animes, WatchStatus.watching),

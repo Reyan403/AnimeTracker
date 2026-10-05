@@ -291,16 +291,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get statsTitle => 'Stats';
 
   @override
-  String get statsWatchTime => 'De visionnage';
-
-  @override
   String get statsEpisodes => 'Épisodes vus';
 
   @override
   String get statsCompleted => 'Animes terminés';
-
-  @override
-  String get statsBreakdownTitle => 'Ma liste';
 
   @override
   String get statsGenresTitle => 'Genres favoris';

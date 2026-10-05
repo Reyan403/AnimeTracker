@@ -46,12 +46,10 @@ ComputeWatchStatsUseCase useCase({
 
 void main() {
   group('ComputeWatchStatsUseCase', () {
-    test('additionne épisodes et minutes, terminé compris', () async {
+    test('additionne les épisodes vus, terminé compris', () async {
       final stats = await useCase()().first;
 
       expect(stats.episodesWatched, 14);
-      expect(stats.minutesWatched, 10 * 20 + 4 * 30);
-      expect(stats.hoursWatched, 5);
     });
 
     test('compte les animes par statut', () async {
@@ -150,7 +148,6 @@ void main() {
 
   group('StatsContent', () {
     const stats = WatchStats(
-      minutesWatched: 7500,
       episodesWatched: 312,
       toWatchCount: 3,
       watchingCount: 2,
@@ -180,13 +177,11 @@ void main() {
       );
       await tester.pumpAndSettle(const Duration(seconds: 2));
 
-      expect(find.text('125 h'), findsOneWidget);
       expect(find.text('312'), findsOneWidget);
       expect(find.text('9'), findsWidgets);
       expect(find.text('Genres favoris'), findsOneWidget);
       expect(find.text('Action'), findsOneWidget);
       expect(find.text('Drame'), findsOneWidget);
-      expect(find.text('Terminé · 9'), findsOneWidget);
     });
 
     testWidgets('sans genre, la carte genres est absente', (tester) async {
@@ -197,7 +192,6 @@ void main() {
             state: StatsState(
               status: StatsStatus.success,
               stats: WatchStats(
-                minutesWatched: 0,
                 episodesWatched: 0,
                 toWatchCount: 1,
                 watchingCount: 0,
@@ -262,20 +256,6 @@ void main() {
       );
 
       expect(find.text('loading'), findsOneWidget);
-    });
-
-    test('hoursWatched arrondit à l heure inférieure', () {
-      expect(
-        const WatchStats(
-          minutesWatched: 119,
-          episodesWatched: 0,
-          toWatchCount: 0,
-          watchingCount: 0,
-          completedCount: 0,
-          topGenres: [],
-        ).hoursWatched,
-        1,
-      );
     });
   });
 }

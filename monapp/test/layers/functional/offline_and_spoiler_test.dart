@@ -31,7 +31,6 @@ import 'package:shared_preferences_platform_interface/in_memory_shared_preferenc
 import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
 
 import '../../support/fake_caches.dart';
-import '../../support/fake_details_gateway.dart';
 import '../../support/fake_watchlist_store.dart';
 import '../../support/pump_app.dart';
 import '../../support/watchlist_fixtures.dart';

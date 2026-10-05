@@ -44,6 +44,7 @@ class EpisodeProgress extends StatelessWidget {
               tooltip: l10n.watchPreviousTooltip,
               icon: const Icon(Icons.remove),
             ),
+            const SizedBox(width: AppSpacing.md),
             IconButton.filledTonal(
               onPressed: anime.isFinished ? null : onNext,
               tooltip: l10n.watchNextTooltip,

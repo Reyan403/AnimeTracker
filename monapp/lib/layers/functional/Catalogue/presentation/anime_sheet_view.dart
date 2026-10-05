@@ -70,6 +70,8 @@ class AnimeSheetScaffold extends StatelessWidget {
           AnimeSheetStatus.success => AnimeSheetBody(
               sheet: state.sheet!,
               heroTag: heroTag,
+              isSynopsisHidden: state.isSynopsisHidden,
+              onRevealSynopsis: cubit.revealSynopsis,
             ),
         },
       ),

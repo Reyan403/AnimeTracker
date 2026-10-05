@@ -10,9 +10,17 @@ import '../../functional/Discover/domain/use_cases/recommend_anime_use_case.dart
 import '../../functional/Discover/domain/use_cases/suggest_evening_watch_use_case.dart';
 import '../../functional/Discover/presentation/cubit/evening_cubit.dart';
 import '../../functional/Discover/presentation/cubit/recommendations_cubit.dart';
+import '../../functional/Settings/data/preferences_settings_gateway.dart';
+import '../../functional/Settings/domain/gateways/settings_gateway.dart';
+import '../../functional/Settings/domain/use_cases/change_spoiler_guard_use_case.dart';
+import '../../functional/Settings/domain/use_cases/read_spoiler_guard_use_case.dart';
+import '../../functional/Settings/presentation/cubit/settings_cubit.dart';
 import '../../functional/Stats/domain/use_cases/compute_watch_stats_use_case.dart';
 import '../../functional/Stats/presentation/cubit/stats_cubit.dart';
 import '../../functional/Anime/data/gateways/local_watchlist_gateway.dart';
+import '../../functional/Anime/data/stores/preferences_anime_details_cache.dart';
+import '../../functional/Anime/domain/gateways/anime_details_cache.dart';
+import '../../functional/Anime/domain/use_cases/find_watch_status_use_case.dart';
 import '../../functional/Anime/data/my_watchlist.dart';
 import '../../functional/Anime/data/stores/preferences_watchlist_store.dart';
 import '../../functional/Anime/data/stores/watchlist_store.dart';
@@ -27,6 +35,8 @@ import '../../functional/Anime/domain/use_cases/watch_previous_episode_use_case.
 import '../../functional/Anime/presentation/cubit/watchlist_cubit.dart';
 import '../../functional/Catalogue/data/gateways/anime_catalogue_gateway_impl.dart';
 import '../../functional/Catalogue/data/gateways/anime_sheet_gateway_impl.dart';
+import '../../functional/Catalogue/data/stores/preferences_anime_sheet_cache.dart';
+import '../../functional/Catalogue/domain/gateways/anime_sheet_cache.dart';
 import '../../functional/Catalogue/data/gateways/french_synopsis_gateway_impl.dart';
 import '../../functional/Catalogue/domain/gateways/anime_catalogue_gateway.dart';
 import '../../functional/Catalogue/domain/gateways/anime_sheet_gateway.dart';
@@ -60,6 +70,15 @@ Future<void> initializeDependencies() async {
     ..registerLazySingleton<AnimeDetailsGateway>(
       () => AnimeDetailsGatewayImpl(getIt()),
     )
+    ..registerLazySingleton<AnimeDetailsCache>(
+      () => PreferencesAnimeDetailsCache(getIt()),
+    )
+    ..registerLazySingleton<AnimeSheetCache>(
+      () => PreferencesAnimeSheetCache(getIt()),
+    )
+    ..registerLazySingleton<SettingsGateway>(
+      () => PreferencesSettingsGateway(getIt()),
+    )
     ..registerLazySingleton<WatchlistStore>(
       () => PreferencesWatchlistStore(getIt()),
     )
@@ -79,6 +98,7 @@ Future<void> initializeDependencies() async {
       () => LoadWatchlistUseCase(
         getIt<AnimeDetailsGateway>(),
         getIt<WatchlistGateway>(),
+        getIt<AnimeDetailsCache>(),
       ),
     )
     ..registerLazySingleton<AddToWatchlistUseCase>(
@@ -118,7 +138,17 @@ Future<void> initializeDependencies() async {
       () => LoadAnimeSheetUseCase(
         getIt<AnimeSheetGateway>(),
         getIt<FrenchSynopsisGateway>(),
+        getIt<AnimeSheetCache>(),
       ),
+    )
+    ..registerLazySingleton<FindWatchStatusUseCase>(
+      () => FindWatchStatusUseCase(getIt<WatchlistGateway>()),
+    )
+    ..registerLazySingleton<ReadSpoilerGuardUseCase>(
+      () => ReadSpoilerGuardUseCase(getIt<SettingsGateway>()),
+    )
+    ..registerLazySingleton<ChangeSpoilerGuardUseCase>(
+      () => ChangeSpoilerGuardUseCase(getIt<SettingsGateway>()),
     )
     ..registerLazySingleton<BrowseCatalogueUseCase>(
       () => BrowseCatalogueUseCase(getIt<AnimeCatalogueGateway>()),
@@ -147,7 +177,17 @@ Future<void> initializeDependencies() async {
       () => AgendaCubit(getIt<LoadReleaseAgendaUseCase>()),
     )
     ..registerFactory<AnimeSheetCubit>(
-      () => AnimeSheetCubit(getIt<LoadAnimeSheetUseCase>()),
+      () => AnimeSheetCubit(
+        getIt<LoadAnimeSheetUseCase>(),
+        getIt<FindWatchStatusUseCase>(),
+        getIt<ReadSpoilerGuardUseCase>(),
+      ),
+    )
+    ..registerFactory<SettingsCubit>(
+      () => SettingsCubit(
+        getIt<ReadSpoilerGuardUseCase>(),
+        getIt<ChangeSpoilerGuardUseCase>(),
+      ),
     )
     ..registerFactory<CatalogueCubit>(
       () => CatalogueCubit(

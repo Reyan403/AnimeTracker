@@ -9,6 +9,7 @@ class AnimeDetails {
     this.nextRelease,
     this.episodeMinutes = 0,
     this.genres = const [],
+    this.isCached = false,
   });
 
   final String format;
@@ -18,6 +19,18 @@ class AnimeDetails {
   final DateTime? nextRelease;
   final int episodeMinutes;
   final List<AnimeGenre> genres;
+  final bool isCached;
 
   bool hasGenre(String slug) => genres.any((genre) => genre.slug == slug);
+
+  AnimeDetails asCached() => AnimeDetails(
+        format: format,
+        year: year,
+        episodeCount: episodeCount,
+        posterUrl: posterUrl,
+        nextRelease: nextRelease,
+        episodeMinutes: episodeMinutes,
+        genres: genres,
+        isCached: true,
+      );
 }

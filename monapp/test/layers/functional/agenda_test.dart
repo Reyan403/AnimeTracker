@@ -15,6 +15,7 @@ import 'package:monapp/layers/functional/Anime/domain/entities/watch_status.dart
 import 'package:monapp/layers/functional/Anime/domain/entities/watchlist_entry.dart';
 import 'package:monapp/layers/functional/Anime/domain/use_cases/load_watchlist_use_case.dart';
 
+import '../../support/fake_caches.dart';
 import '../../support/fake_details_gateway.dart';
 import '../../support/fake_watchlist_store.dart';
 import '../../support/pump_app.dart';
@@ -37,6 +38,7 @@ LoadReleaseAgendaUseCase agendaOf(
       LoadWatchlistUseCase(
         FakeDetailsGateway(details, fails: fails),
         LocalWatchlistGateway(FakeWatchlistStore(entries), const []),
+        FakeDetailsCache(),
       ),
       clock: () => now,
     );

@@ -1,0 +1,46 @@
+import '../../domain/entities/anime_sheet.dart';
+
+abstract final class AnimeSheetCacheDto {
+  static Map<String, dynamic> toJson(AnimeSheet sheet) => {
+        'id': sheet.id,
+        'title': sheet.title,
+        'format': sheet.format,
+        'synopsis': sheet.synopsis,
+        'status': sheet.status,
+        'startYear': sheet.startYear,
+        'endYear': sheet.endYear,
+        'episodeCount': sheet.episodeCount,
+        'episodeMinutes': sheet.episodeMinutes,
+        'totalMinutes': sheet.totalMinutes,
+        'rating': sheet.rating,
+        'ratingRank': sheet.ratingRank,
+        'popularityRank': sheet.popularityRank,
+        'memberCount': sheet.memberCount,
+        'favoriteCount': sheet.favoriteCount,
+        'ageRating': sheet.ageRating,
+        'posterUrl': sheet.posterUrl,
+        'coverUrl': sheet.coverUrl,
+      };
+
+  static AnimeSheet fromJson(Map<String, dynamic> json) => AnimeSheet(
+        id: json['id'] as int,
+        title: json['title'] as String,
+        format: json['format'] as String,
+        synopsis: json['synopsis'] as String?,
+        status: json['status'] as String?,
+        startYear: json['startYear'] as int?,
+        endYear: json['endYear'] as int?,
+        episodeCount: json['episodeCount'] as int?,
+        episodeMinutes: json['episodeMinutes'] as int?,
+        totalMinutes: json['totalMinutes'] as int?,
+        rating: json['rating'] as int?,
+        ratingRank: json['ratingRank'] as int?,
+        popularityRank: json['popularityRank'] as int?,
+        memberCount: json['memberCount'] as int?,
+        favoriteCount: json['favoriteCount'] as int?,
+        ageRating: json['ageRating'] as String?,
+        posterUrl: json['posterUrl'] as String?,
+        coverUrl: json['coverUrl'] as String?,
+        isCached: true,
+      );
+}

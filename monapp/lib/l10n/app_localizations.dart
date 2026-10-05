@@ -610,6 +610,42 @@ abstract class AppLocalizations {
   /// **'Impossible de calculer vos statistiques'**
   String get statsErrorTitle;
 
+  /// No description provided for @offlineNotice.
+  ///
+  /// In fr, this message translates to:
+  /// **'Hors ligne : données enregistrées lors de votre dernière connexion.'**
+  String get offlineNotice;
+
+  /// No description provided for @spoilerHiddenHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Synopsis masqué pour éviter les spoilers.'**
+  String get spoilerHiddenHint;
+
+  /// No description provided for @spoilerReveal.
+  ///
+  /// In fr, this message translates to:
+  /// **'Afficher'**
+  String get spoilerReveal;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réglages'**
+  String get settingsTitle;
+
+  /// No description provided for @spoilerGuardTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Masquer les spoilers'**
+  String get spoilerGuardTitle;
+
+  /// No description provided for @spoilerGuardSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Floute le synopsis des animes que vous n\'avez pas terminés.'**
+  String get spoilerGuardSubtitle;
+
   /// No description provided for @retry.
   ///
   /// In fr, this message translates to:

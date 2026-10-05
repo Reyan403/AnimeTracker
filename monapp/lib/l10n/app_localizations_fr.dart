@@ -316,6 +316,26 @@ class AppLocalizationsFr extends AppLocalizations {
   String get statsErrorTitle => 'Impossible de calculer vos statistiques';
 
   @override
+  String get offlineNotice =>
+      'Hors ligne : données enregistrées lors de votre dernière connexion.';
+
+  @override
+  String get spoilerHiddenHint => 'Synopsis masqué pour éviter les spoilers.';
+
+  @override
+  String get spoilerReveal => 'Afficher';
+
+  @override
+  String get settingsTitle => 'Réglages';
+
+  @override
+  String get spoilerGuardTitle => 'Masquer les spoilers';
+
+  @override
+  String get spoilerGuardSubtitle =>
+      'Floute le synopsis des animes que vous n\'avez pas terminés.';
+
+  @override
   String get retry => 'Réessayer';
 
   @override

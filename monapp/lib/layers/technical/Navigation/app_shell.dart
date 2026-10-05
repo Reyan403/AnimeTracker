@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../functional/Agenda/presentation/agenda_view.dart';
 import '../../functional/Anime/presentation/watchlist_view.dart';
 import '../../functional/Catalogue/presentation/anime_sheet_route.dart';
 import '../../functional/Catalogue/presentation/catalogue_view.dart';
+import '../../functional/Discover/presentation/discover_view.dart';
+import '../../functional/Stats/presentation/stats_view.dart';
 import '../Theme/app_spacing.dart';
 import '../Theme/widgets/anime_poster.dart';
 import '../Theme/widgets/fade_on_change.dart';
@@ -23,6 +26,13 @@ class _AppShellState extends State<AppShell> {
   void _select(AppDestination destination) =>
       setState(() => _selected = destination);
 
+  void _openSheet(String origin, int animeId, String title) => openAnimeSheet(
+        context,
+        animeId: animeId,
+        title: title,
+        heroTag: AnimePoster.heroTagFor(origin, animeId),
+      );
+
   @override
   Widget build(BuildContext context) {
     final isExpanded =
@@ -33,14 +43,19 @@ class _AppShellState extends State<AppShell> {
         index: _selected.index,
         children: [
           WatchlistView(
-            onAnimeSelected: (animeId, title) => openAnimeSheet(
-              context,
-              animeId: animeId,
-              title: title,
-              heroTag: AnimePoster.heroTagFor('list', animeId),
-            ),
+            onAnimeSelected: (animeId, title) =>
+                _openSheet('list', animeId, title),
           ),
           const CatalogueView(),
+          DiscoverView(
+            onAnimeSelected: (animeId, title) =>
+                _openSheet('discover', animeId, title),
+          ),
+          AgendaView(
+            onAnimeSelected: (animeId, title) =>
+                _openSheet('agenda', animeId, title),
+          ),
+          const StatsView(),
         ],
       ),
     );

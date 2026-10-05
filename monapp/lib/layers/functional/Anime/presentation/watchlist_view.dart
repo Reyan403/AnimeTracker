@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../technical/Injection/injection.dart';
 import '../../../technical/Theme/app_spacing.dart';
+import '../../../technical/Theme/widgets/offline_notice.dart';
 import '../../../technical/Theme/widgets/sliver_content_padding.dart';
 import 'cubit/watchlist_cubit.dart';
 import 'cubit/watchlist_state.dart';
@@ -53,6 +54,10 @@ class WatchlistScaffold extends StatelessWidget {
                         state: state,
                         onSelected: cubit.selectStatus,
                       ),
+                      if (state.isShowingCache) ...[
+                        const SizedBox(height: AppSpacing.md),
+                        const OfflineNotice(),
+                      ],
                     ],
                   ),
                 ),
@@ -62,6 +67,8 @@ class WatchlistScaffold extends StatelessWidget {
                 onRetry: cubit.load,
                 onAnimeSelected: onAnimeSelected,
                 onStatusChanged: cubit.changeStatus,
+                onNextEpisode: cubit.watchNextEpisode,
+                onPreviousEpisode: cubit.watchPreviousEpisode,
               ),
             ],
           ),

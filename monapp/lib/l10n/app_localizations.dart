@@ -202,6 +202,438 @@ abstract class AppLocalizations {
   /// **'{rating} %'**
   String ratingPercent(int rating);
 
+  /// No description provided for @episodeProgress.
+  ///
+  /// In fr, this message translates to:
+  /// **'{watched}/{total} épisodes vus'**
+  String episodeProgress(int watched, int total);
+
+  /// No description provided for @episodeProgressOpen.
+  ///
+  /// In fr, this message translates to:
+  /// **'{watched, plural, =0{Pas encore commencé} =1{1 épisode vu} other{{watched} épisodes vus}}'**
+  String episodeProgressOpen(int watched);
+
+  /// No description provided for @watchNextTooltip.
+  ///
+  /// In fr, this message translates to:
+  /// **'Marquer l\'épisode suivant comme vu'**
+  String get watchNextTooltip;
+
+  /// No description provided for @watchPreviousTooltip.
+  ///
+  /// In fr, this message translates to:
+  /// **'Annuler le dernier épisode vu'**
+  String get watchPreviousTooltip;
+
+  /// No description provided for @navAgenda.
+  ///
+  /// In fr, this message translates to:
+  /// **'Agenda'**
+  String get navAgenda;
+
+  /// No description provided for @agendaTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Agenda'**
+  String get agendaTitle;
+
+  /// No description provided for @agendaEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune sortie à venir.'**
+  String get agendaEmpty;
+
+  /// No description provided for @agendaEmptyHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajoutez des animes en cours de diffusion depuis le catalogue.'**
+  String get agendaEmptyHint;
+
+  /// No description provided for @agendaErrorTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de charger l\'agenda'**
+  String get agendaErrorTitle;
+
+  /// No description provided for @releaseToday.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aujourd\'hui'**
+  String get releaseToday;
+
+  /// No description provided for @releaseTomorrow.
+  ///
+  /// In fr, this message translates to:
+  /// **'Demain'**
+  String get releaseTomorrow;
+
+  /// No description provided for @releaseInDays.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dans {days} jours'**
+  String releaseInDays(int days);
+
+  /// No description provided for @releaseYesterday.
+  ///
+  /// In fr, this message translates to:
+  /// **'Hier'**
+  String get releaseYesterday;
+
+  /// No description provided for @releaseDaysAgo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Il y a {days} jours'**
+  String releaseDaysAgo(int days);
+
+  /// No description provided for @nextEpisodeToWatch.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prochain à voir : épisode {number}'**
+  String nextEpisodeToWatch(int number);
+
+  /// No description provided for @navDiscover.
+  ///
+  /// In fr, this message translates to:
+  /// **'Découvrir'**
+  String get navDiscover;
+
+  /// No description provided for @discoverTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Découvrir'**
+  String get discoverTitle;
+
+  /// No description provided for @eveningTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quoi regarder ce soir ?'**
+  String get eveningTitle;
+
+  /// No description provided for @eveningMoodLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mon humeur'**
+  String get eveningMoodLabel;
+
+  /// No description provided for @eveningTimeLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mon temps'**
+  String get eveningTimeLabel;
+
+  /// No description provided for @moodAny.
+  ///
+  /// In fr, this message translates to:
+  /// **'Peu importe'**
+  String get moodAny;
+
+  /// No description provided for @moodRelaxed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Détente'**
+  String get moodRelaxed;
+
+  /// No description provided for @moodAction.
+  ///
+  /// In fr, this message translates to:
+  /// **'Action'**
+  String get moodAction;
+
+  /// No description provided for @moodEmotional.
+  ///
+  /// In fr, this message translates to:
+  /// **'Émotion'**
+  String get moodEmotional;
+
+  /// No description provided for @moodMystery.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mystère'**
+  String get moodMystery;
+
+  /// No description provided for @durationShort.
+  ///
+  /// In fr, this message translates to:
+  /// **'30 min'**
+  String get durationShort;
+
+  /// No description provided for @durationMedium.
+  ///
+  /// In fr, this message translates to:
+  /// **'1 h'**
+  String get durationMedium;
+
+  /// No description provided for @durationLong.
+  ///
+  /// In fr, this message translates to:
+  /// **'2 h'**
+  String get durationLong;
+
+  /// No description provided for @durationUnlimited.
+  ///
+  /// In fr, this message translates to:
+  /// **'Toute la soirée'**
+  String get durationUnlimited;
+
+  /// No description provided for @eveningSuggestAction.
+  ///
+  /// In fr, this message translates to:
+  /// **'Surprends-moi'**
+  String get eveningSuggestAction;
+
+  /// No description provided for @eveningAnother.
+  ///
+  /// In fr, this message translates to:
+  /// **'Une autre idée'**
+  String get eveningAnother;
+
+  /// No description provided for @eveningOpenSheet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voir la fiche'**
+  String get eveningOpenSheet;
+
+  /// No description provided for @eveningContinuing.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vous l\'avez commencé : reprenez-le.'**
+  String get eveningContinuing;
+
+  /// No description provided for @eveningFromList.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dans votre liste « À voir ».'**
+  String get eveningFromList;
+
+  /// No description provided for @eveningNone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rien ne correspond dans votre liste.'**
+  String get eveningNone;
+
+  /// No description provided for @eveningNoneHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Essayez une autre humeur ou plus de temps.'**
+  String get eveningNoneHint;
+
+  /// No description provided for @eveningErrorTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de composer une suggestion'**
+  String get eveningErrorTitle;
+
+  /// No description provided for @genreAction.
+  ///
+  /// In fr, this message translates to:
+  /// **'Action'**
+  String get genreAction;
+
+  /// No description provided for @genreAdventure.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aventure'**
+  String get genreAdventure;
+
+  /// No description provided for @genreComedy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Comédie'**
+  String get genreComedy;
+
+  /// No description provided for @genreDrama.
+  ///
+  /// In fr, this message translates to:
+  /// **'Drame'**
+  String get genreDrama;
+
+  /// No description provided for @genreFantasy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fantastique'**
+  String get genreFantasy;
+
+  /// No description provided for @genreHorror.
+  ///
+  /// In fr, this message translates to:
+  /// **'Horreur'**
+  String get genreHorror;
+
+  /// No description provided for @genreMystery.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mystère'**
+  String get genreMystery;
+
+  /// No description provided for @genreRomance.
+  ///
+  /// In fr, this message translates to:
+  /// **'Romance'**
+  String get genreRomance;
+
+  /// No description provided for @genreScienceFiction.
+  ///
+  /// In fr, this message translates to:
+  /// **'Science-fiction'**
+  String get genreScienceFiction;
+
+  /// No description provided for @genreSliceOfLife.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tranche de vie'**
+  String get genreSliceOfLife;
+
+  /// No description provided for @genreSports.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sport'**
+  String get genreSports;
+
+  /// No description provided for @genreSupernatural.
+  ///
+  /// In fr, this message translates to:
+  /// **'Surnaturel'**
+  String get genreSupernatural;
+
+  /// No description provided for @genreThriller.
+  ///
+  /// In fr, this message translates to:
+  /// **'Thriller'**
+  String get genreThriller;
+
+  /// No description provided for @genrePsychological.
+  ///
+  /// In fr, this message translates to:
+  /// **'Psychologique'**
+  String get genrePsychological;
+
+  /// No description provided for @genreMecha.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mecha'**
+  String get genreMecha;
+
+  /// No description provided for @recoTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pour toi'**
+  String get recoTitle;
+
+  /// No description provided for @recoBecauseOne.
+  ///
+  /// In fr, this message translates to:
+  /// **'Parce que vous aimez {first}'**
+  String recoBecauseOne(String first);
+
+  /// No description provided for @recoBecauseTwo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Parce que vous aimez {first} et {second}'**
+  String recoBecauseTwo(String first, String second);
+
+  /// No description provided for @recoEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas encore de recommandation.'**
+  String get recoEmpty;
+
+  /// No description provided for @recoEmptyHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commencez ou terminez quelques animes pour que l\'application apprenne vos goûts.'**
+  String get recoEmptyHint;
+
+  /// No description provided for @recoErrorTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de charger les recommandations'**
+  String get recoErrorTitle;
+
+  /// No description provided for @navStats.
+  ///
+  /// In fr, this message translates to:
+  /// **'Stats'**
+  String get navStats;
+
+  /// No description provided for @statsTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Stats'**
+  String get statsTitle;
+
+  /// No description provided for @statsEpisodes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Épisodes vus'**
+  String get statsEpisodes;
+
+  /// No description provided for @statsCompleted.
+  ///
+  /// In fr, this message translates to:
+  /// **'Animes terminés'**
+  String get statsCompleted;
+
+  /// No description provided for @statsGenresTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Genres favoris'**
+  String get statsGenresTitle;
+
+  /// No description provided for @statsEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rien à compter pour l\'instant.'**
+  String get statsEmpty;
+
+  /// No description provided for @statsEmptyHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajoutez des animes à votre liste pour voir vos statistiques.'**
+  String get statsEmptyHint;
+
+  /// No description provided for @statsErrorTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de calculer vos statistiques'**
+  String get statsErrorTitle;
+
+  /// No description provided for @offlineNotice.
+  ///
+  /// In fr, this message translates to:
+  /// **'Hors ligne : données enregistrées lors de votre dernière connexion.'**
+  String get offlineNotice;
+
+  /// No description provided for @spoilerHiddenHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Synopsis masqué pour éviter les spoilers.'**
+  String get spoilerHiddenHint;
+
+  /// No description provided for @spoilerReveal.
+  ///
+  /// In fr, this message translates to:
+  /// **'Afficher'**
+  String get spoilerReveal;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réglages'**
+  String get settingsTitle;
+
+  /// No description provided for @spoilerGuardTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Masquer les spoilers'**
+  String get spoilerGuardTitle;
+
+  /// No description provided for @spoilerGuardSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Floute le synopsis des animes que vous n\'avez pas terminés.'**
+  String get spoilerGuardSubtitle;
+
   /// No description provided for @retry.
   ///
   /// In fr, this message translates to:

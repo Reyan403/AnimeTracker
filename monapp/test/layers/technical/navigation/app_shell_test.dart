@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:monapp/layers/functional/Agenda/presentation/cubit/agenda_cubit.dart';
+import 'package:monapp/layers/functional/Agenda/presentation/cubit/agenda_state.dart';
 import 'package:monapp/layers/functional/Anime/domain/entities/anime.dart';
 import 'package:monapp/layers/functional/Anime/domain/entities/watch_status.dart';
 import 'package:monapp/layers/functional/Anime/presentation/cubit/watchlist_cubit.dart';
@@ -11,6 +13,15 @@ import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_shee
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/anime_sheet_state.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/catalogue_cubit.dart';
 import 'package:monapp/layers/functional/Catalogue/presentation/cubit/catalogue_state.dart';
+import 'package:monapp/layers/functional/Discover/domain/entities/evening_duration.dart';
+import 'package:monapp/layers/functional/Discover/domain/entities/evening_mood.dart';
+import 'package:monapp/layers/functional/Discover/presentation/cubit/evening_cubit.dart';
+import 'package:monapp/layers/functional/Discover/presentation/cubit/evening_state.dart';
+import 'package:monapp/layers/functional/Discover/presentation/cubit/recommendations_cubit.dart';
+import 'package:monapp/layers/functional/Discover/presentation/cubit/recommendations_state.dart';
+import 'package:monapp/layers/functional/Settings/presentation/cubit/settings_cubit.dart';
+import 'package:monapp/layers/functional/Stats/presentation/cubit/stats_cubit.dart';
+import 'package:monapp/layers/functional/Stats/presentation/cubit/stats_state.dart';
 import 'package:monapp/layers/technical/Injection/injection.dart';
 import 'package:monapp/layers/technical/Navigation/app_shell.dart';
 
@@ -35,8 +46,65 @@ class FakeWatchlistCubit extends Cubit<WatchlistState>
   void changeStatus(int animeId, WatchStatus status) {}
 
   @override
+  void watchNextEpisode(Anime anime) {}
+
+  @override
+  void watchPreviousEpisode(Anime anime) {}
+
+  @override
   void selectStatus(WatchStatus status) =>
       emit(state.copyWith(selected: status));
+}
+
+class FakeSettingsCubit extends Cubit<SettingsState> implements SettingsCubit {
+  FakeSettingsCubit() : super(const SettingsState(isSpoilerGuardEnabled: true));
+
+  @override
+  void changeSpoilerGuard({required bool enabled}) {}
+}
+
+class FakeStatsCubit extends Cubit<StatsState> implements StatsCubit {
+  FakeStatsCubit() : super(const StatsState(status: StatsStatus.empty));
+
+  @override
+  Future<void> load() async {}
+}
+
+class FakeRecommendationsCubit extends Cubit<RecommendationsState>
+    implements RecommendationsCubit {
+  FakeRecommendationsCubit()
+      : super(
+          const RecommendationsState(status: RecommendationsStatus.empty),
+        );
+
+  @override
+  Future<void> load() async {}
+
+  @override
+  void add(CatalogueAnime anime) {}
+}
+
+class FakeEveningCubit extends Cubit<EveningState> implements EveningCubit {
+  FakeEveningCubit() : super(const EveningState());
+
+  @override
+  void selectMood(EveningMood mood) {}
+
+  @override
+  void selectDuration(EveningDuration duration) {}
+
+  @override
+  Future<void> suggest() async {}
+
+  @override
+  Future<void> suggestAnother() async {}
+}
+
+class FakeAgendaCubit extends Cubit<AgendaState> implements AgendaCubit {
+  FakeAgendaCubit() : super(const AgendaState(status: AgendaStatus.empty));
+
+  @override
+  Future<void> load() async {}
 }
 
 class FakeCatalogueCubit extends Cubit<CatalogueState>
@@ -90,12 +158,20 @@ class FakeAnimeSheetCubit extends Cubit<AnimeSheetState>
 
   @override
   Future<void> load(int id) async {}
+
+  @override
+  void revealSynopsis() {}
 }
 
 void main() {
   setUp(() {
     getIt
       ..registerFactory<WatchlistCubit>(FakeWatchlistCubit.new)
+      ..registerFactory<SettingsCubit>(FakeSettingsCubit.new)
+      ..registerFactory<StatsCubit>(FakeStatsCubit.new)
+      ..registerFactory<RecommendationsCubit>(FakeRecommendationsCubit.new)
+      ..registerFactory<EveningCubit>(FakeEveningCubit.new)
+      ..registerFactory<AgendaCubit>(FakeAgendaCubit.new)
       ..registerFactory<CatalogueCubit>(FakeCatalogueCubit.new)
       ..registerFactory<AnimeSheetCubit>(FakeAnimeSheetCubit.new);
   });

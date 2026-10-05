@@ -88,6 +88,248 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String episodeProgress(int watched, int total) {
+    return '$watched/$total épisodes vus';
+  }
+
+  @override
+  String episodeProgressOpen(int watched) {
+    String _temp0 = intl.Intl.pluralLogic(
+      watched,
+      locale: localeName,
+      other: '$watched épisodes vus',
+      one: '1 épisode vu',
+      zero: 'Pas encore commencé',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get watchNextTooltip => 'Marquer l\'épisode suivant comme vu';
+
+  @override
+  String get watchPreviousTooltip => 'Annuler le dernier épisode vu';
+
+  @override
+  String get navAgenda => 'Agenda';
+
+  @override
+  String get agendaTitle => 'Agenda';
+
+  @override
+  String get agendaEmpty => 'Aucune sortie à venir.';
+
+  @override
+  String get agendaEmptyHint =>
+      'Ajoutez des animes en cours de diffusion depuis le catalogue.';
+
+  @override
+  String get agendaErrorTitle => 'Impossible de charger l\'agenda';
+
+  @override
+  String get releaseToday => 'Aujourd\'hui';
+
+  @override
+  String get releaseTomorrow => 'Demain';
+
+  @override
+  String releaseInDays(int days) {
+    return 'Dans $days jours';
+  }
+
+  @override
+  String get releaseYesterday => 'Hier';
+
+  @override
+  String releaseDaysAgo(int days) {
+    return 'Il y a $days jours';
+  }
+
+  @override
+  String nextEpisodeToWatch(int number) {
+    return 'Prochain à voir : épisode $number';
+  }
+
+  @override
+  String get navDiscover => 'Découvrir';
+
+  @override
+  String get discoverTitle => 'Découvrir';
+
+  @override
+  String get eveningTitle => 'Quoi regarder ce soir ?';
+
+  @override
+  String get eveningMoodLabel => 'Mon humeur';
+
+  @override
+  String get eveningTimeLabel => 'Mon temps';
+
+  @override
+  String get moodAny => 'Peu importe';
+
+  @override
+  String get moodRelaxed => 'Détente';
+
+  @override
+  String get moodAction => 'Action';
+
+  @override
+  String get moodEmotional => 'Émotion';
+
+  @override
+  String get moodMystery => 'Mystère';
+
+  @override
+  String get durationShort => '30 min';
+
+  @override
+  String get durationMedium => '1 h';
+
+  @override
+  String get durationLong => '2 h';
+
+  @override
+  String get durationUnlimited => 'Toute la soirée';
+
+  @override
+  String get eveningSuggestAction => 'Surprends-moi';
+
+  @override
+  String get eveningAnother => 'Une autre idée';
+
+  @override
+  String get eveningOpenSheet => 'Voir la fiche';
+
+  @override
+  String get eveningContinuing => 'Vous l\'avez commencé : reprenez-le.';
+
+  @override
+  String get eveningFromList => 'Dans votre liste « À voir ».';
+
+  @override
+  String get eveningNone => 'Rien ne correspond dans votre liste.';
+
+  @override
+  String get eveningNoneHint => 'Essayez une autre humeur ou plus de temps.';
+
+  @override
+  String get eveningErrorTitle => 'Impossible de composer une suggestion';
+
+  @override
+  String get genreAction => 'Action';
+
+  @override
+  String get genreAdventure => 'Aventure';
+
+  @override
+  String get genreComedy => 'Comédie';
+
+  @override
+  String get genreDrama => 'Drame';
+
+  @override
+  String get genreFantasy => 'Fantastique';
+
+  @override
+  String get genreHorror => 'Horreur';
+
+  @override
+  String get genreMystery => 'Mystère';
+
+  @override
+  String get genreRomance => 'Romance';
+
+  @override
+  String get genreScienceFiction => 'Science-fiction';
+
+  @override
+  String get genreSliceOfLife => 'Tranche de vie';
+
+  @override
+  String get genreSports => 'Sport';
+
+  @override
+  String get genreSupernatural => 'Surnaturel';
+
+  @override
+  String get genreThriller => 'Thriller';
+
+  @override
+  String get genrePsychological => 'Psychologique';
+
+  @override
+  String get genreMecha => 'Mecha';
+
+  @override
+  String get recoTitle => 'Pour toi';
+
+  @override
+  String recoBecauseOne(String first) {
+    return 'Parce que vous aimez $first';
+  }
+
+  @override
+  String recoBecauseTwo(String first, String second) {
+    return 'Parce que vous aimez $first et $second';
+  }
+
+  @override
+  String get recoEmpty => 'Pas encore de recommandation.';
+
+  @override
+  String get recoEmptyHint =>
+      'Commencez ou terminez quelques animes pour que l\'application apprenne vos goûts.';
+
+  @override
+  String get recoErrorTitle => 'Impossible de charger les recommandations';
+
+  @override
+  String get navStats => 'Stats';
+
+  @override
+  String get statsTitle => 'Stats';
+
+  @override
+  String get statsEpisodes => 'Épisodes vus';
+
+  @override
+  String get statsCompleted => 'Animes terminés';
+
+  @override
+  String get statsGenresTitle => 'Genres favoris';
+
+  @override
+  String get statsEmpty => 'Rien à compter pour l\'instant.';
+
+  @override
+  String get statsEmptyHint =>
+      'Ajoutez des animes à votre liste pour voir vos statistiques.';
+
+  @override
+  String get statsErrorTitle => 'Impossible de calculer vos statistiques';
+
+  @override
+  String get offlineNotice =>
+      'Hors ligne : données enregistrées lors de votre dernière connexion.';
+
+  @override
+  String get spoilerHiddenHint => 'Synopsis masqué pour éviter les spoilers.';
+
+  @override
+  String get spoilerReveal => 'Afficher';
+
+  @override
+  String get settingsTitle => 'Réglages';
+
+  @override
+  String get spoilerGuardTitle => 'Masquer les spoilers';
+
+  @override
+  String get spoilerGuardSubtitle =>
+      'Floute le synopsis des animes que vous n\'avez pas terminés.';
+
+  @override
   String get retry => 'Réessayer';
 
   @override

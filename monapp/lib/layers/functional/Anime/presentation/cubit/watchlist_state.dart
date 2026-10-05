@@ -19,6 +19,9 @@ class WatchlistState extends Equatable {
   List<Anime> get visibleAnimes =>
       animes.where((anime) => anime.status == selected).toList();
 
+  bool get isShowingCache =>
+      animes.any((anime) => anime.details?.isCached ?? false);
+
   int countOf(WatchStatus status) =>
       animes.where((anime) => anime.status == status).length;
 

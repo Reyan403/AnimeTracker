@@ -31,7 +31,13 @@ void main() {
         (tester) async {
       await pumpApp(
         tester,
-        AnimeCard(anime: anime, onTap: () {}, onStatusSelected: (_) {}),
+        AnimeCard(
+          anime: anime,
+          onTap: () {},
+          onStatusSelected: (_) {},
+          onNextEpisode: () {},
+          onPreviousEpisode: () {},
+        ),
       );
 
       expect(find.text('Cowboy Bebop'), findsOneWidget);
@@ -47,6 +53,8 @@ void main() {
           anime: const Anime(id: 3, title: 'X', status: WatchStatus.toWatch),
           onTap: () {},
           onStatusSelected: (_) {},
+          onNextEpisode: () {},
+          onPreviousEpisode: () {},
         ),
       );
 
@@ -64,6 +72,8 @@ void main() {
           anime: anime,
           onTap: () => opened = true,
           onStatusSelected: (status) => chosen = status,
+          onNextEpisode: () {},
+          onPreviousEpisode: () {},
         ),
       );
 
@@ -83,7 +93,13 @@ void main() {
     testWidgets('reste affichable avec un texte agrandi', (tester) async {
       await pumpApp(
         tester,
-        AnimeCard(anime: anime, onTap: () {}, onStatusSelected: (_) {}),
+        AnimeCard(
+          anime: anime,
+          onTap: () {},
+          onStatusSelected: (_) {},
+          onNextEpisode: () {},
+          onPreviousEpisode: () {},
+        ),
         textScale: 2,
       );
 
@@ -93,7 +109,13 @@ void main() {
     testWidgets('s affiche en mode sombre', (tester) async {
       await pumpApp(
         tester,
-        AnimeCard(anime: anime, onTap: () {}, onStatusSelected: (_) {}),
+        AnimeCard(
+          anime: anime,
+          onTap: () {},
+          onStatusSelected: (_) {},
+          onNextEpisode: () {},
+          onPreviousEpisode: () {},
+        ),
         themeMode: ThemeMode.dark,
       );
 

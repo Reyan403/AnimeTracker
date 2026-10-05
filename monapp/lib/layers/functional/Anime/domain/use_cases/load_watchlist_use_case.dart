@@ -1,16 +1,19 @@
 import '../entities/anime.dart';
 import '../entities/anime_details.dart';
 import '../entities/watchlist_entry.dart';
+import '../gateways/anime_details_cache.dart';
 import '../gateways/anime_details_gateway.dart';
 import '../gateways/watchlist_gateway.dart';
 
 class LoadWatchlistUseCase {
-  LoadWatchlistUseCase(this._gateway, this._watchlist);
+  LoadWatchlistUseCase(this._gateway, this._watchlist, this._cache);
 
   final AnimeDetailsGateway _gateway;
   final WatchlistGateway _watchlist;
+  final AnimeDetailsCache _cache;
 
   final Map<int, AnimeDetails> _known = {};
+  final Map<int, AnimeDetails> _offline = {};
 
   Stream<List<Anime>> call() async* {
     yield* _animesOf(_watchlist.entries);
@@ -29,25 +32,34 @@ class LoadWatchlistUseCase {
     if (unknown.isNotEmpty) {
       yield [for (final entry in entries) _anime(entry, isAwaited: true)];
 
-      _known.addAll(await _detailsOf(unknown));
+      await _fetch(unknown);
     }
 
     yield [for (final entry in entries) _anime(entry)];
   }
 
-  Anime _anime(WatchlistEntry entry, {bool isAwaited = false}) => Anime(
-        id: entry.id,
-        title: entry.title,
-        status: entry.status,
-        details: _known[entry.id],
-        isLoadingDetails: isAwaited && !_known.containsKey(entry.id),
-      );
+  Anime _anime(WatchlistEntry entry, {bool isAwaited = false}) {
+    final details = _known[entry.id] ?? _offline[entry.id];
 
-  Future<Map<int, AnimeDetails>> _detailsOf(List<int> ids) async {
+    return Anime(
+      id: entry.id,
+      title: entry.title,
+      status: entry.status,
+      episodesWatched: entry.watchedOf(details?.episodeCount ?? 0),
+      details: details,
+      isLoadingDetails: isAwaited && details == null,
+    );
+  }
+
+  Future<void> _fetch(List<int> ids) async {
     try {
-      return await _gateway.findAllByIds(ids);
+      final fetched = await _gateway.findAllByIds(ids);
+
+      _known.addAll(fetched);
+      _offline.removeWhere((id, _) => fetched.containsKey(id));
+      _cache.saveAll(fetched);
     } on AnimeDetailsUnavailableException {
-      return const {};
+      _offline.addAll(_cache.findAll(ids));
     }
   }
 }

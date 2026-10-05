@@ -9,4 +9,6 @@ abstract interface class WatchlistGateway {
   void add(WatchlistEntry entry);
 
   void changeStatus(int animeId, WatchStatus status);
+
+  void update(WatchlistEntry entry);
 }

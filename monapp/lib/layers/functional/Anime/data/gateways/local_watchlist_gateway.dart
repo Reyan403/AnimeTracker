@@ -3,11 +3,17 @@ import 'dart:async';
 import '../../domain/entities/watch_status.dart';
 import '../../domain/entities/watchlist_entry.dart';
 import '../../domain/gateways/watchlist_gateway.dart';
+import '../stores/watchlist_store.dart';
 
-class InMemoryWatchlistGateway implements WatchlistGateway {
-  InMemoryWatchlistGateway(List<WatchlistEntry> entries)
-      : _entries = [...entries];
+class LocalWatchlistGateway implements WatchlistGateway {
+  LocalWatchlistGateway(this._store, List<WatchlistEntry> initialEntries)
+      : _entries = [...(_store.read() ?? initialEntries)] {
+    if (_store.read() == null) {
+      unawaited(_store.write(_entries));
+    }
+  }
 
+  final WatchlistStore _store;
   final List<WatchlistEntry> _entries;
 
   final StreamController<List<WatchlistEntry>> _changes =
@@ -26,7 +32,7 @@ class InMemoryWatchlistGateway implements WatchlistGateway {
     }
 
     _entries.insert(0, entry);
-    _changes.add(entries);
+    _publish();
   }
 
   @override
@@ -38,6 +44,23 @@ class InMemoryWatchlistGateway implements WatchlistGateway {
     }
 
     _entries[listed] = _entries[listed].withStatus(status);
+    _publish();
+  }
+
+  @override
+  void update(WatchlistEntry entry) {
+    final listed = _entries.indexWhere((candidate) => candidate.id == entry.id);
+
+    if (listed < 0) {
+      return;
+    }
+
+    _entries[listed] = entry;
+    _publish();
+  }
+
+  void _publish() {
+    unawaited(_store.write(entries));
     _changes.add(entries);
   }
 }

@@ -27,7 +27,7 @@ Depuis l'écran des statistiques, une carte « Ma constellation » ouvre une pag
 
 ### User Story 2 - Explorer le ciel (Priority: P2)
 
-Le ciel se déplace et se zoome au doigt. Une légende liste les genres les plus fréquents, chacun avec sa couleur, et permet de n'allumer que les étoiles d'un genre. Toucher une étoile ouvre un aperçu (affiche, titre, statut, nombre de liens) avec un bouton « Ouvrir la fiche » qui ouvre la fiche de l'anime.
+Le ciel se déplace et se zoome au doigt. Une légende liste toutes les humeurs de l'onglet « Découvrir » présentes dans la liste, par fréquence décroissante, chacune avec sa couleur, et permet de n'allumer que les étoiles d'une humeur. Les pastilles passent à la ligne, sans défilement horizontal, et la légende n'occupe jamais plus d'un tiers de la hauteur de l'écran. Toucher une étoile ouvre un aperçu (affiche, titre, statut, nombre de liens) avec un bouton « Ouvrir la fiche » qui ouvre la fiche de l'anime.
 
 **Why this priority**: l'exploration donne de la valeur à la carte, mais le ciel reste lisible sans elle.
 
@@ -40,13 +40,15 @@ Le ciel se déplace et se zoome au doigt. Une légende liste les genres les plus
 3. **Given** un aperçu ouvert, **When** l'utilisateur touche « Ouvrir la fiche », **Then** la fiche de l'anime s'ouvre.
 4. **Given** la légende des genres, **When** l'utilisateur choisit un genre, **Then** seules les étoiles de ce genre restent allumées ; le choisir de nouveau rétablit tout le ciel.
 5. **Given** la réduction des animations activée sur l'appareil, **When** le ciel s'affiche, **Then** les étoiles ne scintillent pas.
+6. **Given** un aperçu ouvert, **When** l'utilisateur touche le vide du ciel ou la croix de l'aperçu, **Then** l'aperçu se ferme.
+7. **Given** de nombreuses humeurs présentes, **When** la légende s'affiche, **Then** toutes les pastilles sont visibles en passant à la ligne, et un défilement vertical n'apparaît qu'au-delà d'un tiers de la hauteur de l'écran.
 
 ### Edge Cases
 
 - Un seul anime : une unique étoile, centrée, sans lien.
 - Un anime sans fiche ni genre : étoile présente, sans lien ni couleur de genre.
 - Beaucoup d'animes partageant un même genre : chaque étoile n'est reliée qu'à trois autres au plus pour garder le ciel lisible.
-- Aucune étoile ne sort des marges de l'écran (positions entre 6 % et 94 % de chaque axe) et deux étoiles ne se superposent pas.
+- Aucune étoile ne sort des marges de l'écran (positions entre 6 % et 94 % de chaque axe) et la répulsion entre étoiles évite leur superposition (distance minimale vérifiée supérieure à 0,02 pour 30 étoiles, sans garantie stricte au-delà).
 - Une liste modifiée pendant que la page est ouverte met le ciel à jour.
 
 ## Requirements *(mandatory)*
@@ -65,6 +67,8 @@ Le ciel se déplace et se zoome au doigt. Une légende liste les genres les plus
 - **FR-009**: Le ciel MUST pouvoir être zoomé et déplacé ; toucher une étoile MUST ouvrir un aperçu menant à la fiche de l'anime.
 - **FR-010**: La page MUST respecter la réduction des animations et dessiner le ciel dans une couche isolée pour rester fluide.
 - **FR-011**: L'écran des statistiques MUST proposer une carte d'entrée vers la constellation, visible même sans liste.
+- **FR-012**: La légende MUST afficher toutes les humeurs de `Constellation.genres` avec retour à la ligne, sans défilement horizontal, plafonnée à un tiers de la hauteur de l'écran ; chaque pastille MUST rester cliquable et basculer le filtre d'humeur.
+- **FR-013**: Tous les textes MUST passer par l'i18n (clés `constellation…`, libellés d'humeurs de Découvrir).
 
 ### Key Entities
 
@@ -82,4 +86,4 @@ Le ciel se déplace et se zoome au doigt. Une légende liste les genres les plus
 
 - Les genres viennent des fiches déjà chargées pour la liste ; aucune requête supplémentaire n'est nécessaire.
 - La logique métier se trouve dans `BuildConstellationUseCase`, `ConstellationLayout` et `ConstellationLinksBuilder` ; la page, le cubit, le dessin et l'entrée dans les statistiques relèvent de la présentation.
-- L'architecte câble l'injection et la navigation.
+- L'injection (`injection.dart`) enregistre `BuildConstellationUseCase` en singleton et `ConstellationCubit` en fabrique ; la page est une route poussée depuis l'écran des statistiques via `ConstellationPage.open`.

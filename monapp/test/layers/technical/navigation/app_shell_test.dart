@@ -19,6 +19,8 @@ import 'package:monapp/layers/functional/Discover/presentation/cubit/evening_cub
 import 'package:monapp/layers/functional/Discover/presentation/cubit/evening_state.dart';
 import 'package:monapp/layers/functional/Discover/presentation/cubit/recommendations_cubit.dart';
 import 'package:monapp/layers/functional/Discover/presentation/cubit/recommendations_state.dart';
+import 'package:monapp/layers/functional/Stats/presentation/cubit/stats_cubit.dart';
+import 'package:monapp/layers/functional/Stats/presentation/cubit/stats_state.dart';
 import 'package:monapp/layers/technical/Injection/injection.dart';
 import 'package:monapp/layers/technical/Navigation/app_shell.dart';
 
@@ -51,6 +53,13 @@ class FakeWatchlistCubit extends Cubit<WatchlistState>
   @override
   void selectStatus(WatchStatus status) =>
       emit(state.copyWith(selected: status));
+}
+
+class FakeStatsCubit extends Cubit<StatsState> implements StatsCubit {
+  FakeStatsCubit() : super(const StatsState(status: StatsStatus.empty));
+
+  @override
+  Future<void> load() async {}
 }
 
 class FakeRecommendationsCubit extends Cubit<RecommendationsState>
@@ -147,6 +156,7 @@ void main() {
   setUp(() {
     getIt
       ..registerFactory<WatchlistCubit>(FakeWatchlistCubit.new)
+      ..registerFactory<StatsCubit>(FakeStatsCubit.new)
       ..registerFactory<RecommendationsCubit>(FakeRecommendationsCubit.new)
       ..registerFactory<EveningCubit>(FakeEveningCubit.new)
       ..registerFactory<AgendaCubit>(FakeAgendaCubit.new)

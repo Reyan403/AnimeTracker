@@ -285,6 +285,37 @@ class AppLocalizationsFr extends AppLocalizations {
   String get recoErrorTitle => 'Impossible de charger les recommandations';
 
   @override
+  String get navStats => 'Stats';
+
+  @override
+  String get statsTitle => 'Stats';
+
+  @override
+  String get statsWatchTime => 'De visionnage';
+
+  @override
+  String get statsEpisodes => 'Épisodes vus';
+
+  @override
+  String get statsCompleted => 'Animes terminés';
+
+  @override
+  String get statsBreakdownTitle => 'Ma liste';
+
+  @override
+  String get statsGenresTitle => 'Genres favoris';
+
+  @override
+  String get statsEmpty => 'Rien à compter pour l\'instant.';
+
+  @override
+  String get statsEmptyHint =>
+      'Ajoutez des animes à votre liste pour voir vos statistiques.';
+
+  @override
+  String get statsErrorTitle => 'Impossible de calculer vos statistiques';
+
+  @override
   String get retry => 'Réessayer';
 
   @override

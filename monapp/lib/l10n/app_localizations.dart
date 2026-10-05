@@ -550,6 +550,66 @@ abstract class AppLocalizations {
   /// **'Impossible de charger les recommandations'**
   String get recoErrorTitle;
 
+  /// No description provided for @navStats.
+  ///
+  /// In fr, this message translates to:
+  /// **'Stats'**
+  String get navStats;
+
+  /// No description provided for @statsTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Stats'**
+  String get statsTitle;
+
+  /// No description provided for @statsWatchTime.
+  ///
+  /// In fr, this message translates to:
+  /// **'De visionnage'**
+  String get statsWatchTime;
+
+  /// No description provided for @statsEpisodes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Épisodes vus'**
+  String get statsEpisodes;
+
+  /// No description provided for @statsCompleted.
+  ///
+  /// In fr, this message translates to:
+  /// **'Animes terminés'**
+  String get statsCompleted;
+
+  /// No description provided for @statsBreakdownTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ma liste'**
+  String get statsBreakdownTitle;
+
+  /// No description provided for @statsGenresTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Genres favoris'**
+  String get statsGenresTitle;
+
+  /// No description provided for @statsEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rien à compter pour l\'instant.'**
+  String get statsEmpty;
+
+  /// No description provided for @statsEmptyHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajoutez des animes à votre liste pour voir vos statistiques.'**
+  String get statsEmptyHint;
+
+  /// No description provided for @statsErrorTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de calculer vos statistiques'**
+  String get statsErrorTitle;
+
   /// No description provided for @retry.
   ///
   /// In fr, this message translates to:

@@ -5,6 +5,7 @@ import '../../functional/Anime/presentation/watchlist_view.dart';
 import '../../functional/Catalogue/presentation/anime_sheet_route.dart';
 import '../../functional/Catalogue/presentation/catalogue_view.dart';
 import '../../functional/Discover/presentation/discover_view.dart';
+import '../../functional/Stats/presentation/stats_view.dart';
 import '../Theme/app_spacing.dart';
 import '../Theme/widgets/anime_poster.dart';
 import '../Theme/widgets/fade_on_change.dart';
@@ -54,6 +55,7 @@ class _AppShellState extends State<AppShell> {
             onAnimeSelected: (animeId, title) =>
                 _openSheet('agenda', animeId, title),
           ),
+          const StatsView(),
         ],
       ),
     );

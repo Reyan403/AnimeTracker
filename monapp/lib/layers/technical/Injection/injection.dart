@@ -10,6 +10,8 @@ import '../../functional/Discover/domain/use_cases/recommend_anime_use_case.dart
 import '../../functional/Discover/domain/use_cases/suggest_evening_watch_use_case.dart';
 import '../../functional/Discover/presentation/cubit/evening_cubit.dart';
 import '../../functional/Discover/presentation/cubit/recommendations_cubit.dart';
+import '../../functional/Stats/domain/use_cases/compute_watch_stats_use_case.dart';
+import '../../functional/Stats/presentation/cubit/stats_cubit.dart';
 import '../../functional/Anime/data/gateways/local_watchlist_gateway.dart';
 import '../../functional/Anime/data/my_watchlist.dart';
 import '../../functional/Anime/data/stores/preferences_watchlist_store.dart';
@@ -97,6 +99,9 @@ Future<void> initializeDependencies() async {
     ..registerLazySingleton<LoadReleaseAgendaUseCase>(
       () => LoadReleaseAgendaUseCase(getIt<LoadWatchlistUseCase>()),
     )
+    ..registerLazySingleton<ComputeWatchStatsUseCase>(
+      () => ComputeWatchStatsUseCase(getIt<LoadWatchlistUseCase>()),
+    )
     ..registerLazySingleton<RecommendationGateway>(
       () => KitsuRecommendationGateway(getIt()),
     )
@@ -125,6 +130,9 @@ Future<void> initializeDependencies() async {
         getIt<WatchNextEpisodeUseCase>(),
         getIt<WatchPreviousEpisodeUseCase>(),
       ),
+    )
+    ..registerFactory<StatsCubit>(
+      () => StatsCubit(getIt<ComputeWatchStatsUseCase>()),
     )
     ..registerFactory<RecommendationsCubit>(
       () => RecommendationsCubit(

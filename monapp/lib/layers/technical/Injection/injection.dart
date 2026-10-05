@@ -7,7 +7,7 @@ import '../../functional/Constellation/presentation/cubit/constellation_cubit.da
 import '../../functional/Agenda/presentation/cubit/agenda_cubit.dart';
 import '../../functional/Agenda/data/gateways/anilist_release_schedule_gateway.dart';
 import '../../functional/Agenda/domain/gateways/release_schedule_gateway.dart';
-import '../../functional/Animedex/data/gateways/kitsu_booster_candidate_gateway.dart';
+import '../../functional/Animedex/data/gateways/ani_list_booster_candidate_gateway.dart';
 import '../../functional/Animedex/data/gateways/preferences_booster_schedule_gateway.dart';
 import '../../functional/Animedex/data/gateways/preferences_dex_collection_gateway.dart';
 import '../../functional/Animedex/domain/gateways/booster_candidate_gateway.dart';
@@ -175,7 +175,7 @@ Future<void> initializeDependencies() async {
       () => PreferencesBoosterScheduleGateway(getIt()),
     )
     ..registerLazySingleton<BoosterCandidateGateway>(
-      () => KitsuBoosterCandidateGateway(getIt()),
+      () => AniListBoosterCandidateGateway(getIt()),
     )
     ..registerLazySingleton<LoadDexUseCase>(
       () => LoadDexUseCase(getIt<DexCollectionGateway>()),

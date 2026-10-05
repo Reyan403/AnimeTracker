@@ -13,14 +13,12 @@ class HolographicCard extends StatefulWidget {
     required this.card,
     this.isLive = false,
     this.compact = false,
-    this.heroTag,
     super.key,
   });
 
   final DexCard card;
   final bool isLive;
   final bool compact;
-  final String? heroTag;
 
   @override
   State<HolographicCard> createState() => _HolographicCardState();
@@ -84,11 +82,7 @@ class _HolographicCardState extends State<HolographicCard>
   Widget build(BuildContext context) {
     final card = widget.card;
     final l10n = AppLocalizations.of(context);
-    final face = CardFace(
-      card: card,
-      heroTag: widget.heroTag,
-      compact: widget.compact,
-    );
+    final face = CardFace(card: card, compact: widget.compact);
     final surface = Stack(
       fit: StackFit.expand,
       children: [
@@ -100,7 +94,7 @@ class _HolographicCardState extends State<HolographicCard>
 
     return Semantics(
       excludeSemantics: true,
-      label: l10n.dexCardLabel(card.title, card.rarity.label(l10n)),
+      label: l10n.dexCardLabel(card.name, card.rarity.label(l10n)),
       child: RepaintBoundary(
         child: AspectRatio(
           aspectRatio: CardMetrics.aspectRatio,

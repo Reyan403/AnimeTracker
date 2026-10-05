@@ -18,11 +18,11 @@ class PreferencesDexCollectionGateway implements DexCollectionGateway {
   @override
   Future<void> addAll(List<DexCard> cards) async {
     final stored = _loaded ??= _read();
-    final known = {for (final card in stored) card.animeId};
+    final known = {for (final card in stored) card.characterId};
 
     stored.addAll([
       for (final card in cards)
-        if (known.add(card.animeId)) card,
+        if (known.add(card.characterId)) card,
     ]);
 
     await _preferences.writeString(

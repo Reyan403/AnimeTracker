@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:monapp/layers/functional/Anime/domain/entities/anime_genre.dart';
 import 'package:monapp/layers/functional/Animedex/data/gateways/preferences_booster_schedule_gateway.dart';
 import 'package:monapp/layers/functional/Animedex/data/gateways/preferences_dex_collection_gateway.dart';
 import 'package:monapp/layers/functional/Animedex/data/models/dex_card_dto.dart';
@@ -13,15 +12,14 @@ import 'package:shared_preferences_platform_interface/shared_preferences_async_p
 import '../../../support/animedex_fakes.dart';
 
 final DexCard full = DexCard(
-  animeId: 21,
-  title: 'One Piece',
+  characterId: 21,
+  name: 'Monkey D. Luffy',
   rarity: CardRarity.epic,
-  format: 'Série TV',
-  year: 1999,
-  episodeCount: 1100,
+  favourites: 9000,
   obtainedOn: DateTime(2026, 10, 5, 9, 30),
-  posterUrl: 'https://img/poster.jpg',
-  genres: const [AnimeGenre(slug: 'adventure', title: 'Aventure')],
+  nativeName: 'モンキー・D・ルフィ',
+  imageUrl: 'https://img/luffy.jpg',
+  animeTitle: 'One Piece',
 );
 
 void main() {
@@ -32,53 +30,56 @@ void main() {
 
     test('decode une carte sans champs optionnels', () {
       final card = DexCardDto.fromJson({
-        'id': 1,
-        'title': 'X',
+        'characterId': 1,
+        'name': 'X',
         'rarity': 'rare',
         'obtainedOn': '2026-10-05T00:00:00.000',
       })!;
 
-      expect(card.format, '');
-      expect(card.year, 0);
-      expect(card.episodeCount, 0);
-      expect(card.posterUrl, isNull);
-      expect(card.genres, isEmpty);
-    });
-
-    test('ignore les genres mal formés', () {
-      final card = DexCardDto.fromJson({
-        ...DexCardDto.toJson(full),
-        'genres': [
-          {'slug': 'ok', 'title': 'Ok'},
-          {'slug': 3},
-          'texte',
-        ],
-      })!;
-
-      expect(card.genres.map((genre) => genre.slug), ['ok']);
+      expect(card.favourites, 0);
+      expect(card.nativeName, isNull);
+      expect(card.imageUrl, isNull);
+      expect(card.animeTitle, isNull);
     });
 
     test('tolère des types invalides sur les champs optionnels', () {
       final card = DexCardDto.fromJson({
         ...DexCardDto.toJson(full),
-        'format': 3,
-        'year': 'x',
-        'episodes': 'y',
-        'poster': 5,
-        'genres': 'z',
+        'favourites': 'x',
+        'native': 3,
+        'image': 5,
+        'anime': [],
       })!;
 
-      expect(card.format, '');
-      expect(card.year, 0);
-      expect(card.episodeCount, 0);
-      expect(card.posterUrl, isNull);
-      expect(card.genres, isEmpty);
+      expect(card.favourites, 0);
+      expect(card.nativeName, isNull);
+      expect(card.imageUrl, isNull);
+      expect(card.animeTitle, isNull);
+    });
+
+    test('ignore sans planter une ancienne carte d anime', () {
+      expect(
+        DexCardDto.fromJson({
+          'id': 21,
+          'title': 'One Piece',
+          'rarity': 'epic',
+          'format': 'Série TV',
+          'year': 1999,
+          'episodes': 1100,
+          'obtainedOn': '2026-10-05T09:30:00.000',
+          'poster': 'https://img/poster.jpg',
+          'genres': [
+            {'slug': 'adventure', 'title': 'Aventure'},
+          ],
+        }),
+        isNull,
+      );
     });
 
     test('rejette les données corrompues', () {
       expect(DexCardDto.fromJson(null), isNull);
       expect(DexCardDto.fromJson('texte'), isNull);
-      expect(DexCardDto.fromJson({'id': 'x'}), isNull);
+      expect(DexCardDto.fromJson({'characterId': 'x'}), isNull);
       expect(
         DexCardDto.fromJson({...DexCardDto.toJson(full), 'rarity': 'mythic'}),
         isNull,
@@ -88,7 +89,7 @@ void main() {
         isNull,
       );
       expect(
-        DexCardDto.fromJson({...DexCardDto.toJson(full), 'title': null}),
+        DexCardDto.fromJson({...DexCardDto.toJson(full), 'name': null}),
         isNull,
       );
     });
@@ -129,7 +130,7 @@ void main() {
       await gateway.addAll([full, buildDexCard(2), buildDexCard(2)]);
       await gateway.addAll([full, buildDexCard(3)]);
 
-      expect(gateway.cards.map((card) => card.animeId), [21, 2, 3]);
+      expect(gateway.cards.map((card) => card.characterId), [21, 2, 3]);
     });
 
     test('ignore les données corrompues', () async {
@@ -150,13 +151,29 @@ void main() {
       final preferences = await AppPreferences.open();
       await preferences.writeString(
         PreferencesKey.dex,
-        '[{"id":1,"title":"A","rarity":"epic",'
+        '[{"characterId":1,"name":"A","rarity":"epic",'
         '"obtainedOn":"2026-10-05T00:00:00.000"},{"id":"x"},5]',
       );
 
       final cards = PreferencesDexCollectionGateway(preferences).cards;
 
-      expect(cards.single.animeId, 1);
+      expect(cards.single.characterId, 1);
+    });
+
+    test('ignore l ancienne collection d animes sans exception', () async {
+      final preferences = await AppPreferences.open();
+      await preferences.writeString(
+        PreferencesKey.dex,
+        '[{"id":1,"title":"A","rarity":"epic","format":"TV","year":2000,'
+        '"episodes":12,"obtainedOn":"2026-10-05T00:00:00.000","genres":[]}]',
+      );
+      final gateway = PreferencesDexCollectionGateway(preferences);
+
+      expect(gateway.cards, isEmpty);
+
+      await gateway.addAll([full]);
+
+      expect(gateway.cards, [full]);
     });
 
     test('la liste exposée n est pas modifiable', () async {

@@ -44,7 +44,7 @@ class AlreadyOpenedPanel extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
-          FilledButton(onPressed: onDone, child: Text(l10n.dexSeeDex)),
+          FilledButton(onPressed: onDone, child: Text(l10n.dexSeeCards)),
         ],
       ),
     );

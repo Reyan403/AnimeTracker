@@ -1,41 +1,37 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../Anime/domain/entities/anime_genre.dart';
 import 'card_rarity.dart';
 
 class DexCard extends Equatable {
   const DexCard({
-    required this.animeId,
-    required this.title,
+    required this.characterId,
+    required this.name,
     required this.rarity,
-    required this.format,
-    required this.year,
-    required this.episodeCount,
+    required this.favourites,
     required this.obtainedOn,
-    this.posterUrl,
-    this.genres = const [],
+    this.nativeName,
+    this.imageUrl,
+    this.animeTitle,
   });
 
-  final int animeId;
-  final String title;
+  final int characterId;
+  final String name;
   final CardRarity rarity;
-  final String format;
-  final int year;
-  final int episodeCount;
+  final int favourites;
   final DateTime obtainedOn;
-  final String? posterUrl;
-  final List<AnimeGenre> genres;
+  final String? nativeName;
+  final String? imageUrl;
+  final String? animeTitle;
 
   @override
   List<Object?> get props => [
-        animeId,
-        title,
-        rarity,
-        format,
-        year,
-        episodeCount,
-        obtainedOn,
-        posterUrl,
-        genres,
-      ];
+    characterId,
+    name,
+    rarity,
+    favourites,
+    obtainedOn,
+    nativeName,
+    imageUrl,
+    animeTitle,
+  ];
 }

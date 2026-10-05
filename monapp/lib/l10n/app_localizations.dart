@@ -928,11 +928,119 @@ abstract class AppLocalizations {
   /// **'Animédex'**
   String get dexTitle;
 
-  /// No description provided for @dexCardCount.
+  /// No description provided for @dexCharacterCount.
   ///
   /// In fr, this message translates to:
-  /// **'{count, plural, =0{Aucune carte} =1{1 carte} other{{count} cartes}}'**
-  String dexCardCount(int count);
+  /// **'{count, plural, =0{Aucun personnage} =1{1 personnage} other{{count} personnages}}'**
+  String dexCharacterCount(int count);
+
+  /// No description provided for @dexTabBooster.
+  ///
+  /// In fr, this message translates to:
+  /// **'Booster'**
+  String get dexTabBooster;
+
+  /// No description provided for @dexTabCollection.
+  ///
+  /// In fr, this message translates to:
+  /// **'Collection'**
+  String get dexTabCollection;
+
+  /// No description provided for @dexLatestCardsTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dernières cartes obtenues'**
+  String get dexLatestCardsTitle;
+
+  /// No description provided for @dexSearchHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rechercher un personnage ou un anime'**
+  String get dexSearchHint;
+
+  /// No description provided for @dexSearchClear.
+  ///
+  /// In fr, this message translates to:
+  /// **'Effacer la recherche'**
+  String get dexSearchClear;
+
+  /// No description provided for @dexFilterAll.
+  ///
+  /// In fr, this message translates to:
+  /// **'Toutes'**
+  String get dexFilterAll;
+
+  /// No description provided for @dexSortLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Trier'**
+  String get dexSortLabel;
+
+  /// No description provided for @dexSortRecent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Plus récentes'**
+  String get dexSortRecent;
+
+  /// No description provided for @dexSortRarity.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rareté'**
+  String get dexSortRarity;
+
+  /// No description provided for @dexSortName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom A → Z'**
+  String get dexSortName;
+
+  /// No description provided for @dexSortFavourites.
+  ///
+  /// In fr, this message translates to:
+  /// **'Plus aimés'**
+  String get dexSortFavourites;
+
+  /// No description provided for @dexNoResultsTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun personnage trouvé'**
+  String get dexNoResultsTitle;
+
+  /// No description provided for @dexNoResultsHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Essaie un autre nom ou une autre rareté.'**
+  String get dexNoResultsHint;
+
+  /// No description provided for @dexResetFilters.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réinitialiser les filtres'**
+  String get dexResetFilters;
+
+  /// No description provided for @dexFavouritesThousands.
+  ///
+  /// In fr, this message translates to:
+  /// **'{value} k'**
+  String dexFavouritesThousands(String value);
+
+  /// No description provided for @dexDetailFavourites.
+  ///
+  /// In fr, this message translates to:
+  /// **'{value} favoris'**
+  String dexDetailFavourites(String value);
+
+  /// No description provided for @dexDetailOrigin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Anime d\'origine'**
+  String get dexDetailOrigin;
+
+  /// No description provided for @dexDetailObtained.
+  ///
+  /// In fr, this message translates to:
+  /// **'Obtenue le {date}'**
+  String dexDetailObtained(DateTime date);
 
   /// No description provided for @dexRarityCommon.
   ///
@@ -967,7 +1075,7 @@ abstract class AppLocalizations {
   /// No description provided for @dexBoosterReadyHint.
   ///
   /// In fr, this message translates to:
-  /// **'5 cartes d\'animes à découvrir.'**
+  /// **'5 cartes de personnages à découvrir.'**
   String get dexBoosterReadyHint;
 
   /// No description provided for @dexBoosterOpen.
@@ -991,13 +1099,13 @@ abstract class AppLocalizations {
   /// No description provided for @dexEmptyTitle.
   ///
   /// In fr, this message translates to:
-  /// **'Ton Animédex est vide'**
+  /// **'Ta collection est vide'**
   String get dexEmptyTitle;
 
   /// No description provided for @dexEmptyHint.
   ///
   /// In fr, this message translates to:
-  /// **'Ouvre ton premier booster pour recevoir 5 cartes d\'animes.'**
+  /// **'Ouvre ton premier booster pour recevoir 5 cartes de personnages.'**
   String get dexEmptyHint;
 
   /// No description provided for @dexEmptyWaitHint.
@@ -1015,7 +1123,7 @@ abstract class AppLocalizations {
   /// No description provided for @dexErrorTitle.
   ///
   /// In fr, this message translates to:
-  /// **'Impossible d\'afficher ton Animédex'**
+  /// **'Impossible d\'afficher ta collection'**
   String get dexErrorTitle;
 
   /// No description provided for @dexErrorHint.
@@ -1027,8 +1135,8 @@ abstract class AppLocalizations {
   /// No description provided for @dexCardLabel.
   ///
   /// In fr, this message translates to:
-  /// **'{title}, carte {rarity}'**
-  String dexCardLabel(String title, String rarity);
+  /// **'{name}, carte {rarity}'**
+  String dexCardLabel(String name, String rarity);
 
   /// No description provided for @dexPackLabel.
   ///
@@ -1090,11 +1198,11 @@ abstract class AppLocalizations {
   /// **'{count, plural, =0{aucun doublon} =1{1 doublon} other{{count} doublons}}'**
   String dexRecapDuplicates(int count);
 
-  /// No description provided for @dexSeeDex.
+  /// No description provided for @dexSeeCards.
   ///
   /// In fr, this message translates to:
-  /// **'Voir mon Animédex'**
-  String get dexSeeDex;
+  /// **'Voir mes cartes'**
+  String get dexSeeCards;
 
   /// No description provided for @dexAlreadyOpenedTitle.
   ///

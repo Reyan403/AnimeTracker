@@ -27,7 +27,7 @@ class DexGrid extends StatelessWidget {
       itemBuilder: (context, index) => StaggeredAppear(
         index: index,
         child: DexCardTile(
-          key: ValueKey(cards[index].animeId),
+          key: ValueKey(cards[index].characterId),
           card: cards[index],
           onTap: () => onCardTap(cards[index]),
         ),

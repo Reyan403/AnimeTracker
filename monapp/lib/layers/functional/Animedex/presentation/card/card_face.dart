@@ -1,47 +1,30 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../l10n/app_localizations.dart';
 import '../../../../technical/Theme/app_palette.dart';
 import '../../../../technical/Theme/app_spacing.dart';
 import '../../../../technical/Theme/widgets/anime_poster.dart';
 import '../../domain/entities/dex_card.dart';
+import 'card_caption.dart';
+import 'card_favourites.dart';
 import 'card_metrics.dart';
-import 'rarity_stars.dart';
+import 'card_rarity_label.dart';
 import 'rarity_style.dart';
 
 class CardFace extends StatelessWidget {
-  const CardFace({
-    required this.card,
-    this.heroTag,
-    this.compact = false,
-    super.key,
-  });
+  const CardFace({required this.card, this.compact = false, super.key});
 
   final DexCard card;
-  final String? heroTag;
   final bool compact;
 
   @override
   Widget build(BuildContext context) {
     final palette = AppPalette.of(context);
-    final theme = Theme.of(context);
-    final l10n = AppLocalizations.of(context);
     final tone = card.rarity.color(palette);
-    final radius = BorderRadius.circular(CardMetrics.radius);
-    final labelInk =
-        ThemeData.estimateBrightnessForColor(tone) == Brightness.dark
-        ? palette.starGlow
-        : palette.nebula;
-    final titleStyle = compact
-        ? theme.textTheme.titleLarge?.copyWith(
-            fontSize: CardMetrics.compactTitleSize,
-          )
-        : theme.textTheme.titleLarge;
 
     return DecoratedBox(
       decoration: BoxDecoration(
         color: palette.nebula,
-        borderRadius: radius,
+        borderRadius: BorderRadius.circular(CardMetrics.radius),
         border: Border.all(color: tone, width: CardMetrics.borderWidth),
         boxShadow: [
           BoxShadow(
@@ -60,9 +43,8 @@ class CardFace extends StatelessWidget {
           children: [
             LayoutBuilder(
               builder: (context, box) => AnimePoster(
-                title: card.title,
-                imageUrl: card.posterUrl,
-                heroTag: heroTag,
+                title: card.name,
+                imageUrl: card.imageUrl,
                 width: box.maxWidth,
                 height: box.maxHeight,
               ),
@@ -71,65 +53,19 @@ class CardFace extends StatelessWidget {
               left: 0,
               right: 0,
               bottom: 0,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Colors.transparent, palette.nebula],
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    AppSpacing.sm,
-                    AppSpacing.lg,
-                    AppSpacing.sm,
-                    AppSpacing.sm,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      RarityStars(rarity: card.rarity, size: compact ? 14 : 18),
-                      Text(
-                        card.title,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: titleStyle?.copyWith(color: palette.starGlow),
-                      ),
-                      if (!compact)
-                        Text(
-                          '${card.format} · ${card.year}',
-                          style: theme.textTheme.labelMedium?.copyWith(
-                            color: palette.starGlow,
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
+              child: CardCaption(card: card, compact: compact),
             ),
             Positioned(
               top: AppSpacing.sm,
               left: AppSpacing.sm,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: tone,
-                  borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-                  border: Border.all(color: palette.nebula, width: 2),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.sm,
-                    vertical: 2,
-                  ),
-                  child: Text(
-                    card.rarity.label(l10n),
-                    style: theme.textTheme.labelMedium?.copyWith(
-                      color: labelInk,
-                    ),
-                  ),
-                ),
+              right: AppSpacing.sm,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(child: CardRarityLabel(rarity: card.rarity)),
+                  const SizedBox(width: AppSpacing.xs),
+                  CardFavourites(count: card.favourites, compact: compact),
+                ],
               ),
             ),
           ],

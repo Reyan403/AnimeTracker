@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:monapp/layers/functional/Animedex/domain/entities/card_rarity.dart';
 import 'package:monapp/layers/functional/Animedex/domain/entities/dex_card.dart';
 import 'package:monapp/layers/functional/Animedex/domain/entities/drawn_card.dart';
@@ -6,23 +9,34 @@ import 'package:monapp/layers/functional/Animedex/domain/gateways/dex_collection
 import 'package:monapp/layers/functional/Animedex/domain/use_cases/check_booster_availability_use_case.dart';
 import 'package:monapp/layers/functional/Animedex/domain/use_cases/load_dex_use_case.dart';
 import 'package:monapp/layers/functional/Animedex/domain/use_cases/open_booster_use_case.dart';
+import 'package:monapp/layers/functional/Animedex/presentation/animedex_view.dart';
 import 'package:monapp/layers/functional/Animedex/presentation/cubit/booster_cubit.dart';
 import 'package:monapp/layers/functional/Animedex/presentation/cubit/dex_cubit.dart';
+import 'package:monapp/layers/functional/Animedex/presentation/widgets/dex_card_tile.dart';
+
+import '../../../support/animedex_fakes.dart';
+import '../../../support/pump_app.dart';
 
 final DateTime fixedNow = DateTime(2026, 10, 5, 20, 30, 15);
+
+const Size tallScreen = Size(500, 1800);
 
 DexCard cardOf(
   int id, {
   CardRarity rarity = CardRarity.common,
-  String? title,
-}) => DexCard(
-  animeId: id,
-  title: title ?? 'Anime $id',
+  String? name,
+  int favourites = 1000,
+  String? animeTitle,
+  String? nativeName,
+  DateTime? obtainedOn,
+}) => buildDexCard(
+  id,
   rarity: rarity,
-  format: 'TV',
-  year: 2000 + id,
-  episodeCount: 12,
-  obtainedOn: fixedNow,
+  name: name,
+  favourites: favourites,
+  animeTitle: animeTitle,
+  nativeName: nativeName,
+  obtainedOn: obtainedOn ?? fixedNow,
 );
 
 DrawnCard drawnOf(
@@ -97,4 +111,75 @@ final List<DrawnCard> mixedBooster = [
   drawnOf(3, rarity: CardRarity.epic),
   drawnOf(4, rarity: CardRarity.legendary),
   drawnOf(5, isNew: false),
+];
+
+Future<DexCubit> pumpDex(
+  WidgetTester tester,
+  DexCubit cubit, {
+  bool load = true,
+  Size size = const Size(400, 800),
+}) async {
+  if (load) {
+    cubit.load();
+  }
+
+  await pumpApp(
+    tester,
+    BlocProvider.value(
+      value: cubit,
+      child: AnimedexScaffold(now: () => fixedNow),
+    ),
+    size: size,
+    settle: false,
+  );
+  await tester.pump(const Duration(seconds: 1));
+
+  return cubit;
+}
+
+List<String> tileNames(WidgetTester tester) => [
+  for (final tile in tester.widgetList<DexCardTile>(find.byType(DexCardTile)))
+    tile.card.name,
+];
+
+final List<DexCard> sampleCollection = [
+  cardOf(
+    1,
+    name: 'Naruto Uzumaki',
+    animeTitle: 'Naruto',
+    nativeName: 'うずまきナルト',
+    favourites: 5000,
+    obtainedOn: DateTime(2026, 10, 3),
+  ),
+  cardOf(
+    2,
+    name: 'Élise Moreau',
+    rarity: CardRarity.rare,
+    animeTitle: 'Bleach',
+    favourites: 40000,
+    obtainedOn: DateTime(2026, 10, 4),
+  ),
+  cardOf(
+    3,
+    name: 'Light Yagami',
+    rarity: CardRarity.epic,
+    animeTitle: 'Death Note',
+    favourites: 90000,
+    obtainedOn: DateTime(2026, 10, 5),
+  ),
+  cardOf(
+    4,
+    name: 'Zoro',
+    rarity: CardRarity.legendary,
+    animeTitle: 'One Piece',
+    favourites: 70000,
+    obtainedOn: DateTime(2026, 10, 5),
+  ),
+  cardOf(
+    5,
+    name: 'Mikasa',
+    animeTitle: 'Attack on Titan',
+    favourites: 30000,
+    obtainedOn: DateTime(2026, 10, 2),
+  ),
 ];

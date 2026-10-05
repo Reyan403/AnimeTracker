@@ -35,7 +35,7 @@ class RecapPanel extends StatelessWidget {
         FilledButton.icon(
           onPressed: onDone,
           icon: const Icon(Icons.collections_bookmark_outlined),
-          label: Text(l10n.dexSeeDex),
+          label: Text(l10n.dexSeeCards),
         ),
       ],
     );

@@ -24,7 +24,7 @@ void main() {
         ),
       ]);
 
-      final ids = LoadDexUseCase(collection)().map((card) => card.animeId);
+      final ids = LoadDexUseCase(collection)().map((card) => card.characterId);
 
       expect(ids, [2, 4, 3, 1]);
     });

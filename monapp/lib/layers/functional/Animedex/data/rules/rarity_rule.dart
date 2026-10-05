@@ -3,10 +3,9 @@ import 'dart:math';
 import '../../domain/entities/card_rarity.dart';
 
 abstract final class RarityRule {
-  static const double legendaryRating = 82.3;
-  static const double epicRating = 81.2;
-  static const double rareRating = 73.5;
-  static const int iconicPopularityRank = 20;
+  static const int legendaryFavourites = 14000;
+  static const int epicFavourites = 5400;
+  static const int rareFavourites = 1100;
 
   static const Map<CardRarity, double> probabilities = {
     CardRarity.common: 0.60,
@@ -16,22 +15,22 @@ abstract final class RarityRule {
   };
 
   static const Map<CardRarity, ({int start, int end})> bands = {
-    CardRarity.legendary: (start: 0, end: 100),
-    CardRarity.epic: (start: 100, end: 400),
-    CardRarity.rare: (start: 400, end: 1500),
-    CardRarity.common: (start: 1500, end: 3300),
+    CardRarity.legendary: (start: 1, end: 61),
+    CardRarity.epic: (start: 61, end: 301),
+    CardRarity.rare: (start: 301, end: 1501),
+    CardRarity.common: (start: 1501, end: 5001),
   };
 
-  static CardRarity of({double? averageRating, int? popularityRank}) {
-    final base = _byRating(averageRating);
-    final iconic =
-        popularityRank != null && popularityRank <= iconicPopularityRank;
-
-    if (!iconic || base == CardRarity.legendary) {
-      return base;
+  static CardRarity of(int favourites) {
+    if (favourites >= legendaryFavourites) {
+      return CardRarity.legendary;
     }
 
-    return CardRarity.values[base.index + 1];
+    if (favourites >= epicFavourites) {
+      return CardRarity.epic;
+    }
+
+    return favourites >= rareFavourites ? CardRarity.rare : CardRarity.common;
   }
 
   static CardRarity roll(Random random) {
@@ -48,25 +47,9 @@ abstract final class RarityRule {
     return CardRarity.common;
   }
 
-  static int offsetIn(CardRarity rarity, Random random) {
+  static int pageIn(CardRarity rarity, Random random) {
     final band = bands[rarity]!;
 
     return band.start + random.nextInt(band.end - band.start);
-  }
-
-  static CardRarity _byRating(double? rating) {
-    if (rating == null) {
-      return CardRarity.common;
-    }
-
-    if (rating >= legendaryRating) {
-      return CardRarity.legendary;
-    }
-
-    if (rating >= epicRating) {
-      return CardRarity.epic;
-    }
-
-    return rating >= rareRating ? CardRarity.rare : CardRarity.common;
   }
 }

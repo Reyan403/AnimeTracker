@@ -32,9 +32,15 @@ void main() {
       final drawn = await openerFor(candidates, collection, schedule)();
 
       expect(drawn, hasLength(5));
-      expect(drawn.map((entry) => entry.card.animeId).toSet(), {1, 2, 3, 4, 5});
-      expect(drawn.where((entry) => !entry.isNew).single.card.animeId, 2);
-      expect(collection.cards.map((card) => card.animeId).toSet(), {
+      expect(drawn.map((entry) => entry.card.characterId).toSet(), {
+        1,
+        2,
+        3,
+        4,
+        5,
+      });
+      expect(drawn.where((entry) => !entry.isNew).single.card.characterId, 2);
+      expect(collection.cards.map((card) => card.characterId).toSet(), {
         1,
         2,
         3,
@@ -59,7 +65,13 @@ void main() {
         FakeBoosterScheduleGateway(),
       )();
 
-      expect(drawn.map((entry) => entry.card.animeId).toSet(), {1, 2, 3, 4, 5});
+      expect(drawn.map((entry) => entry.card.characterId).toSet(), {
+        1,
+        2,
+        3,
+        4,
+        5,
+      });
       expect(candidates.requestedCounts, [5, 3, 2]);
       expect(candidates.receivedExclusions[1], {1, 2});
       expect(candidates.receivedExclusions[2], {1, 2, 3});

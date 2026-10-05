@@ -499,15 +499,78 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dexTitle => 'Animédex';
 
   @override
-  String dexCardCount(int count) {
+  String dexCharacterCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count cartes',
-      one: '1 carte',
-      zero: 'Aucune carte',
+      other: '$count personnages',
+      one: '1 personnage',
+      zero: 'Aucun personnage',
     );
     return '$_temp0';
+  }
+
+  @override
+  String get dexTabBooster => 'Booster';
+
+  @override
+  String get dexTabCollection => 'Collection';
+
+  @override
+  String get dexLatestCardsTitle => 'Dernières cartes obtenues';
+
+  @override
+  String get dexSearchHint => 'Rechercher un personnage ou un anime';
+
+  @override
+  String get dexSearchClear => 'Effacer la recherche';
+
+  @override
+  String get dexFilterAll => 'Toutes';
+
+  @override
+  String get dexSortLabel => 'Trier';
+
+  @override
+  String get dexSortRecent => 'Plus récentes';
+
+  @override
+  String get dexSortRarity => 'Rareté';
+
+  @override
+  String get dexSortName => 'Nom A → Z';
+
+  @override
+  String get dexSortFavourites => 'Plus aimés';
+
+  @override
+  String get dexNoResultsTitle => 'Aucun personnage trouvé';
+
+  @override
+  String get dexNoResultsHint => 'Essaie un autre nom ou une autre rareté.';
+
+  @override
+  String get dexResetFilters => 'Réinitialiser les filtres';
+
+  @override
+  String dexFavouritesThousands(String value) {
+    return '$value k';
+  }
+
+  @override
+  String dexDetailFavourites(String value) {
+    return '$value favoris';
+  }
+
+  @override
+  String get dexDetailOrigin => 'Anime d\'origine';
+
+  @override
+  String dexDetailObtained(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Obtenue le $dateString';
   }
 
   @override
@@ -526,7 +589,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dexBoosterReadyTitle => 'Ton booster du jour est prêt !';
 
   @override
-  String get dexBoosterReadyHint => '5 cartes d\'animes à découvrir.';
+  String get dexBoosterReadyHint => '5 cartes de personnages à découvrir.';
 
   @override
   String get dexBoosterOpen => 'Ouvrir';
@@ -538,11 +601,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dexBoosterWaitHint => 'Reviens demain pour 5 nouvelles cartes.';
 
   @override
-  String get dexEmptyTitle => 'Ton Animédex est vide';
+  String get dexEmptyTitle => 'Ta collection est vide';
 
   @override
   String get dexEmptyHint =>
-      'Ouvre ton premier booster pour recevoir 5 cartes d\'animes.';
+      'Ouvre ton premier booster pour recevoir 5 cartes de personnages.';
 
   @override
   String get dexEmptyWaitHint => 'Ton prochain booster arrive bientôt.';
@@ -551,15 +614,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dexOpenFirstBooster => 'Ouvrir mon premier booster';
 
   @override
-  String get dexErrorTitle => 'Impossible d\'afficher ton Animédex';
+  String get dexErrorTitle => 'Impossible d\'afficher ta collection';
 
   @override
   String get dexErrorHint =>
       'Une erreur est survenue. Réessaie dans un instant.';
 
   @override
-  String dexCardLabel(String title, String rarity) {
-    return '$title, carte $rarity';
+  String dexCardLabel(String name, String rarity) {
+    return '$name, carte $rarity';
   }
 
   @override
@@ -613,7 +676,7 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get dexSeeDex => 'Voir mon Animédex';
+  String get dexSeeCards => 'Voir mes cartes';
 
   @override
   String get dexAlreadyOpenedTitle => 'Booster déjà ouvert aujourd\'hui';

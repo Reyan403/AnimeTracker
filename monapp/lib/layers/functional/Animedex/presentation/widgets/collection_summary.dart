@@ -5,6 +5,7 @@ import '../../../../technical/Theme/app_spacing.dart';
 import '../../domain/entities/card_rarity.dart';
 import '../cubit/dex_state.dart';
 import 'rarity_count_chip.dart';
+import 'rarity_distribution_bar.dart';
 
 class CollectionSummary extends StatelessWidget {
   const CollectionSummary({required this.state, super.key});
@@ -16,13 +17,15 @@ class CollectionSummary extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          l10n.dexCardCount(state.cards.length),
+          l10n.dexCharacterCount(state.cards.length),
           style: Theme.of(context).textTheme.headlineSmall,
         ),
-        const SizedBox(height: AppSpacing.sm),
+        const SizedBox(height: AppSpacing.md),
+        RarityDistributionBar(state: state),
+        const SizedBox(height: AppSpacing.md),
         Wrap(
           spacing: AppSpacing.sm,
           runSpacing: AppSpacing.sm,

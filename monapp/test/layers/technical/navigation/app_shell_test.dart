@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:monapp/layers/functional/Agenda/presentation/cubit/agenda_cubit.dart';
 import 'package:monapp/layers/functional/Agenda/presentation/cubit/agenda_state.dart';
+import 'package:monapp/layers/functional/Animedex/domain/use_cases/check_booster_availability_use_case.dart';
+import 'package:monapp/layers/functional/Animedex/domain/use_cases/load_dex_use_case.dart';
 import 'package:monapp/layers/functional/Animedex/presentation/cubit/dex_cubit.dart';
-import 'package:monapp/layers/functional/Animedex/presentation/cubit/dex_state.dart';
 import 'package:monapp/layers/functional/Anime/domain/entities/anime.dart';
 import 'package:monapp/layers/functional/Anime/domain/entities/watch_status.dart';
 import 'package:monapp/layers/functional/Anime/presentation/cubit/watchlist_cubit.dart';
@@ -28,6 +29,7 @@ import 'package:monapp/layers/functional/Stats/presentation/cubit/stats_state.da
 import 'package:monapp/layers/technical/Injection/injection.dart';
 import 'package:monapp/layers/technical/Navigation/app_shell.dart';
 
+import '../../../support/animedex_fakes.dart';
 import '../../../support/pump_app.dart';
 
 class FakeWatchlistCubit extends Cubit<WatchlistState>
@@ -179,12 +181,10 @@ class FakeAnimeSheetCubit extends Cubit<AnimeSheetState>
   void revealSynopsis() {}
 }
 
-class FakeDexCubit extends Cubit<DexState> implements DexCubit {
-  FakeDexCubit() : super(const DexState(status: DexStatus.empty));
-
-  @override
-  void load() {}
-}
+DexCubit buildDexCubit() => DexCubit(
+  LoadDexUseCase(FakeDexCollectionGateway()),
+  CheckBoosterAvailabilityUseCase(FakeBoosterScheduleGateway()),
+);
 
 Future<void> advance(WidgetTester tester) async {
   await tester.pump();
@@ -202,7 +202,7 @@ void main() {
       ..registerFactory<RecommendationsCubit>(FakeRecommendationsCubit.new)
       ..registerFactory<EveningCubit>(FakeEveningCubit.new)
       ..registerFactory<AgendaCubit>(FakeAgendaCubit.new)
-      ..registerFactory<DexCubit>(FakeDexCubit.new)
+      ..registerFactory<DexCubit>(buildDexCubit)
       ..registerFactory<CatalogueCubit>(FakeCatalogueCubit.new)
       ..registerFactory<AnimeSheetCubit>(FakeAnimeSheetCubit.new);
   });

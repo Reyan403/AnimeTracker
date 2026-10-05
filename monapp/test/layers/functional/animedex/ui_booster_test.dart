@@ -213,7 +213,7 @@ void main() {
 
       await tapCard(tester);
       expect(find.text('1 / 5'), findsOneWidget);
-      expect(find.text('Anime 1'), findsOneWidget);
+      expect(find.text('Personnage 1'), findsOneWidget);
       expect(find.text('NOUVEAU'), findsOneWidget);
 
       await tapCard(tester);
@@ -226,13 +226,13 @@ void main() {
       await tapCard(tester);
       expect(find.text('4 / 5'), findsOneWidget);
       expect(find.text('Légendaire'), findsOneWidget);
-      expect(find.text('Voir mon Animédex'), findsNothing);
+      expect(find.text('Voir mes cartes'), findsNothing);
 
       await tapCard(tester);
       expect(find.text('5 / 5'), findsOneWidget);
       expect(find.text('Récap du booster'), findsOneWidget);
       expect(find.text('3 nouvelles cartes · 2 doublons'), findsOneWidget);
-      expect(find.text('Voir mon Animédex'), findsOneWidget);
+      expect(find.text('Voir mes cartes'), findsOneWidget);
       await teardown(tester);
     });
 
@@ -255,7 +255,7 @@ void main() {
       await tester.tap(find.byType(RevealCard));
       await tester.pumpAndSettle();
 
-      expect(find.text('Anime 1'), findsOneWidget);
+      expect(find.text('Personnage 1'), findsOneWidget);
       expect(find.text('NOUVEAU'), findsOneWidget);
     });
 
@@ -271,7 +271,7 @@ void main() {
 
       expect(find.text('Booster déjà ouvert aujourd\'hui'), findsOneWidget);
       expect(find.text('03:29:45'), findsOneWidget);
-      expect(find.text('Voir mon Animédex'), findsOneWidget);
+      expect(find.text('Voir mes cartes'), findsOneWidget);
       await teardown(tester);
     });
 
@@ -301,7 +301,7 @@ void main() {
       await teardown(tester);
     });
 
-    testWidgets('« Voir mon Animédex » referme la page', (tester) async {
+    testWidgets('« Voir mes cartes » referme la page', (tester) async {
       final cubit = boosterCubitOf(
         ScriptedOpenBooster((_) async => [drawnOf(1)]),
       );
@@ -329,7 +329,7 @@ void main() {
       await settleFor(tester);
       await tapCard(tester);
 
-      await tester.tap(find.text('Voir mon Animédex'));
+      await tester.tap(find.text('Voir mes cartes'));
       await tester.pump();
       await tester.pump(const Duration(seconds: 1));
 

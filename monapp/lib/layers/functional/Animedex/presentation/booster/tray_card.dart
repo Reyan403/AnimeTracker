@@ -36,8 +36,8 @@ class TrayCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     child: LayoutBuilder(
                       builder: (context, box) => AnimePoster(
-                        title: entry.card.title,
-                        imageUrl: entry.card.posterUrl,
+                        title: entry.card.name,
+                        imageUrl: entry.card.imageUrl,
                         width: box.maxWidth,
                         height: box.maxHeight,
                       ),

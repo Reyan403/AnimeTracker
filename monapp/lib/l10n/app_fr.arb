@@ -184,28 +184,55 @@
   },
   "constellationFilterHint": "Filtrer par genre",
   "dexTitle": "Animédex",
-  "dexCardCount": "{count, plural, =0{Aucune carte} =1{1 carte} other{{count} cartes}}",
-  "@dexCardCount": {
+  "dexCharacterCount": "{count, plural, =0{Aucun personnage} =1{1 personnage} other{{count} personnages}}",
+  "@dexCharacterCount": {
     "placeholders": {"count": {"type": "int"}}
+  },
+  "dexTabBooster": "Booster",
+  "dexTabCollection": "Collection",
+  "dexLatestCardsTitle": "Dernières cartes obtenues",
+  "dexSearchHint": "Rechercher un personnage ou un anime",
+  "dexSearchClear": "Effacer la recherche",
+  "dexFilterAll": "Toutes",
+  "dexSortLabel": "Trier",
+  "dexSortRecent": "Plus récentes",
+  "dexSortRarity": "Rareté",
+  "dexSortName": "Nom A → Z",
+  "dexSortFavourites": "Plus aimés",
+  "dexNoResultsTitle": "Aucun personnage trouvé",
+  "dexNoResultsHint": "Essaie un autre nom ou une autre rareté.",
+  "dexResetFilters": "Réinitialiser les filtres",
+  "dexFavouritesThousands": "{value} k",
+  "@dexFavouritesThousands": {
+    "placeholders": {"value": {"type": "String"}}
+  },
+  "dexDetailFavourites": "{value} favoris",
+  "@dexDetailFavourites": {
+    "placeholders": {"value": {"type": "String"}}
+  },
+  "dexDetailOrigin": "Anime d'origine",
+  "dexDetailObtained": "Obtenue le {date}",
+  "@dexDetailObtained": {
+    "placeholders": {"date": {"type": "DateTime", "format": "yMMMMd"}}
   },
   "dexRarityCommon": "Commune",
   "dexRarityRare": "Rare",
   "dexRarityEpic": "Épique",
   "dexRarityLegendary": "Légendaire",
   "dexBoosterReadyTitle": "Ton booster du jour est prêt !",
-  "dexBoosterReadyHint": "5 cartes d'animes à découvrir.",
+  "dexBoosterReadyHint": "5 cartes de personnages à découvrir.",
   "dexBoosterOpen": "Ouvrir",
   "dexBoosterWaitTitle": "Prochain booster dans",
   "dexBoosterWaitHint": "Reviens demain pour 5 nouvelles cartes.",
-  "dexEmptyTitle": "Ton Animédex est vide",
-  "dexEmptyHint": "Ouvre ton premier booster pour recevoir 5 cartes d'animes.",
+  "dexEmptyTitle": "Ta collection est vide",
+  "dexEmptyHint": "Ouvre ton premier booster pour recevoir 5 cartes de personnages.",
   "dexEmptyWaitHint": "Ton prochain booster arrive bientôt.",
   "dexOpenFirstBooster": "Ouvrir mon premier booster",
-  "dexErrorTitle": "Impossible d'afficher ton Animédex",
+  "dexErrorTitle": "Impossible d'afficher ta collection",
   "dexErrorHint": "Une erreur est survenue. Réessaie dans un instant.",
-  "dexCardLabel": "{title}, carte {rarity}",
+  "dexCardLabel": "{name}, carte {rarity}",
   "@dexCardLabel": {
-    "placeholders": {"title": {"type": "String"}, "rarity": {"type": "String"}}
+    "placeholders": {"name": {"type": "String"}, "rarity": {"type": "String"}}
   },
   "dexPackLabel": "Booster",
   "dexPackTapHint": "Touche le paquet pour l'ouvrir",
@@ -226,7 +253,7 @@
   "@dexRecapDuplicates": {
     "placeholders": {"count": {"type": "int"}}
   },
-  "dexSeeDex": "Voir mon Animédex",
+  "dexSeeCards": "Voir mes cartes",
   "dexAlreadyOpenedTitle": "Booster déjà ouvert aujourd'hui",
   "dexAlreadyOpenedHint": "Reviens demain pour tirer 5 nouvelles cartes.",
   "dexBoosterErrorTitle": "Le booster n'a pas pu être tiré",

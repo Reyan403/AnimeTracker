@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:monapp/layers/functional/Animedex/domain/entities/card_rarity.dart';
-import 'package:monapp/layers/functional/Animedex/presentation/animedex_view.dart';
-import 'package:monapp/layers/functional/Animedex/presentation/cubit/dex_cubit.dart';
 import 'package:monapp/layers/functional/Animedex/presentation/cubit/dex_state.dart';
 import 'package:monapp/layers/functional/Animedex/presentation/widgets/countdown_text.dart';
 import 'package:monapp/layers/functional/Animedex/presentation/widgets/dex_card_tile.dart';
@@ -11,35 +8,16 @@ import 'package:monapp/layers/functional/Animedex/presentation/widgets/dex_card_
 import '../../../support/pump_app.dart';
 import 'ui_support.dart';
 
-Future<DexCubit> pumpDex(
-  WidgetTester tester,
-  DexCubit cubit, {
-  bool load = true,
-}) async {
-  if (load) {
-    cubit.load();
-  }
-
-  await pumpApp(
-    tester,
-    BlocProvider.value(
-      value: cubit,
-      child: AnimedexScaffold(now: () => fixedNow),
-    ),
-    settle: false,
-  );
-  await tester.pump(const Duration(seconds: 1));
-
-  return cubit;
-}
-
 Future<void> teardown(WidgetTester tester) =>
     tester.pumpWidget(const SizedBox());
 
 void main() {
   group('DexCubit', () {
-    test('commence en chargement', () {
-      expect(dexCubitOf().state.status, DexStatus.loading);
+    test('commence en chargement sur l\'onglet Booster', () {
+      final state = dexCubitOf().state;
+
+      expect(state.status, DexStatus.loading);
+      expect(state.tab, DexTab.booster);
     });
 
     test('collection vide : état vide, booster disponible', () {
@@ -61,7 +39,7 @@ void main() {
       )..load();
 
       expect(cubit.state.status, DexStatus.success);
-      expect(cubit.state.cards.first.animeId, 2);
+      expect(cubit.state.cards.first.characterId, 2);
       expect(cubit.state.countOf(CardRarity.common), 2);
       expect(cubit.state.countOf(CardRarity.epic), 0);
       expect(cubit.state.isBoosterAvailable, isFalse);
@@ -131,25 +109,19 @@ void main() {
     });
   });
 
-  group('AnimedexScaffold', () {
-    testWidgets('affiche le titre, le compteur et les cartes', (tester) async {
+  group('AnimedexScaffold, onglet Booster', () {
+    testWidgets('titre, onglets et dernières cartes obtenues', (tester) async {
       await pumpDex(
         tester,
-        dexCubitOf(
-          collection: MemoryCollection([
-            cardOf(1, title: 'Naruto'),
-            cardOf(2, rarity: CardRarity.rare, title: 'Bleach'),
-          ]),
-        ),
+        dexCubitOf(collection: MemoryCollection(sampleCollection)),
       );
 
       expect(find.text('Animédex'), findsOneWidget);
-      expect(find.text('2 cartes'), findsOneWidget);
-      expect(find.text('Naruto'), findsOneWidget);
-      expect(find.text('Bleach'), findsOneWidget);
-      expect(find.text('Rare 1'), findsOneWidget);
-      expect(find.text('Légendaire 0'), findsOneWidget);
-      expect(find.byType(DexCardTile), findsNWidgets(2));
+      expect(find.text('Booster'), findsOneWidget);
+      expect(find.text('Collection'), findsOneWidget);
+      expect(find.text('Dernières cartes obtenues'), findsOneWidget);
+      expect(tileNames(tester), ['Zoro', 'Light Yagami']);
+      expect(find.byType(TextField), findsNothing);
       await teardown(tester);
     });
 
@@ -158,6 +130,7 @@ void main() {
 
       expect(find.text('Ton booster du jour est prêt !'), findsOneWidget);
       expect(find.widgetWithText(FilledButton, 'Ouvrir'), findsOneWidget);
+      expect(find.text('Dernières cartes obtenues'), findsNothing);
       await teardown(tester);
     });
 
@@ -176,32 +149,14 @@ void main() {
       await pumpDex(tester, dexCubitOf(), load: false);
 
       expect(find.byType(DexCardTile), findsNothing);
-      expect(find.text('Ton Animédex est vide'), findsNothing);
-      await teardown(tester);
-    });
-
-    testWidgets('état vide : invitation à ouvrir le premier booster', (
-      tester,
-    ) async {
-      await pumpDex(tester, dexCubitOf());
-
-      expect(find.text('Ton Animédex est vide'), findsOneWidget);
-      expect(find.text('Ouvrir mon premier booster'), findsOneWidget);
-      await teardown(tester);
-    });
-
-    testWidgets('état vide sans booster : pas d\'invitation', (tester) async {
-      await pumpDex(tester, dexCubitOf(openedToday: true));
-
-      expect(find.text('Ton Animédex est vide'), findsOneWidget);
-      expect(find.text('Ouvrir mon premier booster'), findsNothing);
+      expect(find.text('Dernières cartes obtenues'), findsNothing);
       await teardown(tester);
     });
 
     testWidgets('état d\'erreur : message et réessai', (tester) async {
       await pumpDex(tester, dexCubitOf(collection: ThrowingCollection()));
 
-      expect(find.text('Impossible d\'afficher ton Animédex'), findsOneWidget);
+      expect(find.text('Impossible d\'afficher ta collection'), findsOneWidget);
       expect(find.textContaining('broken'), findsNothing);
       expect(find.text('Réessayer'), findsOneWidget);
       await teardown(tester);

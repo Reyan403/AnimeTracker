@@ -1,8 +1,3 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
-import 'package:http/testing.dart';
-import 'package:monapp/layers/technical/KitsuApi/kitsu_client.dart';
 import 'package:monapp/layers/functional/Animedex/domain/entities/card_rarity.dart';
 import 'package:monapp/layers/functional/Animedex/domain/entities/dex_card.dart';
 import 'package:monapp/layers/functional/Animedex/domain/gateways/booster_candidate_gateway.dart';
@@ -10,18 +5,23 @@ import 'package:monapp/layers/functional/Animedex/domain/gateways/booster_schedu
 import 'package:monapp/layers/functional/Animedex/domain/gateways/dex_collection_gateway.dart';
 
 DexCard buildDexCard(
-  int animeId, {
+  int id, {
   CardRarity rarity = CardRarity.common,
   DateTime? obtainedOn,
-  String? title,
+  String? name,
+  int favourites = 1000,
+  String? animeTitle,
+  String? nativeName,
+  String? imageUrl,
 }) => DexCard(
-  animeId: animeId,
-  title: title ?? 'Anime $animeId',
+  characterId: id,
+  name: name ?? 'Personnage $id',
   rarity: rarity,
-  format: 'Série TV',
-  year: 2020,
-  episodeCount: 12,
+  favourites: favourites,
   obtainedOn: obtainedOn ?? DateTime(2026, 10, 5),
+  nativeName: nativeName,
+  imageUrl: imageUrl ?? 'https://img/$id.jpg',
+  animeTitle: animeTitle ?? 'Anime $id',
 );
 
 class FakeDexCollectionGateway implements DexCollectionGateway {
@@ -78,54 +78,3 @@ class FakeBoosterCandidateGateway implements BoosterCandidateGateway {
     return _batches.removeAt(0);
   }
 }
-
-Map<String, dynamic> payload({
-  int id = 7,
-  String? title = 'Cowboy Bebop',
-  Object? rating = '88.5',
-  int? popularityRank = 400,
-  List<Map<String, dynamic>>? included,
-  List<Map<String, dynamic>>? links,
-}) => {
-  'data': [
-    {
-      'id': '$id',
-      'attributes': {
-        'canonicalTitle': title,
-        'subtype': 'TV',
-        'startDate': '1998-04-03',
-        'episodeCount': 26,
-        'averageRating': rating,
-        'popularityRank': popularityRank,
-        'posterImage': {'small': 'https://img/$id.jpg'},
-      },
-      'relationships': {
-        'categories': {
-          'data':
-              links ??
-              [
-                {'type': 'categories', 'id': '1'},
-                {'type': 'categories', 'id': '99'},
-              ],
-        },
-      },
-    },
-  ],
-  'included':
-      included ??
-      [
-        {
-          'id': '1',
-          'type': 'categories',
-          'attributes': {'slug': 'space', 'title': 'Espace'},
-        },
-        {'id': '5', 'type': 'anime', 'attributes': <String, dynamic>{}},
-      ],
-};
-
-KitsuClient clientReplying(
-  Future<http.Response> Function(http.Request request) handler,
-) => KitsuClient(MockClient(handler));
-
-http.Response jsonResponse(Map<String, dynamic> body) =>
-    http.Response(jsonEncode(body), 200);

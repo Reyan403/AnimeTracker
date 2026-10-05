@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../technical/Theme/widgets/anime_poster.dart';
 import '../../domain/entities/dex_card.dart';
 import '../card/holographic_card.dart';
 
@@ -17,11 +16,7 @@ class DexCardTile extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: onTap,
-        child: HolographicCard(
-          card: card,
-          compact: true,
-          heroTag: AnimePoster.heroTagFor('dex', card.animeId),
-        ),
+        child: HolographicCard(card: card, compact: true),
       ),
     );
   }

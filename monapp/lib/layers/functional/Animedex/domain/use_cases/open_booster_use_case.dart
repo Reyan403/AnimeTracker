@@ -43,10 +43,10 @@ class OpenBoosterUseCase {
 
     final drawn = await _drawDistinct(moment);
     drawn.shuffle(_random);
-    final owned = {for (final card in _collection.cards) card.animeId};
+    final owned = {for (final card in _collection.cards) card.characterId};
     final result = [
       for (final card in drawn)
-        DrawnCard(card: card, isNew: !owned.contains(card.animeId)),
+        DrawnCard(card: card, isNew: !owned.contains(card.characterId)),
     ];
 
     await _collection.addAll([
@@ -78,7 +78,7 @@ class OpenBoosterUseCase {
 
       for (final card in batch) {
         if (chosen.length < boosterSize) {
-          chosen.putIfAbsent(card.animeId, () => card);
+          chosen.putIfAbsent(card.characterId, () => card);
         }
       }
     }

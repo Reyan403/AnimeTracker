@@ -6,45 +6,15 @@ import 'package:monapp/layers/functional/Animedex/domain/entities/card_rarity.da
 
 void main() {
   group('RarityRule.of', () {
-    test('classe selon la note moyenne', () {
-      expect(RarityRule.of(averageRating: 85), CardRarity.legendary);
-      expect(RarityRule.of(averageRating: 82.3), CardRarity.legendary);
-      expect(RarityRule.of(averageRating: 81.5), CardRarity.epic);
-      expect(RarityRule.of(averageRating: 81.2), CardRarity.epic);
-      expect(RarityRule.of(averageRating: 78), CardRarity.rare);
-      expect(RarityRule.of(averageRating: 73.5), CardRarity.rare);
-      expect(RarityRule.of(averageRating: 73.49), CardRarity.common);
-      expect(RarityRule.of(averageRating: 60), CardRarity.common);
-    });
-
-    test('traite une note absente comme commune', () {
-      expect(RarityRule.of(), CardRarity.common);
-    });
-
-    test('élève d un cran un anime iconique', () {
-      expect(
-        RarityRule.of(averageRating: 60, popularityRank: 1),
-        CardRarity.rare,
-      );
-      expect(
-        RarityRule.of(averageRating: 78, popularityRank: 20),
-        CardRarity.epic,
-      );
-      expect(
-        RarityRule.of(averageRating: 81.5, popularityRank: 5),
-        CardRarity.legendary,
-      );
-    });
-
-    test('ne dépasse pas légendaire et ignore un anime peu populaire', () {
-      expect(
-        RarityRule.of(averageRating: 90, popularityRank: 1),
-        CardRarity.legendary,
-      );
-      expect(
-        RarityRule.of(averageRating: 60, popularityRank: 21),
-        CardRarity.common,
-      );
+    test('classe selon le nombre de favoris', () {
+      expect(RarityRule.of(39000), CardRarity.legendary);
+      expect(RarityRule.of(14000), CardRarity.legendary);
+      expect(RarityRule.of(13999), CardRarity.epic);
+      expect(RarityRule.of(5400), CardRarity.epic);
+      expect(RarityRule.of(5399), CardRarity.rare);
+      expect(RarityRule.of(1100), CardRarity.rare);
+      expect(RarityRule.of(1099), CardRarity.common);
+      expect(RarityRule.of(0), CardRarity.common);
     });
   });
 
@@ -83,28 +53,29 @@ void main() {
     });
   });
 
-  group('RarityRule.offsetIn', () {
-    test('reste dans la tranche de chaque rareté', () {
+  group('RarityRule.pageIn', () {
+    test('reste dans la tranche de rang de chaque rareté', () {
       final random = Random(7);
 
       for (final rarity in CardRarity.values) {
         final band = RarityRule.bands[rarity]!;
 
         for (var index = 0; index < 500; index++) {
-          final offset = RarityRule.offsetIn(rarity, random);
+          final page = RarityRule.pageIn(rarity, random);
 
-          expect(offset, greaterThanOrEqualTo(band.start));
-          expect(offset, lessThan(band.end));
+          expect(page, greaterThanOrEqualTo(band.start));
+          expect(page, lessThan(band.end));
         }
       }
     });
 
-    test('couvre toutes les raretés sans chevauchement', () {
+    test('couvre les rangs 1 à 5000 sans chevauchement', () {
       final bands = RarityRule.bands.values.toList()
         ..sort((a, b) => a.start.compareTo(b.start));
 
       expect(bands.length, CardRarity.values.length);
-      expect(bands.first.start, 0);
+      expect(bands.first.start, 1);
+      expect(bands.last.end, 5001);
 
       for (var index = 1; index < bands.length; index++) {
         expect(bands[index].start, bands[index - 1].end);

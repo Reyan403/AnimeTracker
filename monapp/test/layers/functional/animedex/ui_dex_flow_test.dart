@@ -47,9 +47,9 @@ void main() {
     await pumpApp(tester, const AnimedexView(), settle: false);
     await tester.pump(const Duration(seconds: 1));
 
-    expect(find.text('Ton Animédex est vide'), findsOneWidget);
+    expect(find.text('Ton booster du jour est prêt !'), findsOneWidget);
 
-    await tester.tap(find.text('Ouvrir mon premier booster'));
+    await tester.tap(find.widgetWithText(FilledButton, 'Ouvrir'));
     await tester.pump();
     await tester.pump(const Duration(seconds: 1));
     expect(find.byType(SealedPack), findsOneWidget);
@@ -65,8 +65,12 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
 
     expect(find.byType(DexCardTile), findsNWidgets(2));
-    expect(find.text('2 cartes'), findsOneWidget);
+    expect(find.text('Dernières cartes obtenues'), findsOneWidget);
     expect(find.text('Prochain booster dans'), findsOneWidget);
+
+    await tester.tap(find.text('Collection'));
+    await tester.pump(const Duration(seconds: 1));
+    expect(find.text('2 personnages'), findsNWidgets(2));
 
     await tester.pumpWidget(const SizedBox());
   });

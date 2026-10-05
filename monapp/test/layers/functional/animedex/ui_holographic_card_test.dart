@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:monapp/layers/functional/Animedex/domain/entities/card_rarity.dart';
+import 'package:monapp/layers/functional/Animedex/domain/entities/dex_card.dart';
 import 'package:monapp/layers/functional/Animedex/presentation/card/holo_shine.dart';
 import 'package:monapp/layers/functional/Animedex/presentation/card/holographic_card.dart';
 
@@ -14,7 +15,7 @@ Widget cardWith(CardRarity rarity, {bool isLive = false}) => Center(
   child: SizedBox(
     width: 200,
     child: HolographicCard(
-      card: cardOf(1, rarity: rarity, title: 'Naruto'),
+      card: cardOf(1, rarity: rarity, name: 'Naruto'),
       isLive: isLive,
     ),
   ),
@@ -22,12 +23,41 @@ Widget cardWith(CardRarity rarity, {bool isLive = false}) => Center(
 
 void main() {
   group('HolographicCard', () {
-    testWidgets('affiche titre et rareté', (tester) async {
+    testWidgets('affiche nom, anime d\'origine, rareté et favoris', (
+      tester,
+    ) async {
       await pumpApp(tester, cardWith(CardRarity.epic));
 
       expect(find.text('Naruto'), findsOneWidget);
+      expect(find.text('Anime 1'), findsOneWidget);
       expect(find.text('Épique'), findsOneWidget);
+      expect(find.text('1 k'), findsOneWidget);
+      expect(find.byIcon(Icons.favorite_rounded), findsOneWidget);
       expect(find.byIcon(Icons.star_rounded), findsNWidgets(3));
+    });
+
+    testWidgets('sans anime d\'origine : la ligne disparaît', (tester) async {
+      await pumpApp(
+        tester,
+        Center(
+          child: SizedBox(
+            width: 200,
+            child: HolographicCard(
+              card: DexCard(
+                characterId: 9,
+                name: 'Inconnu',
+                rarity: CardRarity.common,
+                favourites: 12,
+                obtainedOn: fixedNow,
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Inconnu'), findsOneWidget);
+      expect(find.text('12'), findsOneWidget);
+      expect(find.textContaining('Anime'), findsNothing);
     });
 
     testWidgets('pas de reflet pour une carte commune', (tester) async {
@@ -117,7 +147,7 @@ void main() {
       await tester.pump();
     });
 
-    testWidgets('sémantique : titre et rareté lus ensemble', (tester) async {
+    testWidgets('sémantique : nom et rareté lus ensemble', (tester) async {
       final handle = tester.ensureSemantics();
       await pumpApp(tester, cardWith(CardRarity.rare));
 

@@ -10,7 +10,7 @@
 
 ### User Story 1 - Ne pas me faire spoiler (Priority: P1)
 
-Sur la fiche d'un anime de sa liste qu'il n'a pas terminé, le synopsis apparaît flouté avec un bouton « Afficher ». Un réglage permet de désactiver cette protection.
+Sur la fiche de tout anime qu'il n'a pas terminé, qu'il soit dans sa liste ou seulement dans le catalogue, le synopsis apparaît flouté avec un bouton « Afficher ». Un réglage permet de désactiver cette protection.
 
 **Why this priority**: évite de gâcher une série en cours en lisant son résumé.
 
@@ -20,9 +20,10 @@ Sur la fiche d'un anime de sa liste qu'il n'a pas terminé, le synopsis apparaî
 
 1. **Given** la protection active et un anime « À voir » ou « En cours », **When** la fiche s'ouvre, **Then** le synopsis est flouté et masqué aux lecteurs d'écran.
 2. **Given** un synopsis flouté, **When** l'utilisateur touche « Afficher », **Then** le synopsis devient lisible.
-3. **Given** un anime terminé ou absent de la liste, **When** la fiche s'ouvre, **Then** le synopsis est lisible directement.
-4. **Given** la protection désactivée dans les réglages, **When** une fiche s'ouvre, **Then** aucun synopsis n'est flouté.
-5. **Given** un réglage modifié, **When** l'application est relancée, **Then** le réglage est conservé.
+3. **Given** un anime terminé, **When** la fiche s'ouvre, **Then** le synopsis est lisible directement.
+4. **Given** un anime du catalogue absent de la liste, **When** la fiche s'ouvre, **Then** son synopsis est flouté comme les autres.
+5. **Given** la protection désactivée dans les réglages, **When** une fiche s'ouvre, **Then** aucun synopsis n'est flouté.
+6. **Given** un réglage modifié, **When** l'application est relancée, **Then** le réglage est conservé.
 
 ### User Story 2 - Consulter sans connexion (Priority: P2)
 
@@ -48,7 +49,7 @@ Sans connexion, la liste et les fiches déjà consultées restent affichées à 
 
 ### Functional Requirements
 
-- **FR-001**: Une protection anti-spoil MUST flouter le synopsis des animes de la liste non terminés, activée par défaut.
+- **FR-001**: Une protection anti-spoil MUST flouter le synopsis de tout anime non terminé, listé ou non, activée par défaut.
 - **FR-002**: L'utilisateur MUST pouvoir révéler un synopsis flouté et désactiver la protection dans les réglages.
 - **FR-003**: Le réglage MUST être conservé entre deux lancements.
 - **FR-004**: Les détails de la liste et les fiches consultées MUST être enregistrés à chaque chargement réussi.

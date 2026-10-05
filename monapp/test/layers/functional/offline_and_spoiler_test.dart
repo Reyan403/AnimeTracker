@@ -303,12 +303,13 @@ void main() {
       expect(cubit.state.isSynopsisHidden, isFalse);
     });
 
-    test('laisse visible un anime absent de la liste', () async {
+    test('masque le synopsis d un anime du catalogue absent de la liste',
+        () async {
       final cubit = sheetCubit();
 
       await cubit.load(1);
 
-      expect(cubit.state.isSynopsisHidden, isFalse);
+      expect(cubit.state.isSynopsisHidden, isTrue);
     });
 
     test('laisse visible quand la protection est désactivée', () async {

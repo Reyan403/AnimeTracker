@@ -50,11 +50,6 @@ class AnimeSheetCubit extends Cubit<AnimeSheetState> {
         ),
       );
 
-  bool _shouldHideSynopsis(int id) {
-    final status = _findWatchStatus(id);
-
-    return _readSpoilerGuard() &&
-        status != null &&
-        status != WatchStatus.completed;
-  }
+  bool _shouldHideSynopsis(int id) =>
+      _readSpoilerGuard() && _findWatchStatus(id) != WatchStatus.completed;
 }
